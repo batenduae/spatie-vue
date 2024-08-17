@@ -6,8 +6,11 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import { usePermissions } from "@/composables/permissions.js";
 
 const showingNavigationDropdown = ref(false);
+
+const { is  } = usePermissions();
 </script>
 
 <template>
@@ -29,9 +32,31 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="route('dashboard')"
+                                         :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+                                <NavLink v-if="is('admin')"
+                                    :href="route('admin.index')"
+                                         :active="route().current('admin.index')">
+                                    Admin
+                                </NavLink>
+                                <NavLink
+                                    :href="route('users.index')"
+                                    :active="route().current('users.index')">
+                                    Users
+                                </NavLink>
+                                <NavLink
+                                    :href="route('roles.index')"
+                                    :active="route().current('roles.index')">
+                                    Roles
+                                </NavLink>
+                                <NavLink
+                                    :href="route('permissions.index')"
+                                    :active="route().current('permissions.index')">
+                                    Permissions
+                                </NavLink>
+
                             </div>
                         </div>
 
@@ -112,9 +137,17 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink
+                            :href="route('dashboard')"
+                            :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('admin.index')"
+                            :active="route().current('admin.index')">
+                            Admin
+                        </ResponsiveNavLink>
+
                     </div>
 
                     <!-- Responsive Settings Options -->

@@ -1,29 +1,36 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import AdminLayout from "@/Layouts/AdminLayout.vue";
+import {Head, Link, useForm} from "@inertiajs/vue3";
+import TextInput from "@/Components/TextInput.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import InputError from "@/Components/InputError.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-});
 
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
+})
+defineOptions({ layout: AdminLayout });
 </script>
 
 <template>
-        <Head title="Register" />
-
-        <form @submit.prevent="submit">
+    <Head title="Users/Create" />
+    <div class="max-w-7xl mx-auto py-4">
+        <div class="flex justify-between items-baseline">
+            <h1 class="text-white">Create User</h1>
+            <Link
+                :href="route('users.index')"
+                class="px-4 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded-lg"
+            >
+                Go Back
+            </Link>
+        </div>
+    </div>
+    <div class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200">
+        <form @submit.prevent="form.post(route('users.store'))">
             <div>
                 <InputLabel for="name" value="Name" />
 
@@ -86,16 +93,15 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link
-                    :href="route('login')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Already registered?
-                </Link>
 
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    Create
                 </PrimaryButton>
             </div>
         </form>
+    </div>
 </template>
+
+<style scoped>
+
+</style>
