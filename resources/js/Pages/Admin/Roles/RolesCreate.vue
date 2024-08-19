@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Head, Link, useForm} from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
@@ -10,32 +10,35 @@ import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
 import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
 import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.vue";
-import {ref} from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
     permissions: {
         type: Object,
-        required: true
-    }
-})
+        required: true,
+    },
+});
 
-function addTag (newTag) {
+function addTag(newTag) {
     const tag = {
         name: newTag,
-        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
-    }
-    this.permissions.push(tag)
-    this.form.permissions.push(tag)
+        code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000),
+    };
+    this.permissions.push(tag);
+    this.form.permissions.push(tag);
 }
 
 const form = useForm({
     name: "",
     permissions: ref([]),
-})
+});
 
-function revokePermission(id){
+function revokePermission(id) {
     let obj = this.form.permissions;
-    obj.splice(obj.findIndex(a => a.id === id) , 1)
+    obj.splice(
+        obj.findIndex((a) => a.id === id),
+        1
+    );
 }
 defineOptions({ layout: AdminLayout });
 </script>
@@ -55,7 +58,9 @@ defineOptions({ layout: AdminLayout });
         </div>
     </div>
     <div class="flex">
-        <div class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50">
+        <div
+            class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50"
+        >
             <form @submit.prevent="form.post(route('roles.store'))">
                 <div>
                     <InputLabel for="role" value="Role" />
@@ -94,27 +99,26 @@ defineOptions({ layout: AdminLayout });
                         label="name"
                         track-by="name"
                     >
-                        <template
-                            slot="tag"
-                            slot-scope="props"
-                        >
-                            {{ form.permissions}}
+                        <template slot="tag" slot-scope="props">
+                            {{ form.permissions }}
                         </template>
                     </multiselect>
                 </div>
 
                 <div class="flex items-center justify-end mt-4">
-
-                    <PrimaryButton class="ms-4"
-                                   :class="{ 'opacity-25': form.processing }"
-                                   :disabled="form.processing">
+                    <PrimaryButton
+                        class="ms-4"
+                        :class="{ 'opacity-25': form.processing }"
+                        :disabled="form.processing"
+                    >
                         Create
                     </PrimaryButton>
                 </div>
             </form>
         </div>
 
-        <div v-if="form.permissions.length"
+        <div
+            v-if="form.permissions.length"
             class="p-4 max-w-2xl mx-auto rounded-lg bg-gradient-to-bl from-green-600 to-indigo-500 shadow-lg shadow-blue-500/50"
         >
             <div class="py-4 text-white">Permissions</div>
@@ -127,15 +131,17 @@ defineOptions({ layout: AdminLayout });
                     </TableRow>
                 </template>
                 <template #default>
-                    <TableRow v-for="permission in form.permissions" :key="permission.id"
-                              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    <TableRow
+                        v-for="permission in form.permissions"
+                        :key="permission.id"
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     >
                         <TableDataCell>{{ permission.id }}</TableDataCell>
                         <TableDataCell>{{ permission.name }}</TableDataCell>
                         <TableDataCell class="flex space-x-2">
                             <button
                                 v-on:click="revokePermission(permission.id)"
-                                class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500 "
+                                class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500"
                             >
                                 Revoke
                             </button>
@@ -145,9 +151,6 @@ defineOptions({ layout: AdminLayout });
             </Table>
         </div>
     </div>
-
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
-<style scoped>
-
-</style>
+<style scoped></style>

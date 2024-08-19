@@ -1,15 +1,15 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { Head } from '@inertiajs/vue3';
+import { Head } from "@inertiajs/vue3";
 defineOptions({ layout: AdminLayout });
 </script>
 
 <template>
     <Head title="Dashboard" />
-        <div class="mx-auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">You're in Dashboard now</div>
-            </div>
+    <div class="mx-auto">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 text-gray-900">You're in Dashboard now</div>
         </div>
+    </div>
 </template>

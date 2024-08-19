@@ -1,12 +1,12 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Head, Link, useForm} from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Multiselect from "vue-multiselect";
-import {onMounted, ref, watch} from "vue";
+import { onMounted, ref, watch } from "vue";
 import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
 import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
@@ -15,25 +15,25 @@ import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.
 const props = defineProps({
     user: {
         type: Object,
-        required: true
+        required: true,
     },
     roles: {
         type: Object,
-        required: true
+        required: true,
     },
     permissions: {
         type: Object,
-        required: true
-    }
-})
+        required: true,
+    },
+});
 
-function addTag (newTag) {
+function addTag(newTag) {
     const tag = {
         name: newTag,
-        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
-    }
-    this.permissions.push(tag)
-    this.form.permissions.push(tag)
+        code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000),
+    };
+    this.permissions.push(tag);
+    this.form.permissions.push(tag);
 }
 
 const form = useForm({
@@ -41,23 +41,17 @@ const form = useForm({
     email: props.user?.email,
     roles: ref(props.user?.roles),
     permissions: ref(props.user?.permissions),
-})
+});
 
-onMounted(()=> {
+onMounted(() => {
     form.roles = props.user?.roles;
     form.permissions = props.user?.permissions;
-})
+});
 
 watch(
-    (
-        ()=> props.user,
-        ()=> (form.roles = ref(props.user?.roles))
-    ),
-    (
-        ()=> props.user,
-        ()=> (form.permissions = ref(props.user?.permissions))
-    )
-)
+    (() => props.user, () => (form.roles = ref(props.user?.roles))),
+    (() => props.user, () => (form.permissions = ref(props.user?.permissions)))
+);
 // object contains subObject
 function partialContains(object, subObject) {
     // Create arrays of property names
@@ -98,8 +92,10 @@ defineOptions({ layout: AdminLayout });
         </div>
     </div>
     <div class="flex flex-wrap justify-around">
-        <div class="my-2 w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50">
-            <form @submit.prevent="form.put(route('users.update',user.id))">
+        <div
+            class="my-2 w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50"
+        >
+            <form @submit.prevent="form.put(route('users.update', user.id))">
                 <div>
                     <InputLabel for="name" value="Name" />
 
@@ -152,11 +148,8 @@ defineOptions({ layout: AdminLayout });
                         label="name"
                         track-by="name"
                     >
-                        <template
-                            slot="tag"
-                            slot-scope="props"
-                        >
-                            {{ form.roles}}
+                        <template slot="tag" slot-scope="props">
+                            {{ form.roles }}
                         </template>
                     </multiselect>
                 </div>
@@ -182,25 +175,27 @@ defineOptions({ layout: AdminLayout });
                         label="name"
                         track-by="name"
                     >
-                        <template
-                            slot="tag"
-                            slot-scope="props"
-                        >
-                            {{ form.permissions}}
+                        <template slot="tag" slot-scope="props">
+                            {{ form.permissions }}
                         </template>
                     </multiselect>
                 </div>
 
                 <div class="flex items-center justify-end mt-4">
-
-                    <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    <PrimaryButton
+                        class="ms-4"
+                        :class="{ 'opacity-25': form.processing }"
+                        :disabled="form.processing"
+                    >
                         Update
                     </PrimaryButton>
                 </div>
             </form>
         </div>
 
-        <div class="my-2 w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50">
+        <div
+            class="my-2 w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50"
+        >
             <div class="max-w-xl" v-if="props.user?.roles.length">
                 <div class="py-4 text-white">Assigned Roles</div>
                 <Table>
@@ -212,18 +207,25 @@ defineOptions({ layout: AdminLayout });
                         </TableRow>
                     </template>
                     <template #default>
-                        <TableRow v-for="role in props.user.roles" :key="role.id"
-                                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                        <TableRow
+                            v-for="role in props.user.roles"
+                            :key="role.id"
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         >
                             <TableDataCell>{{ role.id }}</TableDataCell>
                             <TableDataCell>{{ role.name }}</TableDataCell>
                             <TableDataCell class="flex space-x-2">
                                 <Link
-                                    :href="route('users.revokeRole',[user.id, role.id])"
+                                    :href="
+                                        route('users.revokeRole', [
+                                            user.id,
+                                            role.id,
+                                        ])
+                                    "
                                     method="delete"
                                     as="button"
                                     preserve-scroll
-                                    class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500 "
+                                    class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500"
                                 >
                                     Revoke
                                 </Link>
@@ -234,7 +236,9 @@ defineOptions({ layout: AdminLayout });
             </div>
         </div>
 
-        <div class="my-2 w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50">
+        <div
+            class="my-2 w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50"
+        >
             <div class="max-w-xl" v-if="props.user?.permissions.length">
                 <div class="py-4 text-white">Direct Permissions</div>
                 <Table>
@@ -246,18 +250,25 @@ defineOptions({ layout: AdminLayout });
                         </TableRow>
                     </template>
                     <template #default>
-                        <TableRow v-for="permission in props.user?.permissions" :key="permission.id"
-                                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                        <TableRow
+                            v-for="permission in props.user?.permissions"
+                            :key="permission.id"
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         >
                             <TableDataCell>{{ permission.id }}</TableDataCell>
                             <TableDataCell>{{ permission.name }}</TableDataCell>
                             <TableDataCell class="flex space-x-2">
                                 <Link
-                                    :href="route('users.revokePermission',[user.id, permission.id])"
+                                    :href="
+                                        route('users.revokePermission', [
+                                            user.id,
+                                            permission.id,
+                                        ])
+                                    "
                                     method="delete"
                                     as="button"
                                     preserve-scroll
-                                    class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500 "
+                                    class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500"
                                 >
                                     Revoke
                                 </Link>
@@ -267,13 +278,16 @@ defineOptions({ layout: AdminLayout });
                 </Table>
             </div>
         </div>
-
-
     </div>
 
-    <div class="m-8 p-6 rounded-lg bg-gradient-to-bl from-green-600 to-indigo-500 shadow-lg shadow-blue-500/50">
+    <div
+        class="m-8 p-6 rounded-lg bg-gradient-to-bl from-green-600 to-indigo-500 shadow-lg shadow-blue-500/50"
+    >
         <div class="flex flex-wrap justify-around">
-            <div class="my-4 max-w-2xl overflow-x-auto" v-if="props.user?.permissions.length">
+            <div
+                class="my-4 max-w-2xl overflow-x-auto"
+                v-if="props.user?.permissions.length"
+            >
                 <div class="py-4 text-white">Permissions from Roles</div>
                 <Table>
                     <template #tableHeader>
@@ -285,21 +299,46 @@ defineOptions({ layout: AdminLayout });
                         </TableRow>
                     </template>
                     <template #default>
-                        <template v-for="role in props.user.roles" :key="role.id">
-                            <TableRow v-for="permission in role.assignedPermissions"
-                                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                        <template
+                            v-for="role in props.user.roles"
+                            :key="role.id"
+                        >
+                            <TableRow
+                                v-for="permission in role.assignedPermissions"
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                             >
-                                <TableDataCell v-if="permission === role.assignedPermissions[0]" :rowspan="[role.assignedPermissions.length]">{{ role.id }}</TableDataCell>
-                                <TableDataCell v-if="permission === role.assignedPermissions[0]" :rowspan="[role.assignedPermissions.length]">{{ role.name }}</TableDataCell>
-                                <TableDataCell>{{ permission.id }}</TableDataCell>
-                                <TableDataCell>{{ permission.name }}</TableDataCell>
+                                <TableDataCell
+                                    v-if="
+                                        permission ===
+                                        role.assignedPermissions[0]
+                                    "
+                                    :rowspan="[role.assignedPermissions.length]"
+                                    >{{ role.id }}</TableDataCell
+                                >
+                                <TableDataCell
+                                    v-if="
+                                        permission ===
+                                        role.assignedPermissions[0]
+                                    "
+                                    :rowspan="[role.assignedPermissions.length]"
+                                    >{{ role.name }}</TableDataCell
+                                >
+                                <TableDataCell>{{
+                                    permission.id
+                                }}</TableDataCell>
+                                <TableDataCell>{{
+                                    permission.name
+                                }}</TableDataCell>
                             </TableRow>
                         </template>
                     </template>
                 </Table>
             </div>
 
-            <div class="my-4 max-w-2xl overflow-x-auto" v-if="props.user?.permissionsAll.length">
+            <div
+                class="my-4 max-w-2xl overflow-x-auto"
+                v-if="props.user?.permissionsAll.length"
+            >
                 <div class="py-4 text-white">All Permissions</div>
                 <Table>
                     <template #tableHeader>
@@ -311,24 +350,33 @@ defineOptions({ layout: AdminLayout });
                         </TableRow>
                     </template>
                     <template #default>
-                        <TableRow v-for="permission in props.user?.permissionsAll" :key="permission.id"
-                                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                        <TableRow
+                            v-for="permission in props.user?.permissionsAll"
+                            :key="permission.id"
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         >
                             <TableDataCell>{{ permission.id }}</TableDataCell>
                             <TableDataCell>{{ permission.name }}</TableDataCell>
                             <TableDataCell>
-
                                 {{ permission.name }}
                             </TableDataCell>
                             <TableDataCell class="flex space-x-2">
                                 <Link
-
-                                    v-if="props.user?.permissions.find((object) => partialContains(object, permission))"
-                                    :href="route('users.revokePermission',[user.id, permission.id])"
+                                    v-if="
+                                        props.user?.permissions.find((object) =>
+                                            partialContains(object, permission)
+                                        )
+                                    "
+                                    :href="
+                                        route('users.revokePermission', [
+                                            user.id,
+                                            permission.id,
+                                        ])
+                                    "
                                     method="delete"
                                     as="button"
                                     preserve-scroll
-                                    class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500 "
+                                    class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500"
                                 >
                                     Revoke
                                 </Link>
@@ -337,12 +385,8 @@ defineOptions({ layout: AdminLayout });
                     </template>
                 </Table>
             </div>
-
         </div>
     </div>
-
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,21 +1,20 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Head, Link, useForm} from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
-
 const props = defineProps({
     permission: {
         type: Object,
-        required: true
-    }
-})
+        required: true,
+    },
+});
 const form = useForm({
     name: props.permission.name,
-})
+});
 defineOptions({ layout: AdminLayout });
 </script>
 
@@ -33,8 +32,12 @@ defineOptions({ layout: AdminLayout });
             </Link>
         </div>
     </div>
-    <div class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50">
-        <form @submit.prevent="form.put(route('permissions.update',permission))">
+    <div
+        class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50"
+    >
+        <form
+            @submit.prevent="form.put(route('permissions.update', permission))"
+        >
             <div>
                 <InputLabel for="name" value="Permissions" />
 
@@ -52,10 +55,11 @@ defineOptions({ layout: AdminLayout });
             </div>
 
             <div class="flex items-center justify-end mt-4">
-
-                <PrimaryButton class="ms-4"
-                               :class="{ 'opacity-25': form.processing }"
-                               :disabled="form.processing">
+                <PrimaryButton
+                    class="ms-4"
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
                     Update
                 </PrimaryButton>
             </div>
@@ -63,6 +67,4 @@ defineOptions({ layout: AdminLayout });
     </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

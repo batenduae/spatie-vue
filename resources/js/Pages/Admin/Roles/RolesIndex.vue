@@ -1,13 +1,11 @@
 <script setup>
-import {Head, Link} from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
 import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
-defineProps([
-    'roles'
-])
+defineProps(["roles"]);
 defineOptions({ layout: AdminLayout });
 </script>
 
@@ -43,34 +41,41 @@ defineOptions({ layout: AdminLayout });
                 </TableRow>
             </template>
             <template #default>
-                <TableRow v-for="role in roles" :key="role.id"
-                          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                <TableRow
+                    v-for="role in roles"
+                    :key="role.id"
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                     <TableDataCell>{{ role.id }}</TableDataCell>
                     <TableDataCell>{{ role.name }}</TableDataCell>
                     <TableDataCell class="flex space-x-2">
                         <Link
-                            :href="route('roles.assignPermissionToRoleView',role.id)"
+                            :href="
+                                route(
+                                    'roles.assignPermissionToRoleView',
+                                    role.id
+                                )
+                            "
                             preserve-scroll
-                            class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-green-500 to-blue-500 "
+                            class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-green-500 to-blue-500"
                         >
                             Assign-permit
                         </Link>
 
                         <Link
-                            :href="route('roles.edit',role)"
+                            :href="route('roles.edit', role)"
                             preserve-scroll
-                            class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-purple-500 to-teal-500 "
+                            class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-purple-500 to-teal-500"
                         >
                             Edit
                         </Link>
 
                         <Link
-                            :href="route('roles.destroy',role)"
+                            :href="route('roles.destroy', role)"
                             method="delete"
                             as="button"
                             preserve-scroll
-                            class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500 "
+                            class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500"
                         >
                             Delete
                         </Link>
@@ -81,6 +86,4 @@ defineOptions({ layout: AdminLayout });
     </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

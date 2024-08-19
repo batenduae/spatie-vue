@@ -1,13 +1,9 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
     <th class="px-6 py-3">
-        <slot/>
+        <slot />
     </th>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
