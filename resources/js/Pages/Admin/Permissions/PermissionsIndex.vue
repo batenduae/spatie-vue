@@ -18,6 +18,7 @@ defineOptions({ layout: AdminLayout });
             <h1 class="text-white">Permissions Index Page</h1>
             <Link
                 :href="route('permissions.create')"
+                preserve-scroll
                 class="px-4 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded-lg"
             >
                 Create Permission
@@ -42,6 +43,7 @@ defineOptions({ layout: AdminLayout });
                     <TableDataCell class="flex space-x-2">
                         <Link
                             :href="route('permissions.edit',permission)"
+                            preserve-scroll
                             class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-purple-500 to-teal-500 "
                         >
                             Edit
@@ -49,6 +51,8 @@ defineOptions({ layout: AdminLayout });
                         <Link
                             :href="route('permissions.destroy',permission)"
                             method="delete"
+                            as="button"
+                            preserve-scroll
                             class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500 "
                         >
                             Delete

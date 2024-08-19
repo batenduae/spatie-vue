@@ -17,7 +17,16 @@ defineOptions({ layout: AdminLayout });
         <div class="flex justify-between items-baseline">
             <h1 class="text-white">Roles Index Page</h1>
             <Link
+                :href="route('roles.massAssignPermissionToRole')"
+                preserve-scroll
+                class="px-4 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded-lg"
+            >
+                Mass Assign Role Permission
+            </Link>
+
+            <Link
                 :href="route('roles.create')"
+                preserve-scroll
                 class="px-4 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded-lg"
             >
                 Create Role
@@ -41,14 +50,26 @@ defineOptions({ layout: AdminLayout });
                     <TableDataCell>{{ role.name }}</TableDataCell>
                     <TableDataCell class="flex space-x-2">
                         <Link
+                            :href="route('roles.assignPermissionToRoleView',role.id)"
+                            preserve-scroll
+                            class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-green-500 to-blue-500 "
+                        >
+                            Assign-permit
+                        </Link>
+
+                        <Link
                             :href="route('roles.edit',role)"
+                            preserve-scroll
                             class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-purple-500 to-teal-500 "
                         >
                             Edit
                         </Link>
+
                         <Link
                             :href="route('roles.destroy',role)"
                             method="delete"
+                            as="button"
+                            preserve-scroll
                             class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500 "
                         >
                             Delete

@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Resources\PermissionResource;
+use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -11,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -60,26 +65,34 @@ class UserController extends Controller
     public function edit(User $user): Response
     {
         return Inertia::render('Admin/Users/UsersEdit',[
-            'user'  => new UserResource($user)
+            'user'  => new UserResource($user),
+            'roles'=> RoleResource::collection(Role::all()),
+            'permissions'   =>  PermissionResource::collection(Permission::all())
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.Rule::unique('users','email')->ignore($user)
-        ]);
+            'email' => 'required|string|lowercase|email|max:255|'.Rule::unique('users','email')->ignore($user),
+            'roles' =>  'sometimes|array',
+            'permissions' =>  'sometimes|array'
+            ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
         ]);
-
-        return to_route('users.index');
+        $user->syncRoles($request->input('roles.*.name'));
+//        $user->syncRoles($request->roles);
+        $user->syncPermissions($request->input('permissions.*.name'));
+//        $user->syncPermissions($request->permissions);
+        return back();
+//        return to_route('users.index');
     }
 
     /**

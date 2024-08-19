@@ -80,10 +80,14 @@ import SideBarLink from "@/Layouts/Partials/SideBarLink.vue";
             </Link>
         </div>
     </aside>
-    <div class="ml-auto lg:w-[75%] xl:w-[80%] 2xl:w-[85%] h-screen">
-        <div class="sticky top-0 h-16 border-b bg-white dark:bg-gray-800 dark:border-gray-700 lg:py-2.5">
+<!--    TopBar-->
+    <div class="ml-auto lg:w-[75%] xl:w-[80%] 2xl:w-[85%] h-screen flex flex-col">
+        <div class="sticky top-0 z-20 h-16 border-b bg-white dark:bg-gray-800 dark:border-gray-700 lg:py-2.5">
             <div class="flex items-center justify-between space-x-4 px-6 2xl:container">
-                <h5 hidden class="text-2xl font-medium text-gray-600 lg:block dark:text-white">Dashboard</h5>
+                <h5 hidden class="text-2xl font-medium text-gray-600 lg:block dark:text-white">
+                    User: {{ $page.props.auth.user.name}},
+                    Email: {{ $page.props.auth.user.email}}
+                </h5>
                 <button class="-mr-2 h-16 w-12 border-r lg:hidden dark:border-gray-700 dark:text-gray-300">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -180,7 +184,7 @@ import SideBarLink from "@/Layouts/Partials/SideBarLink.vue";
                 </div>
             </div>
         </div>
-        <div class="flex-1 px-4 pt-6">
+        <div class="flex-1 px-4 pt-6 bg-violet-950 overflow-x-auto">
            <slot/>
         </div>
     </div>

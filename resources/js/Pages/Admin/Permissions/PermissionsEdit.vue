@@ -26,13 +26,14 @@ defineOptions({ layout: AdminLayout });
             <h1 class="text-white">Edit Permission</h1>
             <Link
                 :href="route('permissions.index')"
+                preserve-scroll
                 class="px-4 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded-lg"
             >
                 Go Back
             </Link>
         </div>
     </div>
-    <div class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200">
+    <div class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50">
         <form @submit.prevent="form.put(route('permissions.update',permission))">
             <div>
                 <InputLabel for="name" value="Permissions" />

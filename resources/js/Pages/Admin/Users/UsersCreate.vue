@@ -23,13 +23,14 @@ defineOptions({ layout: AdminLayout });
             <h1 class="text-white">Create User</h1>
             <Link
                 :href="route('users.index')"
+                preserve-scroll
                 class="px-4 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded-lg"
             >
                 Go Back
             </Link>
         </div>
     </div>
-    <div class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200">
+    <div class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50">
         <form @submit.prevent="form.post(route('users.store'))">
             <div>
                 <InputLabel for="name" value="Name" />
