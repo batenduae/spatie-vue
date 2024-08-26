@@ -13,7 +13,7 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    routeUrl: {
+    routeName: {
         type: String,
         required: true,
         default: "roles.assignPermissionsToRole",
@@ -30,14 +30,15 @@ const form = useForm({
 </script>
 
 <template>
-    <form @submit.prevent="form.put(route(routeUrl, role.id))">
+
+    <form @submit.prevent="form.put(route(routeName, role))">
         <div class="flex flex-wrap items-center group">
             <span v-for="permission in permissions" class="">
                 <input
                     type="checkbox"
                     v-model="form.permissions"
                     :id="role.name + ' ' + permission.name"
-                    :value="permission.name"
+                    :value="permission"
                     :name="permission.name"
                     class="mr-2 peer/checkbox checked:text-green-900"
                 />

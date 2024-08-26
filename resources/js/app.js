@@ -8,6 +8,27 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
+//
+import { createNotivue } from 'notivue'
+import 'notivue/notification.css' // Only needed if using built-in notifications
+import 'notivue/animations.css' // Only needed if using built-in animations
+const notivue = createNotivue({
+    position: 'top-right',
+    // limit: 5,
+    // enqueue: true,
+    notifications: {
+        global: {
+            duration: 3000
+        }
+    }
+})
+
+
+
+
+
+//
+
 createInertiaApp({
     title: function (title) {
         if (title) {
@@ -26,6 +47,11 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            //
+            .use(notivue)
+
+
+            //
             .mount(el);
     },
     progress: {

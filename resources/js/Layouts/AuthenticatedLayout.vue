@@ -10,7 +10,7 @@ import { usePermissions } from "@/composables/permissions.js";
 
 const showingNavigationDropdown = ref(false);
 
-const { is } = usePermissions();
+const { hasRole, hasPermission } = usePermissions();
 </script>
 
 <template>
@@ -41,32 +41,13 @@ const { is } = usePermissions();
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    v-if="is('admin')"
+                                    v-if="hasRole(['super admin','admin'])"
                                     :href="route('admin.index')"
                                     :active="route().current('admin.index')"
                                 >
                                     Admin
                                 </NavLink>
-                                <NavLink
-                                    :href="route('users.index')"
-                                    :active="route().current('users.index')"
-                                >
-                                    Users
-                                </NavLink>
-                                <NavLink
-                                    :href="route('roles.index')"
-                                    :active="route().current('roles.index')"
-                                >
-                                    Roles
-                                </NavLink>
-                                <NavLink
-                                    :href="route('permissions.index')"
-                                    :active="
-                                        route().current('permissions.index')
-                                    "
-                                >
-                                    Permissions
-                                </NavLink>
+
                             </div>
                         </div>
 

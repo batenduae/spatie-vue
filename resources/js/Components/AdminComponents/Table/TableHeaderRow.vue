@@ -8,9 +8,9 @@ defineProps({
 
 <template>
     <tr>
-        <td class="px-6 py-3" v-for="content in contents">
+        <th class="px-6 py-3" v-for="content in contents">
             {{ content }}
-        </td>
+        </th>
         <slot />
     </tr>
 </template>

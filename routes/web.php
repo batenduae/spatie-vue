@@ -25,4 +25,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-require __DIR__.'/spatieRoute.php';
+require __DIR__ . '/spatieRolePermissionRoute.php';
+require __DIR__ . '/adminRoutes.php';

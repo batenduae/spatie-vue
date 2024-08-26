@@ -1,11 +1,31 @@
 import { usePage } from "@inertiajs/vue3";
 
 export function usePermissions() {
-    const is = (name) => usePage().props.auth.user.roles.includes(name);
-    const hasPermission = (name) =>
+    const hasPermissions = (name) =>
         usePage().props.auth.user.permissions.includes(name);
     const can = (name) =>
         usePage().props.auth.user.permissionsAll.includes(name);
 
-    return { is, hasPermission, can };
+    function hasRole(roleArray) {
+        let roles = usePage().props.auth.user.roles;
+        if (roles.find((role) => roleArray.includes(role.name))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function hasPermission(permissionArray) {
+        let permissions = usePage().props.auth.user.roles;
+        if (permissions.find((role) => permissionArray.includes(role.name))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    return { hasRole, hasPermission, can };
 }
+
+
+

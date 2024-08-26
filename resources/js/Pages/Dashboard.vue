@@ -2,7 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Head } from "@inertiajs/vue3";
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 </script>
 
 <template>
