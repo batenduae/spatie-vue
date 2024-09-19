@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
             return ($user->hasRole('super admin')
                 ||$user->email==='superadmin@gmail.com'
                 ||$user->email==='batenduae@gmail.com'
-            ) ? true : null;
+            );// note this returns boolean
         });
 
         Gate::after(function ($user, $ability) {

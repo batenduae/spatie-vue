@@ -8,7 +8,8 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
-
+import {usePermissions} from "@/composables/permissions.js";
+const { hasPermission } = usePermissions();
 const form = useForm({
     name: "",
     email: "",
@@ -24,6 +25,7 @@ defineOptions({ layout: AdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="users.index"
+            v-if="hasPermission('user.view')"
         />
     </PageHeader>
     <Card class="mx-auto w-96">
@@ -100,6 +102,7 @@ defineOptions({ layout: AdminLayout });
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
+                    v-if="hasPermission('user.create')"
                 >
                     Create
                 </PrimaryButton>

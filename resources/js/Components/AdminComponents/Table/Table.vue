@@ -1,20 +1,18 @@
 <script setup></script>
 
 <template>
-    <div class="relative mb-4 overflow-x-auto rounded-lg min-w-80 shadow-lg drop-shadow shadow-blue-500/50">
-        <table
-            class="w-full mx-auto text-sm text-left text-gray-500 dark:text-gray-400"
+    <table
+        class="mx-auto overflow-x-auto min-w-80 mb-4 text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg shadow-lg drop-shadow shadow-blue-500/50"
+    >
+        <thead
+            class="text-xs text-white uppercase bg-neutral-800 dark:bg-gray-700 rounded-t-lg"
         >
-            <thead
-                class="text-xs text-white uppercase bg-gray-50 dark:bg-gray-700"
-            >
-                <slot name="tableHeader"></slot>
-            </thead>
-            <tbody>
-                <slot />
-            </tbody>
-        </table>
-    </div>
+            <slot name="tableHeader"></slot>
+        </thead>
+        <tbody class="bg-transparent dark:bg-black">
+            <slot />
+        </tbody>
+    </table>
 </template>
 
 <style scoped></style>

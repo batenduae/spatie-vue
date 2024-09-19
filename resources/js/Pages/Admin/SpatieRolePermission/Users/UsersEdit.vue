@@ -14,7 +14,8 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
-
+import {usePermissions} from "@/composables/permissions.js";
+const { hasPermission } = usePermissions();
 const props = defineProps({
     user: {
         type: Object,
@@ -87,6 +88,7 @@ defineOptions({ layout: AdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="users.index"
+            v-if="hasPermission('user.view')"
         />
     </PageHeader>
     <Card type="cyan">
@@ -124,7 +126,7 @@ defineOptions({ layout: AdminLayout });
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4" v-if="hasPermission('assign-role.to-user')">
                         <InputLabel for="role" value="Roles" />
                         <multiselect
                             id="role"
@@ -151,7 +153,7 @@ defineOptions({ layout: AdminLayout });
                         </multiselect>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4" v-if="hasPermission('assign-permission.to-user')">
                         <InputLabel for="permission" value="Permissions" />
                         <Multiselect
                             id="permission"
@@ -183,6 +185,8 @@ defineOptions({ layout: AdminLayout });
                             class="ms-4"
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
+
+                            v-if="hasPermission('user.edit')"
                         >
                             Update
                         </PrimaryButton>
@@ -211,6 +215,7 @@ defineOptions({ layout: AdminLayout });
                                     route-name="users.revokeRole"
                                     :obj="[user, role]"
                                     text="User Role"
+                                    v-if="hasPermission('revoke-role.from-user')"
                                 />
                             </TableDataCell>
                         </TableRow>
@@ -239,6 +244,7 @@ defineOptions({ layout: AdminLayout });
                                     route-name="users.revokePermission"
                                     :obj="[user, permission]"
                                     text="User Permission"
+                                    v-if="hasPermission('revoke-permission.from-user')"
                                 />
                             </TableDataCell>
                         </TableRow>
@@ -248,11 +254,11 @@ defineOptions({ layout: AdminLayout });
         </div>
     </Card>
 
-    <Card type="green">
+    <Card type="green" v-if="(props.user?.permissions.length)+(props.user?.permissionsAll.length)">
         <div class="flex flex-wrap justify-around justify-items-center justify-self-center">
             <Card
                 class=""
-                v-if="props.user?.permissions.length"
+                v-if="props.user?.roles.find((role) => role.assignedPermissions.length)"
             >
                 <div class="py-4 text-white">Permissions from Roles</div>
                 <Table>
@@ -301,13 +307,14 @@ defineOptions({ layout: AdminLayout });
                     >
                         <TableDataCell class="flex space-x-2">
                            <AdminButton
-                                v-if="props.user?.permissions.find((object) =>partialContains(object, permission))"
+                                v-if="hasPermission('delete-permission.from-user') && props.user?.permissions.find((object) =>partialContains(object, permission))"
                                 button-text="remove"
                                 button-type="delete"
                                 route-method="delete"
                                 route-name="users.revokePermission"
                                 :obj="[user, permission]"
                                 text="User Permission"
+
                             />
                         </TableDataCell>
                     </TableRow>

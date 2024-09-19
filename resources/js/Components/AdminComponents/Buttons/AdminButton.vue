@@ -3,6 +3,7 @@ import {Link} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import Swal from 'sweetalert2'
+import {push} from "notivue";
 
 
 const props = defineProps({
@@ -26,6 +27,10 @@ const props = defineProps({
     text: {
         type: String,
         default: 'Permit'
+    },
+    property: {
+        type: String,
+        default: 'name'
     },
 })
 let className = ref('')
@@ -123,8 +128,8 @@ const form = useForm({})
 function alertNow(props){
     Swal.fire({
         title: "Are you sure?",
-        text: props.text+": '"+props.obj.name+"' will be deleted permanently ",
-        icon: "danger",
+        text: props.text+": '"+props.obj[props.property]+"' will be deleted permanently ",
+        icon: "error",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
@@ -134,9 +139,12 @@ function alertNow(props){
             form.delete(route(props.routeName, props.obj))
             Swal.fire({
                 title: "Deleted!",
-                text: props.text+": '"+props.obj.name+" has been deleted.",
+                text: props.text+": '"+props.obj[props.property]+" has been deleted.",
                 icon: "success"
             });
+            push.error(props.text+ ' Deleting Confirmed')
+        }else{
+            push.warning(props.text+ ' Deleting Canceled')
         }
     });
 }

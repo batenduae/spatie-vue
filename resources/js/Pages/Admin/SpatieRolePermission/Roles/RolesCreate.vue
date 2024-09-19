@@ -13,7 +13,8 @@ import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.
 import { ref } from "vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
-
+import {usePermissions} from "@/composables/permissions.js";
+const { hasPermission } = usePermissions();
 const props = defineProps({
     permissions: {
         type: Object,
@@ -51,6 +52,7 @@ defineOptions({ layout: AdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="roles.index"
+            v-if="hasPermission('role.view')"
         />
     </PageHeader>
     <div class="flex">
@@ -106,6 +108,7 @@ defineOptions({ layout: AdminLayout });
                         class="ms-4"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
+                        v-if="hasPermission('role.create')"
                     >
                         Create
                     </PrimaryButton>

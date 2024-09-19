@@ -6,6 +6,10 @@ import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue"
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
+import {usePermissions} from "@/composables/permissions.js";
+import {onMounted} from "vue";
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
 defineProps(["users"]);
 defineOptions({ layout: AdminLayout });
 </script>
@@ -16,21 +20,23 @@ defineOptions({ layout: AdminLayout });
             button-text="Create User"
             button-type="create"
             route-name="users.create"
+            v-if="hasPermission('user.create')"
         />
     </PageHeader>
     <div class="mx-auto" v-if="users.length">
         <div class="">
             <Table>
                 <template #tableHeader>
-                    <TableHeaderRow :contents="['ID','Name','Email','Roles','Action']"/>
+                    <TableHeaderRow :contents="['ID','Name','Email','Roles','Direct Permissions','All Permissions','Action']"/>
                 </template>
                 <TableRow
                     v-for="user in users"
                     :key="user.id"
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    class="bg-white border-b border-blue-300 dark:bg-gray-800 dark:border-gray-700"
                     :contents="[ user.id,user.name,user.email]"
                 >
-                    <TableDataCell class="items-center">
+                    <TableDataCell class="items-center flex align-middle space-x-2">
+                        <ul>{{ user.roles.length}}</ul>
                         <ul class="flex">
                             <li
                                 v-for="role in user.roles"
@@ -40,18 +46,22 @@ defineOptions({ layout: AdminLayout });
                             </li>
                         </ul>
                     </TableDataCell>
+                    <TableDataCell>{{ user.permissions.length }}</TableDataCell>
+                    <TableDataCell>{{ user.permissionsAll.length}}</TableDataCell>
                     <TableDataCell class="flex space-x-2 items-center">
                         <AdminButton
-                            button-text="Assign-Role"
+                            button-text="Assign-Role-Permit"
                             button-type="assign"
                             route-name="users.assignRolePermissionToUser"
                             :obj="user"
+                            v-if="hasPermission(['assign-role.to-user','assign-permission.to-user'])"
                         />
                         <AdminButton
                             button-text="Edit"
                             button-type="edit"
                             route-name="users.edit"
                             :obj="user"
+                            v-if="hasPermission('user.edit')"
                         />
                         <AdminButton
                             button-text="Delete"
@@ -60,6 +70,7 @@ defineOptions({ layout: AdminLayout });
                             route-name="users.destroy"
                             :obj="user"
                             text="User"
+                            v-if="hasPermission('user.delete')"
                         />
                         <AdminButton
                             button-text="Log in"
@@ -67,6 +78,7 @@ defineOptions({ layout: AdminLayout });
                             route-method="post"
                             route-name="users.loginDynamically"
                             :obj="user"
+                            v-if="hasPermission('log-in.dynamically')"
                         />
                     </TableDataCell>
                 </TableRow>

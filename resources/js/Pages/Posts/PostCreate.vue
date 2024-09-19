@@ -1,13 +1,15 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
+import {useForm} from "@inertiajs/vue3";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
+import {usePermissions} from "@/composables/permissions.js";
 
-
+const { hasPermission } = usePermissions();
 const form = useForm({
     title: "",
     content: "",
@@ -26,7 +28,7 @@ defineOptions({ layout: AdminLayout });
     </PageHeader>
     <div class="flex">
         <div
-            class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50"
+            class="mx-auto w-full p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50"
         >
             <form @submit.prevent="form.post(route('posts.store'))">
                 <div>
@@ -54,7 +56,6 @@ defineOptions({ layout: AdminLayout });
                         class="mt-1 block w-full"
                         v-model="form.content"
                         required
-                        autofocus
                         autocomplete="content"
                     />
 

@@ -3,7 +3,8 @@ import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
-
+import {usePermissions} from "@/composables/permissions.js";
+const { hasPermission } = usePermissions();
 const props = defineProps({
     role: {
         type: Object,
@@ -32,7 +33,7 @@ const form = useForm({
 <template>
 
     <form @submit.prevent="form.put(route(routeName, role))">
-        <div class="flex flex-wrap items-center group">
+        <div class="grid sm:grid-cols-4">
             <span v-for="permission in permissions" class="">
                 <input
                     type="checkbox"
@@ -56,6 +57,8 @@ const form = useForm({
                 class="ms-4"
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
+                @click="push.success('Permission to Role: `'+role.name+'` Updated Successfully')"
+                v-if="hasPermission('assign-permission.to-role')"
             >
                 {{ props.submitText }}
             </PrimaryButton>

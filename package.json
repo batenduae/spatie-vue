@@ -18,8 +18,16 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@vueuse/core": "^11.1.0",
+        "apexcharts": "^3.53.0",
+        "flatpickr": "^4.6.13",
+        "jsvectormap": "^1.6.0",
         "notivue": "^2.4.4",
+        "pinia": "^2.2.2",
         "sweetalert2": "^11.12.4",
-        "vue-multiselect": "^3.0.0"
+        "unimport": "^3.11.1",
+        "vue-multiselect": "^3.0.0",
+        "vue-router": "^4.4.5",
+        "vue3-apexcharts": "^1.6.0"
     }
 }

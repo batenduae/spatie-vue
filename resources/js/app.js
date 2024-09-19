@@ -1,17 +1,38 @@
 import "./bootstrap";
 import "../css/app.css";
+//
+import "jsvectormap/dist/jsvectormap.min.css"
+import "flatpickr/dist/flatpickr.min.css"
+
+//
 
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy";
-import GuestLayout from "@/Layouts/GuestLayout.vue";
+import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
+//
+// import RolesPermissionsToVue from "../../vendor/geowrgetudor/laravel-spatie-permissions-vue/src/js";
+//
+import { createPinia } from 'pinia'
+import VueApexCharts from 'vue3-apexcharts'
+import { createMemoryHistory, createRouter } from 'vue-router'
 
+// import routes from './routes.js'
+// const routes = [
+//     { path: '/hello', component: Dashboard },
+// ]
+// const router = createRouter({
+//     history: createMemoryHistory(),
+//     routes: routes,
+// })
 //
 import { createNotivue } from 'notivue'
 import 'notivue/notification.css' // Only needed if using built-in notifications
 import 'notivue/animations.css' // Only needed if using built-in animations
+import 'notivue/notification-progress.css'
+
 const notivue = createNotivue({
     position: 'top-right',
     // limit: 5,
@@ -22,9 +43,6 @@ const notivue = createNotivue({
         }
     }
 })
-
-
-
 
 
 //
@@ -40,7 +58,7 @@ createInertiaApp({
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
         let page = pages[`./Pages/${name}.vue`];
-        page.default.layout = page.default.layout || GuestLayout;
+        page.default.layout = page.default.layout || DefaultLayout;
         return page;
     },
     setup({ el, App, props, plugin }) {
@@ -48,9 +66,20 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             //
-            .use(notivue)
-
-
+            // .use(RolesPermissionsToVue)
+            //
+            .use(createPinia())
+            .use(VueApexCharts)
+            //
+            // .use(router)
+            //
+            .use(notivue, {
+                animations: {
+                    enter: 'slide-in',
+                    leave: 'slide-out',
+                    clearAll: 'fade'
+                }
+            })
             //
             .mount(el);
     },
@@ -58,3 +87,4 @@ createInertiaApp({
         color: "#4B5563",
     },
 });
+

@@ -7,7 +7,8 @@ import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
-
+import {usePermissions} from "@/composables/permissions.js";
+const { hasPermission } = usePermissions();
 const props = defineProps({
     permission: {
         type: Object,
@@ -26,6 +27,7 @@ defineOptions({ layout: AdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="permissions.index"
+            v-if="hasPermission('permission.view')"
         />
     </PageHeader>
     <div
@@ -55,6 +57,7 @@ defineOptions({ layout: AdminLayout });
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
+                    v-if="hasPermission('permission.edit')"
                 >
                     Update
                 </PrimaryButton>

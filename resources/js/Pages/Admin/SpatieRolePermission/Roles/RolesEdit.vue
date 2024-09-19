@@ -13,7 +13,9 @@ import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {useForm} from "@inertiajs/vue3";
-
+import Card from "@/Components/AdminComponents/Cards/Card.vue";
+import {usePermissions} from "@/composables/permissions.js";
+const { hasPermission } = usePermissions();
 const props = defineProps({
     role: {
         type: Object,
@@ -52,12 +54,11 @@ defineOptions({ layout: AdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="roles.index"
+            v-if="hasPermission('role.view')"
         />
     </PageHeader>
-    <div class="flex">
-        <div
-            class="mx-auto w-96 p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200 shadow-lg shadow-blue-500/50"
-        >
+    <div class="flex flex-wrap justify-between">
+        <Card type="orange" class="w-96">
             <form @submit.prevent="form.put(route('roles.update', role))">
                 <div>
                     <InputLabel for="role" value="Role" />
@@ -75,7 +76,7 @@ defineOptions({ layout: AdminLayout });
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
 
-                <div class="mt-4">
+                <div class="mt-4" v-if="hasPermission('assign-permission.to-role')">
                     <InputLabel for="permission" value="Permissions" />
                     <multiselect
                         id="permission"
@@ -107,17 +108,16 @@ defineOptions({ layout: AdminLayout });
                         class="ms-4"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
+                        @click="push.success('Role Updated Successfully')"
+                        v-if="hasPermission(['role.edit','assign-permission.to-role'])"
                     >
                         Update
                     </PrimaryButton>
                 </div>
             </form>
-        </div>
+        </Card>
 
-        <div
-            v-if="props.role?.assignedPermissions.length"
-            class="p-4 max-w-2xl mx-auto rounded-lg bg-gradient-to-bl from-green-600 to-indigo-500 shadow-lg shadow-blue-500/50"
-        >
+        <Card type="green" v-if="props.role?.assignedPermissions.length">
             <div class="py-4 text-white">
                 Permissions To Role: {{ role.name }}
             </div>
@@ -143,11 +143,12 @@ defineOptions({ layout: AdminLayout });
                             route-name="roles.revokePermission"
                             :obj="[role,permission]"
                             text="Role"
+                            v-if="hasPermission('revoke-permission.from-role')"
                         />
                     </TableDataCell>
                 </TableRow>
             </Table>
-        </div>
+        </Card>
     </div>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

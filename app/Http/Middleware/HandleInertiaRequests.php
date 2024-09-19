@@ -4,7 +4,10 @@ namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
+use Spatie\Permission\Models\Permission;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -30,11 +33,31 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $permissions = [];
+        foreach (Permission::all() as $permission) {
+            if(Auth::user()){
+                if (Auth::user()->can($permission->name)) {
+                    $permissions[] = $permission->name;
+                }
+            }
+        }
         return [
             ...parent::share($request),
             'auth.user' => fn () => $request->user()
                 ? new UserResource($request->user())
                 : null,
+            'auth.user.permit' => $permissions,
+
+            'flash' => function () use ($request) {
+                return [
+                    'message'   => session('message'),
+                    'info'      => session('info'),
+                    'success'   => session('success'),
+                    'warning'   => session('warning'),
+                    'error'     => session('error'),
+                    'danger'    => session('danger'),
+                ];
+            }
         ];
     }
 }

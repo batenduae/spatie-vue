@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import Unimport from 'unimport/unplugin'
 
 export default defineConfig({
     plugins: [
@@ -16,5 +17,11 @@ export default defineConfig({
                 },
             },
         }),
+        Unimport.vite({
+            addons: {
+                vueTemplate: true
+            },
+            imports: [{ name: 'push', from: 'notivue' }]
+        })
     ],
 });

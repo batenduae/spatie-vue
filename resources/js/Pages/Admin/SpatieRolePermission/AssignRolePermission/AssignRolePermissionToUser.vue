@@ -7,6 +7,8 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
+import {usePermissions} from "@/composables/permissions.js";
+const { hasPermission } = usePermissions();
 const props = defineProps({
     user: {
         type: Object,
@@ -57,6 +59,7 @@ defineOptions({ layout: AdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="users.index"
+            v-if="hasPermission('user.view')"
         />
     </PageHeader>
     <Card type="green">
@@ -67,8 +70,8 @@ defineOptions({ layout: AdminLayout });
         </div>
     </Card>
 
-    <Card type="cyan">
-        <div class="my-2">
+    <Card type="cyan" v-if="hasPermission(['assign-role.to-user','assign-permission.to-user'])">
+        <div class="my-2" v-if="hasPermission('assign-role.to-user')">
             <div class="text-xl py-2 text-blue-600 font-bold">Roles:</div>
             <div
                 class="mx-auto p-6 rounded-lg bg-gradient-to-b from-purple-400 to-indigo-400"
@@ -78,7 +81,7 @@ defineOptions({ layout: AdminLayout });
                         form1.put(route('users.assignRoleToUser', user.id))
                     "
                 >
-                    <div class="flex flex-wrap items-center group">
+                    <div class="grid sm:grid-cols-4">
                         <span v-for="role in roles" class="">
                             <input
                                 type="checkbox"
@@ -101,6 +104,7 @@ defineOptions({ layout: AdminLayout });
                             class="ms-4"
                             :class="{ 'opacity-25': form1.processing }"
                             :disabled="form1.processing"
+                            @click="push.success('Role to User: `'+user.name+'` Updated Successfully')"
                         >
                             Update
                         </PrimaryButton>
@@ -108,7 +112,7 @@ defineOptions({ layout: AdminLayout });
                 </form>
             </div>
         </div>
-        <div class="my-2">
+        <div class="my-2" v-if="hasPermission('assign-permission.to-user')">
             <div class="mt-4 text-xl py-2 text-green-600 font-bold">
                 Permissions:
             </div>
@@ -122,7 +126,7 @@ defineOptions({ layout: AdminLayout });
                         )
                     "
                 >
-                    <div class="flex flex-wrap items-center">
+                    <div class="grid sm:grid-cols-4">
                         <span v-for="permission in permissions">
                             <input
                                 type="checkbox"
@@ -159,6 +163,7 @@ defineOptions({ layout: AdminLayout });
                             class="ms-4"
                             :class="{ 'opacity-25': form2.processing }"
                             :disabled="form2.processing"
+                            @click="push.success('Permission to User: `'+user.name+'` Updated Successfully')"
                         >
                             Update
                         </PrimaryButton>

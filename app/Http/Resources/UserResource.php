@@ -2,12 +2,16 @@
 
 namespace App\Http\Resources;
 
+use App\SpatieContainer\SpatieResources\PermissionResource;
+use App\SpatieContainer\SpatieResources\RoleResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 class UserResource extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      *
