@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import {Notification, NotificationProgress, Notivue, outlinedIcons, pastelTheme} from "notivue";
 import SidebarArea from "@/Components/AdminComponents/SideBar/SidebarArea.vue";
-import HeaderArea from "@/Components/TailAdmin/Header/HeaderArea.vue";
+import HeaderArea from "@/Components/AdminComponents/Header/HeaderArea.vue";
 </script>
 
 <template>
-    <!-- ===== Page Wrapper Start ===== -->
-    <div class="flex h-screen overflow-hidden">
+    <div class="">
         <Notivue v-slot="item">
             <Notification
-                :item="item"
-                :icons="outlinedIcons"
-                :theme="pastelTheme"
+                          :item="item"
+                          :icons="outlinedIcons"
+                          :theme="pastelTheme"
             >
                 <NotificationProgress :item="item" />
             </Notification>
         </Notivue>
-        <!-- ===== Sidebar Start ===== -->
+    </div>
+    <!-- ===== Page Wrapper Start ===== -->
+    <div class="flex h-screen overflow-hidden text-black dark:text-slate-300">
+                <!-- ===== Sidebar Start ===== -->
         <SidebarArea />
         <!-- ===== Sidebar End ===== -->
 
@@ -27,8 +29,8 @@ import HeaderArea from "@/Components/TailAdmin/Header/HeaderArea.vue";
             <!-- ===== Header End ===== -->
 
             <!-- ===== Main Content Start ===== -->
-            <main class="flex flex-1">
-                <div class="mx-auto p-4 md:p-6 2xl:p-10">
+            <main class="w-full flex-1 bg-violet-900 dark:bg-boxdark-2">
+                <div class="items-center p-4 md:p-6 2xl:p-10">
                     <slot></slot>
                 </div>
             </main>
@@ -37,3 +39,18 @@ import HeaderArea from "@/Components/TailAdmin/Header/HeaderArea.vue";
     </div>
     <!-- ===== Page Wrapper End ===== -->
 </template>
+<style>
+:root {
+    /* Your variables */
+    --nv-gap: 1rem;
+    --nv-z: 9999;
+}
+
+/* Rules for mobile devices */
+@media (max-width: 768px) {
+    :root {
+        --nv-root-x-align: center;
+        --nv-gap: 0.5rem;
+    }
+}
+</style>

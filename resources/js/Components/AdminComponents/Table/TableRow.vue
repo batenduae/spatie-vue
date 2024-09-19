@@ -5,9 +5,8 @@ defineProps({
     }
 })
 </script>
-
 <template>
-    <tr>
+    <tr class="border-b border-slate-300 dark:border-slate-600">
         <td class="px-6 py-3" v-for="content in contents">
             {{ content }}
         </td>

@@ -9,13 +9,14 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, watch} from "vue";
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 
 const form = useForm({
     name: "",
 });
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>

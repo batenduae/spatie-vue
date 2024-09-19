@@ -7,10 +7,11 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 defineProps(["posts"]);
 const { hasPermission } = usePermissions();
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>

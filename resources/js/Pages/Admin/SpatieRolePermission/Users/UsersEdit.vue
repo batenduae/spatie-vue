@@ -15,6 +15,7 @@ import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 import {usePermissions} from "@/composables/permissions.js";
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 const { hasPermission } = usePermissions();
 const props = defineProps({
     user: {
@@ -79,7 +80,7 @@ function partialContains(object, subObject) {
     return true;
 }
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
@@ -204,7 +205,6 @@ defineOptions({ layout: AdminLayout });
                         <TableRow
                             v-for="role in props.user.roles"
                             :key="role.id"
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                             :contents="[role.id,role.name]"
                         >
                             <TableDataCell class="flex space-x-2">
@@ -233,7 +233,6 @@ defineOptions({ layout: AdminLayout });
                         <TableRow
                             v-for="permission in props.user?.permissions"
                             :key="permission.id"
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                             :contents="[permission.id, permission.name]"
                         >
                             <TableDataCell class="flex space-x-2">
@@ -271,7 +270,6 @@ defineOptions({ layout: AdminLayout });
                     >
                         <TableRow
                             v-for="permission in role.assignedPermissions"
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         >
                             <TableDataCell
                                 v-if="permission === role.assignedPermissions[0]"
@@ -302,7 +300,6 @@ defineOptions({ layout: AdminLayout });
                     <TableRow
                         v-for="permission in props.user?.permissionsAll"
                         :key="permission.id"
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         :contents="[ permission.id,permission.name]"
                     >
                         <TableDataCell class="flex space-x-2">

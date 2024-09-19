@@ -8,6 +8,7 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 const { hasPermission } = usePermissions();
 const props = defineProps({
     role: {
@@ -23,7 +24,7 @@ const props = defineProps({
 const form = useForm({
     permissions: ref(props.role.assignedPermissions),
 });
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>

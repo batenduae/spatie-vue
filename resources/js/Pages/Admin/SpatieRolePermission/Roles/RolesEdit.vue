@@ -15,6 +15,7 @@ import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {useForm} from "@inertiajs/vue3";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import {usePermissions} from "@/composables/permissions.js";
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 const { hasPermission } = usePermissions();
 const props = defineProps({
     role: {
@@ -45,7 +46,7 @@ watch(
     () => props.role,
     () => (form.permissions = ref(props.role?.assignedPermissions))
 );
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
@@ -132,7 +133,6 @@ defineOptions({ layout: AdminLayout });
                 <TableRow
                     v-for="permission in props.role?.assignedPermissions"
                     :key="permission.id"
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     :contents="[permission.id,permission.name]"
                 >
                     <TableDataCell class="flex space-x-2">

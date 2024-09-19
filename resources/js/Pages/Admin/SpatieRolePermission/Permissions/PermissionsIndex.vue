@@ -8,6 +8,7 @@ import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted} from "vue";
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 const props = defineProps({
     permissions: {
         type: [Object,String],
@@ -16,7 +17,7 @@ const props = defineProps({
 });
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: SpatieAdminLayout });
 
 </script>
 
@@ -38,7 +39,6 @@ defineOptions({ layout: AdminLayout });
                 <TableRow
                     v-for="permission in props.permissions"
                     :key="permission.id"
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     :contents="[ permission.id,permission.name]"
                 >
                     <TableDataCell class="flex space-x-2">

@@ -10,10 +10,11 @@ import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted} from "vue";
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 defineProps(["roles"]);
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
@@ -40,7 +41,6 @@ defineOptions({ layout: AdminLayout });
                 <TableRow
                     v-for="role in roles"
                     :key="role.id"
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     :contents="[ role.id,role.name]"
                 >
                     <TableDataCell class="flex space-x-2">

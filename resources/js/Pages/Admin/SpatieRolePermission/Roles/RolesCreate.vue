@@ -14,6 +14,7 @@ import { ref } from "vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 const { hasPermission } = usePermissions();
 const props = defineProps({
     permissions: {
@@ -43,7 +44,7 @@ function revokePermission(id) {
         1
     );
 }
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
@@ -132,7 +133,6 @@ defineOptions({ layout: AdminLayout });
                 <TableRow
                     v-for="permission in form.permissions"
                     :key="permission.id"
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     :contents="[permission.id,permission.name]"
                 >
                     <TableDataCell class="flex space-x-2">

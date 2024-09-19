@@ -2,14 +2,16 @@
 
 <template>
     <table
-        class="mx-auto overflow-x-auto min-w-80 mb-4 text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg shadow-lg drop-shadow shadow-blue-500/50"
+        class="mx-auto w-full overflow-x-auto min-w-80 mb-4 text-sm text-left
+         bg-neutral-200 dark:bg-neutral-800 text-black dark:text-slate-300
+         shadow-lg drop-shadow shadow-blue-500/50 rounded-lg"
     >
         <thead
-            class="text-xs text-white uppercase bg-neutral-800 dark:bg-gray-700 rounded-t-lg"
+            class="text-xs uppercase bg-indigo-200 dark:bg-indigo-900 shadow-md shadow-slate-300 dark:shadow-indigo-500 sticky top-20"
         >
             <slot name="tableHeader"></slot>
         </thead>
-        <tbody class="bg-transparent dark:bg-black">
+        <tbody>
             <slot />
         </tbody>
     </table>

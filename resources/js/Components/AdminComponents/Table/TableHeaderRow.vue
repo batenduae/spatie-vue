@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-    <tr>
+    <tr class="rounded-lg">
         <th class="px-6 py-3" v-for="content in contents">
             {{ content }}
         </th>
