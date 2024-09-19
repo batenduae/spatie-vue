@@ -15,8 +15,8 @@ const { hasRole, hasPermission } = usePermissions();
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+        <div class="min-h-screen bg-green-100 dark:bg-boxdark-2 text-black dark:text-white/70">
+            <nav class="border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -25,7 +25,7 @@ const { hasRole, hasPermission } = usePermissions();
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
+                                        class="block h-9 w-auto fill-current"
                                     />
                                 </Link>
                             </div>
@@ -50,7 +50,7 @@ const { hasRole, hasPermission } = usePermissions();
                             </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <div class="hidden sm:flex sm:items-center sm:ms-6 text-black ">
                             <!-- Settings Dropdown -->
                             <div class="ms-3 relative">
                                 <Dropdown align="right" width="48">
@@ -58,7 +58,9 @@ const { hasRole, hasPermission } = usePermissions();
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium
+                                                rounded-md hover:text-gray-700 focus:outline-none transition ease-in-out duration-150
+                                                bg-teal-800 dark:bg-green-700"
                                             >
                                                 {{ $page.props.auth.user.name }}
 

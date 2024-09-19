@@ -55,7 +55,8 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
         ]);
         $user = User::findOrFail($userId);
         $user->syncRoles($request->roles);
-        return back();
+        return back()
+            ->with('success','Role Updated');
     }
 
     public function assignPermissionToUser(Request $request, $userId): RedirectResponse
@@ -73,8 +74,8 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
         $user = User::findOrFail($userId);
         Auth::login($user);
         session()->regenerate();
-        echo "push.success('Permission Created Successfully')";
-        return back();
+        return back()
+            ->with('success','logged in successfully');
     }
 
 

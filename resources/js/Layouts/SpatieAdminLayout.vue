@@ -2,6 +2,10 @@
 import {Notification, NotificationProgress, Notivue, outlinedIcons, pastelTheme} from "notivue";
 import SidebarArea from "@/Components/AdminComponents/SideBar/SidebarArea.vue";
 import HeaderArea from "@/Components/AdminComponents/Header/HeaderArea.vue";
+import {usePermissions} from "@/composables/permissions.js";
+import {onMounted} from "vue";
+const { hasPermission, showFlash} = usePermissions();
+onMounted(showFlash)
 </script>
 
 <template>
@@ -17,7 +21,7 @@ import HeaderArea from "@/Components/AdminComponents/Header/HeaderArea.vue";
         </Notivue>
     </div>
     <!-- ===== Page Wrapper Start ===== -->
-    <div class="flex h-screen overflow-hidden text-black dark:text-slate-300">
+    <div class="flex h-screen overflow-hidden text-black dark:text-white">
                 <!-- ===== Sidebar Start ===== -->
         <SidebarArea />
         <!-- ===== Sidebar End ===== -->
@@ -43,7 +47,7 @@ import HeaderArea from "@/Components/AdminComponents/Header/HeaderArea.vue";
 :root {
     /* Your variables */
     --nv-gap: 1rem;
-    --nv-z: 9999;
+    --nv-z: 9999999;
 }
 
 /* Rules for mobile devices */

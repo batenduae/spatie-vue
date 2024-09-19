@@ -19,7 +19,7 @@ onClickOutside(target, () => {
       @click.prevent="dropdownOpen = !dropdownOpen"
     >
       <span class="hidden text-right lg:block">
-        <span class="block text-sm font-medium text-black dark:text-white">{{ $page.props.auth.user.name }}</span>
+        <span class="block text-lg font-semibold text-green-600">{{ $page.props.auth.user.name }}</span>
         <span class="block text-xs font-medium">{{ $page.props.auth.user.email }}</span>
       </span>
 

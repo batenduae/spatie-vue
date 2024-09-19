@@ -68,7 +68,9 @@ const menuGroups = ref([
 
 <template>
   <aside
-    class="absolute left-0 top-0 z-9999 flex h-screen flex-col overflow-y-hidden bg-body duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
+    class="absolute left-0 top-0 z-9999 flex h-screen flex-col
+    overflow-y-hidden duration-300 ease-linear bg-body dark:bg-boxdark
+    text-black dark:text-white/70 lg:static lg:translate-x-0 shadow-lg drop-shadow shadow-blue-500"
     :class="{
       'translate-x-0': sidebarStore.isSidebarOpen,
       '-translate-x-full': !sidebarStore.isSidebarOpen
@@ -76,9 +78,10 @@ const menuGroups = ref([
     ref="target"
   >
     <!-- SIDEBAR HEADER -->
-    <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+    <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 max-w-45">
       <Link href="/">
         <img src="@/assets/images/logo/logo.svg" alt="Logo" />
+          //Brand Logo
       </Link>
 
       <button class="block lg:hidden" @click="sidebarStore.isSidebarOpen = false">
@@ -119,22 +122,22 @@ const menuGroups = ref([
       </nav>
       <!-- Sidebar Menu -->
 
-      <!-- Promo Box -->
-      <div
-        class="mx-auto mb-10 w-full max-w-60 rounded-sm border border-strokedark bg-boxdark py-6 px-4 text-center shadow-default"
-      >
-        <h3 class="mb-1 font-semibold text-white">TailAdmin Pro</h3>
-        <p class="mb-4 text-xs">Get All Dashboards and 300+ UI Elements</p>
-        <a
-          href="https://tailadmin.com/pricing"
-          target="_blank"
-          rel="nofollow"
-          class="flex items-center justify-center rounded-md bg-primary p-2 font-medium text-white hover:bg-opacity-90"
-        >
-          Purchase Now
-        </a>
-      </div>
-      <!-- Promo Box -->
+<!--      &lt;!&ndash; Promo Box &ndash;&gt;-->
+<!--      <div-->
+<!--        class="mx-auto mb-10 w-full max-w-60 rounded-sm border border-strokedark bg-boxdark py-6 px-4 text-center shadow-default"-->
+<!--      >-->
+<!--        <h3 class="mb-1 font-semibold text-white">TailAdmin Pro</h3>-->
+<!--        <p class="mb-4 text-xs">Get All Dashboards and 300+ UI Elements</p>-->
+<!--        <a-->
+<!--          href="https://tailadmin.com/pricing"-->
+<!--          target="_blank"-->
+<!--          rel="nofollow"-->
+<!--          class="flex items-center justify-center rounded-md bg-primary p-2 font-medium text-white hover:bg-opacity-90"-->
+<!--        >-->
+<!--          Purchase Now-->
+<!--        </a>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Promo Box &ndash;&gt;-->
     </div>
   </aside>
 </template>

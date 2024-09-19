@@ -3,7 +3,10 @@ import { useSidebarStore } from '@/stores/sidebar'
 import SidebarDropdown from "@/Components/AdminComponents/SideBar/SidebarDropdown.vue";
 import {Link} from "@inertiajs/vue3";
 const sidebarStore = useSidebarStore()
-
+import {usePermissions} from "@/composables/permissions.js";
+import {onMounted} from "vue";
+const { hasPermission, showFlash} = usePermissions();
+onMounted(showFlash)
 const props = defineProps(['item', 'index'])
 
 interface SidebarItem {
@@ -21,14 +24,14 @@ const handleItemClick = () => {
 </script>
 
 <template>
-  <li>
+  <li v-if="item.permission?hasPermission(item.permission):true">
     <Link
       :href="route(item.route)"
       :active="route().current(item.active)"
-      class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+      class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium ease-in-out hover:bg-gradient-to-tl hover:from-purple-600 hover:to-teal-500 hover:rounded-lg"
       @click.prevent="handleItemClick"
       :class="{
-        'bg-graydark dark:bg-meta-4': sidebarStore.page === item.label
+        'bg-gradient-to-rb from-rose-500 to-green-500 dark:bg-gradient': sidebarStore.page === item.label
       }"
     >
       <span v-html="item.icon"></span>

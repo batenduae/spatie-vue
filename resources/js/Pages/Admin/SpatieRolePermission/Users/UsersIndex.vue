@@ -6,11 +6,12 @@ import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue"
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
-import {usePermissions} from "@/composables/permissions.js";
-import {onMounted} from "vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+import {usePermissions} from "@/composables/permissions.js";
+import {onMounted, onUpdated} from "vue";
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
+onUpdated(showFlash)
 defineProps(["users"]);
 defineOptions({ layout: SpatieAdminLayout });
 </script>
@@ -40,7 +41,7 @@ defineOptions({ layout: SpatieAdminLayout });
                         <ul class="flex">
                             <li
                                 v-for="role in user.roles"
-                                class="mr-2 text-center px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-blue-400 to-green-200 mb-2"
+                                class="mr-2 text-center px-2 rounded-lg text-xs  font-bold bg-gradient-to-br from-teal-500 to-fuchsia-500 mb-2"
                             >
                                 {{ role.name }}
                             </li>

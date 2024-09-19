@@ -20,7 +20,7 @@ defineProps({
     <div class="w-full mx-auto py-4">
         <div class="flex justify-between items-baseline">
             <div class="bg-gradient-to-tr from-cyan-700 to-green-500 px-4 py-2 rounded-lg ">
-                <div class="text-white text-xl">
+                <div class="text-black dark:text-white text-xl font-semibold">
                     {{ text }} <span class="font-bold text-indigo-900">{{ content }}</span>
                 </div>
             </div>

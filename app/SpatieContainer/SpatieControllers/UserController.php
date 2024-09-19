@@ -105,7 +105,7 @@ class UserController extends Controller implements HasMiddleware
         $user->syncPermissions($request->input('permissions.*.name'));
 //        $user->syncPermissions($request->permissions);
         return back()
-            ->with('error','User Updated Successfully');
+            ->with('info','User Updated Successfully');
 //        return to_route('users.index');
     }
 
@@ -115,6 +115,7 @@ class UserController extends Controller implements HasMiddleware
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
-        return to_route('users.index');
+        return back()
+            ->with('danger','User Deleted Successfully');
     }
 }

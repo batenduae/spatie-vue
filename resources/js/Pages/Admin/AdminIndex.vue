@@ -8,15 +8,13 @@ defineOptions({ layout: SpatieAdminLayout });
 
 <template>
     <Head title="Admin" ></Head>
-    <div class="py-12">
-        <div class="sm:px-4 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4 text-gray-900 text-center">Admin Page</div>
-            </div>
+    <div class="py-6">
+        <div class="bg-slate-200 text-black dark:bg-black dark:text-white/70 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-4 text-center">Admin Page</div>
         </div>
     </div>
     <Card type="green">
-        <div class="">
+        <div class="min-h-96">
             This is Admin Page. Here You are welcome. Explore the cool feature of this admin panel.
             Best of luck.
         </div>

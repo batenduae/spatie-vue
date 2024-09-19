@@ -37,7 +37,7 @@ let className = ref('')
 function defineClass(){
     switch(props.buttonType) {
         case 'create':
-            className = "px-4 py-2 text-white bg-indigo-500 hover:bg-indigo-700 hover:shadow-lg hover:drop-shadow hover:shadow-blue-500/50";
+            className = "px-4 py-2 bg-indigo-500 hover:bg-indigo-700 hover:shadow-lg hover:drop-shadow hover:shadow-blue-500/50";
             break;
         case 'edit':
             className = "text-xs  from-purple-500 to-teal-500 ";
@@ -156,7 +156,7 @@ function alertNow(props){
             :href="route(routeName, obj)"
             :method="routeMethod"
             as="button"
-            class="px-2 rounded-lg text-black font-bold bg-gradient-to-br"
+            class="px-2 rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
             :class="className"
             preserve-scroll
         >
@@ -166,9 +166,8 @@ function alertNow(props){
     <template v-else>
         <button
             @click.prevent="alertNow(props)"
-            class="px-2 rounded-lg text-black font-bold bg-gradient-to-br"
+            class="px-2 rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
             :class="className"
-            preserve-scroll
         >
             {{ btnText }}
         </button>
