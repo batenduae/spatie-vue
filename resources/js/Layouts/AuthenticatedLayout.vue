@@ -14,9 +14,9 @@ const { hasRole, hasPermission } = usePermissions();
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen bg-green-100 dark:bg-boxdark-2 text-black dark:text-white/70">
-            <nav class="border-b border-gray-100">
+    <div class="">
+        <div class="min-h-screen bgImage text-black dark:text-white">
+            <nav class="border-b bg-white text-black dark:bg-boxdark-2 dark:text-white border-gray-100 roun">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -199,9 +199,15 @@ const { hasRole, hasPermission } = usePermissions();
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="">
                 <slot />
             </main>
         </div>
     </div>
 </template>
+
+<style>
+.bgImage {
+    background: #ffffff url(https://ibas.finance.gov.bd/acs/assets/img/bg_main.gif);
+}
+</style>

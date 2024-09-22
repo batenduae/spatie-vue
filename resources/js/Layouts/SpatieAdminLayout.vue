@@ -33,7 +33,7 @@ onMounted(showFlash)
             <!-- ===== Header End ===== -->
 
             <!-- ===== Main Content Start ===== -->
-            <main class="w-full flex-1 bg-violet-900 dark:bg-boxdark-2">
+            <main class="w-full flex-1 bg-violet-900 bgImage dark:bg-boxdark-2 ">
                 <div class="items-center p-4 md:p-6 2xl:p-10">
                     <slot></slot>
                 </div>
@@ -57,4 +57,13 @@ onMounted(showFlash)
         --nv-gap: 0.5rem;
     }
 }
+
+
+.bgImage {
+    background: #ffffff url(https://ibas.finance.gov.bd/acs/assets/img/bg_main.gif);
+}
+.bgImageDrk {
+
+}
+
 </style>

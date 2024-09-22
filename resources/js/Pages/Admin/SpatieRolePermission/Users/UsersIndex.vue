@@ -87,7 +87,7 @@ defineOptions({ layout: SpatieAdminLayout });
         </div>
     </div>
     <div class="" v-else>
-        <div class="text-xl text-white bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+        <div class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
             No User Found
         </div>
     </div>

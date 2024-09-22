@@ -8,14 +8,17 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
-import {onMounted, watch} from "vue";
+import {onMounted, onUpdated, watch} from "vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
+
 
 const form = useForm({
     name: "",
 });
-const { hasPermission,showFlash } = usePermissions();
-onMounted(showFlash)
 defineOptions({ layout: SpatieAdminLayout });
 </script>
 
@@ -38,7 +41,6 @@ defineOptions({ layout: SpatieAdminLayout });
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
                     v-model="form.name"
                     required
                     autofocus

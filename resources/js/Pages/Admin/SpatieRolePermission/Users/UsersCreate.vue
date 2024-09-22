@@ -10,7 +10,10 @@ import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-const { hasPermission } = usePermissions();
+import {onMounted, onUpdated} from "vue";
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
 const form = useForm({
     name: "",
     email: "",
@@ -30,6 +33,7 @@ defineOptions({ layout: SpatieAdminLayout });
         />
     </PageHeader>
     <Card class="mx-auto w-96">
+        <div class="py-4 font-semibold">User Information</div>
         <form @submit.prevent="form.post(route('users.store'))">
             <div>
                 <InputLabel for="name" value="Name" />
@@ -37,7 +41,6 @@ defineOptions({ layout: SpatieAdminLayout });
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full bg-purple-200 dark:bg-boxdark-2 text-black dark:text-white/70"
                     v-model="form.name"
                     required
                     autofocus
@@ -53,7 +56,6 @@ defineOptions({ layout: SpatieAdminLayout });
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full bg-purple-200 dark:bg-boxdark-2 text-black dark:text-white/70"
                     v-model="form.email"
                     required
                     autocomplete="username"
@@ -68,7 +70,6 @@ defineOptions({ layout: SpatieAdminLayout });
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full bg-purple-200 dark:bg-boxdark-2 text-black dark:text-white/70"
                     v-model="form.password"
                     required
                     autocomplete="new-password"
@@ -86,7 +87,6 @@ defineOptions({ layout: SpatieAdminLayout });
                 <TextInput
                     id="password_confirmation"
                     type="password"
-                    class="mt-1 block w-full bg-purple-200 dark:bg-boxdark-2 text-black dark:text-white/70"
                     v-model="form.password_confirmation"
                     required
                     autocomplete="new-password"

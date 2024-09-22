@@ -9,7 +9,10 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-const { hasPermission } = usePermissions();
+import {onMounted, onUpdated} from "vue";
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
 const props = defineProps({
     permission: {
         type: Object,
@@ -43,7 +46,6 @@ defineOptions({ layout: SpatieAdminLayout });
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
                     v-model="form.name"
                     required
                     autofocus

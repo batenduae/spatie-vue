@@ -8,8 +8,11 @@ import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vu
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+import {onMounted, onUpdated} from "vue";
 defineProps(["posts"]);
-const { hasPermission } = usePermissions();
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
 
 defineOptions({ layout: SpatieAdminLayout });
 </script>

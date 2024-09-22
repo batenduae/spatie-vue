@@ -56,7 +56,7 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
         $user = User::findOrFail($userId);
         $user->syncRoles($request->roles);
         return back()
-            ->with('success','Role Updated');
+            ->with('success',"Role Updated to user: '".$user->name."'");
     }
 
     public function assignPermissionToUser(Request $request, $userId): RedirectResponse
@@ -66,7 +66,8 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
         ]);
         $user = User::findOrFail($userId);
         $user->syncPermissions($request->permissions);
-        return back();
+        return back()
+            ->with('success',"Permission Updated to user: '".$user->name."'");
     }
 
     public function loginDynamically(string $userId): RedirectResponse
@@ -75,7 +76,7 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
         Auth::login($user);
         session()->regenerate();
         return back()
-            ->with('success','logged in successfully');
+            ->with('success',"logged in as '".$user->name."' successfully");
     }
 
 
@@ -96,7 +97,8 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
         $role = Role::findOrFail($roleId);
         $role->syncPermissions($request->input('permissions.*.name'));
 
-        return redirect()->back()->with('status','Permissions updated to role: '.$role->name);
+        return back()
+            ->with('success',"Permissions updated to role: '".$role->name."'");
     }
 
     public function massAssignPermissionToRole(): Response
@@ -110,19 +112,22 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
     public function revokeRoleFromUser(User $user,Role $role): RedirectResponse
     {
         $user->removeRole($role);
-        return back();
+        return back()
+            ->with('warning',"Role : '".$role->name."' removed from User : '".$user->name."'");
     }
 
     public function revokePermissionFromUser(User $user,Permission $permission): RedirectResponse
     {
         $user->revokePermissionTo($permission);
-        return back();
+        return back()
+            ->with('warning',"Permission : '".$permission->name."' removed from User : '".$user->name."'");
     }
 
 
     public function revokePermissionFromRole(Role $role,Permission $permission): RedirectResponse
     {
         $role->revokePermissionTo($permission);
-        return back();
+        return back()
+            ->with('warning',"Permission : '".$permission->name."' removed from Role : '".$role->name."'");
     }
 }

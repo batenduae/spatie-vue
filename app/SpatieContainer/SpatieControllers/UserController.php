@@ -54,14 +54,14 @@ class UserController extends Controller implements HasMiddleware
      */
     public function store(\App\SpatieContainer\SpatieRequests\CreateUserRequest $request)
     {
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
         return to_route('users.index')
-            ->with('success','User Created Successfully');
+            ->with('success',"User : '".$user->name."' Created Successfully");
     }
 
     /**
@@ -105,7 +105,7 @@ class UserController extends Controller implements HasMiddleware
         $user->syncPermissions($request->input('permissions.*.name'));
 //        $user->syncPermissions($request->permissions);
         return back()
-            ->with('info','User Updated Successfully');
+            ->with('info',"User : '".$user->name."' Updated Successfully");
 //        return to_route('users.index');
     }
 
@@ -116,6 +116,6 @@ class UserController extends Controller implements HasMiddleware
     {
         $user->delete();
         return back()
-            ->with('danger','User Deleted Successfully');
+            ->with('danger',"User : '".$user->name."' Deleted Successfully");
     }
 }

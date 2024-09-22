@@ -97,6 +97,7 @@ defineOptions({ layout: SpatieAdminLayout });
     <Card type="cyan">
         <div class="flex flex-wrap justify-between">
             <Card class="max-w-96">
+                <div class="py-4 font-semibold">User Information</div>
                 <form @submit.prevent="form.put(route('users.update', user.id))">
                     <div>
                         <InputLabel for="name" value="Name" />
@@ -104,7 +105,6 @@ defineOptions({ layout: SpatieAdminLayout });
                         <TextInput
                             id="name"
                             type="text"
-                            class="mt-1 block w-full"
                             v-model="form.name"
                             required
                             autofocus
@@ -120,7 +120,6 @@ defineOptions({ layout: SpatieAdminLayout });
                         <TextInput
                             id="email"
                             type="email"
-                            class="mt-1 block w-full"
                             v-model="form.email"
                             required
                             autocomplete="username"
@@ -199,7 +198,7 @@ defineOptions({ layout: SpatieAdminLayout });
 
             <Card class="" v-if="props.user?.roles.length">
                 <div class="w-full" >
-                    <div class="py-4 text-white">Assigned Roles</div>
+                    <div class="py-4 font-semibold">Assigned Roles</div>
                     <Table>
                         <template #tableHeader>
                             <TableHeaderRow :contents="['ID','Name','Action']"/>
@@ -216,7 +215,7 @@ defineOptions({ layout: SpatieAdminLayout });
                                     route-method="delete"
                                     route-name="users.revokeRole"
                                     :obj="[user, role]"
-                                    text="User Role"
+                                    :text="['User', 'Role']"
                                     v-if="hasPermission('revoke-role.from-user')"
                                 />
                             </TableDataCell>
@@ -227,7 +226,7 @@ defineOptions({ layout: SpatieAdminLayout });
 
             <Card class="" v-if="props.user?.permissions.length">
                 <div class="w-full" >
-                    <div class="py-4 text-white">Direct Permissions</div>
+                    <div class="py-4 font-semibold">Direct Permissions</div>
                     <Table>
                         <template #tableHeader>
                             <TableHeaderRow :contents="['ID','Name','Action']"/>
@@ -244,7 +243,7 @@ defineOptions({ layout: SpatieAdminLayout });
                                     route-method="delete"
                                     route-name="users.revokePermission"
                                     :obj="[user, permission]"
-                                    text="User Permission"
+                                    :text="['User','Permission']"
                                     v-if="hasPermission('revoke-permission.from-user')"
                                 />
                             </TableDataCell>
@@ -261,7 +260,7 @@ defineOptions({ layout: SpatieAdminLayout });
                 class=""
                 v-if="props.user?.roles.find((role) => role.assignedPermissions.length)"
             >
-                <div class="py-4 text-white">Permissions from Roles</div>
+                <div class="py-4 font-semibold">Permissions from Roles</div>
                 <Table>
                     <template #tableHeader>
                         <TableHeaderRow :contents="['ID','Role','Id','Permission']"/>
@@ -294,7 +293,7 @@ defineOptions({ layout: SpatieAdminLayout });
                 class=""
                 v-if="props.user?.permissionsAll.length"
             >
-                <div class="py-4 text-white">All Permissions</div>
+                <div class="py-4 font-semibold">All Permissions</div>
                 <Table>
                     <template #tableHeader>
                         <TableHeaderRow :contents="['ID','Name','Action']"/>

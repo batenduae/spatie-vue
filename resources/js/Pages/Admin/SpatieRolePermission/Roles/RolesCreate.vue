@@ -10,12 +10,14 @@ import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
 import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
 import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.vue";
-import { ref } from "vue";
+import {onMounted, onUpdated, ref} from "vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-const { hasPermission } = usePermissions();
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
 const props = defineProps({
     permissions: {
         type: Object,
@@ -67,7 +69,6 @@ defineOptions({ layout: SpatieAdminLayout });
                     <TextInput
                         id="role"
                         type="text"
-                        class="mt-1 block w-full"
                         v-model="form.name"
                         required
                         autofocus

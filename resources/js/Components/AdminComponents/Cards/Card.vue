@@ -35,7 +35,7 @@ computed(
         <div
             :class="className"
             class="mx-auto mb-4 p-4 min-w-96 rounded-lg shadow-lg drop-shadow
-            shadow-blue-500/50 bg-gradient-to-bl text-black dark:text-stone-200"
+            shadow-blue-500/50 bg-gradient-to-bl text-black dark:text-white"
         >
             <slot/>
         </div>

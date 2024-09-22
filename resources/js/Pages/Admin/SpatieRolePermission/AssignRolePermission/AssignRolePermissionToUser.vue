@@ -1,7 +1,7 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { defineOptions, ref, watch } from "vue";
+import {defineOptions, onMounted, onUpdated, ref, watch} from "vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
@@ -9,7 +9,9 @@ import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-const { hasPermission } = usePermissions();
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
 const props = defineProps({
     user: {
         type: Object,
@@ -64,6 +66,9 @@ defineOptions({ layout: SpatieAdminLayout });
         />
     </PageHeader>
     <Card type="green">
+        <div class="text-xl py-2 text-fuchsia-900 font-bold">
+            User Information:
+        </div>
         <div class="justify-between font-bold">
             <div class="">UserId: {{ user.id }}</div>
             <div class="">User: {{ user.name }}</div>
@@ -73,7 +78,9 @@ defineOptions({ layout: SpatieAdminLayout });
 
     <Card type="cyan" v-if="hasPermission(['assign-role.to-user','assign-permission.to-user'])">
         <div class="my-2" v-if="hasPermission('assign-role.to-user')">
-            <div class="text-xl py-2 text-blue-600 font-bold">Roles:</div>
+            <div class="text-xl py-2 text-blue-600 font-bold">
+                Roles:
+            </div>
             <div
                 class="mx-auto p-6 rounded-lg bg-gradient-to-b from-purple-400 to-indigo-400"
             >
@@ -146,7 +153,7 @@ defineOptions({ layout: SpatieAdminLayout });
                                     ) &&
                                     !form2.permissions.includes(permission.name)
                                 "
-                                class="mr-2 peer/checkbox checked:text-blue-700 disabled:text-green-900 disabled:opacity-25 disabled:font-bold"
+                                class="mr-2 peer/checkbox checked:text-blue-700 disabled:text-green-900 disabled:opacity-25 disabled:font-semibold"
                             />
                             <label
                                 :for="permission.name"

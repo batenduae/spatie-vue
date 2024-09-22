@@ -1,14 +1,16 @@
 <script setup>
 import {Head} from "@inertiajs/vue3";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {defineOptions} from "vue";
+import {defineOptions, onMounted, onUpdated} from "vue";
 import Form from "@/Components/AdminComponents/Forms/Form.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-const { hasPermission } = usePermissions();
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
 const props = defineProps({
     roles: {
         type: Object,

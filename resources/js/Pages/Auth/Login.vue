@@ -7,6 +7,8 @@ import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 
+import userOne from '@/assets/images/user/user-01.png'
+
 defineOptions({
     layout: GuestLayout
 })
@@ -38,8 +40,9 @@ const submit = () => {
     <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
         {{ status }}
     </div>
-
-    <div class="mx-auto max-w-xl bg-slate-500 text-white py-8 px-10 rounded-lg">
+<div class="bgImage h-screen flex items-center justify-center">
+    <div class="bg-slate-500 text-white py-8 px-10 rounded-lg
+    box-border h-80 w-100 ">
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="email" value="Email" />
@@ -79,7 +82,7 @@ const submit = () => {
                 </label>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
+            <div class="flex items-center justify-between mt-4">
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
@@ -89,7 +92,7 @@ const submit = () => {
                 </Link>
 
                 <PrimaryButton
-                    class="ms-4 text-black bg-green-600"
+                    class="ms-4 text-black bg-gradient-to-r from-green-600 to-cyan-500"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
@@ -98,4 +101,12 @@ const submit = () => {
             </div>
         </form>
     </div>
+</div>
+
 </template>
+<style>
+
+.bgImage {
+    background: #ffffff url(https://ibas.finance.gov.bd/acs/assets/img/bg_main.gif);
+}
+</style>

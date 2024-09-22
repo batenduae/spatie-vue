@@ -7,7 +7,7 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 import {usePermissions} from "@/composables/permissions.js";
-import {onMounted} from "vue";
+import {onMounted, onUpdated} from "vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 const props = defineProps({
     permissions: {
@@ -17,6 +17,7 @@ const props = defineProps({
 });
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
+onUpdated(showFlash)
 defineOptions({ layout: SpatieAdminLayout });
 
 </script>

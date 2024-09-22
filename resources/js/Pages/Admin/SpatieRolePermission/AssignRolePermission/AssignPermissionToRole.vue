@@ -1,7 +1,7 @@
 <script setup>
 import { Head, useForm } from "@inertiajs/vue3";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { defineOptions, ref } from "vue";
+import {defineOptions, onMounted, onUpdated, ref} from "vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
@@ -9,7 +9,9 @@ import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-const { hasPermission } = usePermissions();
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
 const props = defineProps({
     role: {
         type: Object,
@@ -41,7 +43,10 @@ defineOptions({ layout: SpatieAdminLayout });
         </PageHeader>
 
         <Card type="cyan" v-if="hasPermission('assign-permission.to-role')">
-            <div class="mt-4">Permissions:</div>
+            <div class="text-xl py-2 text-fuchsia-900 font-bold">
+                Permissions:
+            </div>
+
             <div
                 class="mx-auto p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200"
             >

@@ -5,7 +5,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Multiselect from "vue-multiselect";
-import { ref, watch } from "vue";
+import {onMounted, onUpdated, ref, watch} from "vue";
 import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
 import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
@@ -16,7 +16,9 @@ import {useForm} from "@inertiajs/vue3";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-const { hasPermission } = usePermissions();
+const { hasPermission,showFlash } = usePermissions();
+onMounted(showFlash)
+onUpdated(showFlash)
 const props = defineProps({
     role: {
         type: Object,
@@ -142,7 +144,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             route-method="delete"
                             route-name="roles.revokePermission"
                             :obj="[role,permission]"
-                            text="Role"
+                            :text="['Role','Permission']"
                             v-if="hasPermission('revoke-permission.from-role')"
                         />
                     </TableDataCell>
