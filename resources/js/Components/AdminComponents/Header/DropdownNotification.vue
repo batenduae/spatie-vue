@@ -44,7 +44,7 @@ const notificationItems = ref([
   <li class="relative" ref="target">
     <Link
       class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
-      to="#"
+      href="#"
       @click.prevent="(dropdownOpen = !dropdownOpen), (notifying = false)"
     >
       <span
@@ -85,7 +85,7 @@ const notificationItems = ref([
           <li>
             <Link
               class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              :to="item.route"
+              :href="item.route"
             >
               <p class="text-sm">
                 <span class="text-black dark:text-white">{{ item.title }}</span>

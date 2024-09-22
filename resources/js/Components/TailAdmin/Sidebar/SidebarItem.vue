@@ -5,7 +5,7 @@ import {Link} from "@inertiajs/vue3";
 const sidebarStore = useSidebarStore()
 
 const props = defineProps(['item', 'index'])
-
+const currentPage = route().current()
 interface SidebarItem {
   label: string
 }

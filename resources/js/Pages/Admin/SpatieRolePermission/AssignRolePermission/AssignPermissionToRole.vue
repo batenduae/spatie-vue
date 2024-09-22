@@ -1,6 +1,5 @@
 <script setup>
 import { Head, useForm } from "@inertiajs/vue3";
-import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {defineOptions, onMounted, onUpdated, ref} from "vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";

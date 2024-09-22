@@ -1,5 +1,4 @@
 <script setup>
-import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";

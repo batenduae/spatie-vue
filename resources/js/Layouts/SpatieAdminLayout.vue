@@ -23,11 +23,11 @@ onMounted(showFlash)
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden text-black dark:text-white">
                 <!-- ===== Sidebar Start ===== -->
-        <SidebarArea />
+        <SidebarArea/>
         <!-- ===== Sidebar End ===== -->
 
         <!-- ===== Content Area Start ===== -->
-        <div class="relative w-full flex  flex-col overflow-y-auto overflow-x-hidden">
+        <div class="relative w-full flex flex-col overflow-y-auto no-scrollbar overflow-x-hidden">
             <!-- ===== Header Start ===== -->
             <HeaderArea />
             <!-- ===== Header End ===== -->

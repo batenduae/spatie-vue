@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/sidebar'
-import SidebarDropdown from "@/Components/AdminComponents/SideBar/SidebarDropdown.vue";
 import {Link} from "@inertiajs/vue3";
-import SidebarSecondItem from "@/Components/AdminComponents/SideBar/SidebarSecondItem.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
+import SidebarThirdItem from "@/Components/AdminComponents/SideBar/SidebarThirdItem.vue";
 const { hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
-
-const sidebarStore = useSidebarStore()
 const currentPage = route().current()
+const sidebarStore = useSidebarStore()
 
 const props = defineProps(['item', 'index'])
 interface SidebarItem {
@@ -18,8 +16,8 @@ interface SidebarItem {
 }
 
 const handleItemClick = () => {
-  const pageName = sidebarStore.page === props.item.label ? '' : props.item.label
-  sidebarStore.page = pageName
+  const pageName = sidebarStore.page2 === props.item.label ? '' : props.item.label
+  sidebarStore.page2= pageName
 
   if (props.item.children) {
     return props.item.children.some((child: SidebarItem) => sidebarStore.selected === child.label)
@@ -33,16 +31,17 @@ const handleItemClick = () => {
     <Link
       :href="item.routeType=='named'?route(item.route):item.route"
       :active="item.active?route().current(item.active):''"
-      class="group relative rounded-lg flex items-center gap-2.5 py-2 px-4 font-medium ease-in-out hover:bg-gradient-to-tl hover:from-purple-600 hover:to-teal-500 hover:rounded-lg"
+      class="group relative flex items-center gap-2.5 py-2 px-4 rounded-lg font-medium ease-in-out hover:bg-gradient-to-tl hover:from-purple-600 hover:to-teal-500 hover:rounded-lg"
       @click.prevent="handleItemClick"
       :class="route().current(item.active)?'bg-gradient-to-br dark:bg-gradient-to-br from-emerald-500 to-indigo-900 ':''"
+      :color="(item.label === sidebarStore.selected)?'red':'green'"
     >
       <span v-html="item.icon"></span>
       {{ item.label }}
       <svg
         v-if="item.children"
         class="absolute right-4 top-1/2 -translate-y-1/2 fill-current"
-        :class="{ 'rotate-180': sidebarStore.page === item.label }"
+        :class="{ 'rotate-180': sidebarStore.page2 === item.label }"
         width="20"
         height="20"
         viewBox="0 0 20 20"
@@ -59,15 +58,9 @@ const handleItemClick = () => {
     </Link>
 
     <!-- Dropdown Menu Start -->
-    <div class="translate transform overflow-hidden" v-show="sidebarStore.page === item.label">
-<!--      <SidebarDropdown-->
-<!--        v-if="item.children"-->
-<!--        :items="item.children"-->
-<!--        :currentPage="currentPage"-->
-<!--        :page="item.label"-->
-<!--      />-->
+    <div class="translate transform overflow-hidden" v-show="sidebarStore.page2 === item.label">
         <div class="pl-4" v-if="item.children">
-            <SidebarSecondItem
+            <SidebarThirdItem
                 v-for="(item, index) in item.children"
                 :item="item"
                 :key="index"

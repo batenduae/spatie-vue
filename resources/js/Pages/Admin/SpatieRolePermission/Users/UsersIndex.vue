@@ -1,5 +1,4 @@
 <script setup>
-import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
 import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";

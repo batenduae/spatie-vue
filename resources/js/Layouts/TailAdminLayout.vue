@@ -11,7 +11,7 @@ import SidebarArea from "@/Components/TailAdmin/Sidebar/SidebarArea.vue"
         <!-- ===== Sidebar End ===== -->
 
         <!-- ===== Content Area Start ===== -->
-        <div class="relative flex  flex-col overflow-y-auto overflow-x-hidden">
+        <div class="relative w-full flex flex-col overflow-y-auto overflow-x-hidden">
             <!-- ===== Header Start ===== -->
             <HeaderArea />
             <!-- ===== Header End ===== -->

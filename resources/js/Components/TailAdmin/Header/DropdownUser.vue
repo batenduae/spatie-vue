@@ -15,7 +15,7 @@ onClickOutside(target, () => {
   <div class="relative" ref="target">
     <Link
       class="flex items-center gap-4"
-      to="#"
+      href="#"
       @click.prevent="dropdownOpen = !dropdownOpen"
     >
       <span class="hidden text-right lg:block">
@@ -53,7 +53,7 @@ onClickOutside(target, () => {
       <ul class="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
         <li>
           <Link
-            to="/profile"
+            href="/profile"
             class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
           >
             <svg
@@ -78,7 +78,7 @@ onClickOutside(target, () => {
         </li>
         <li>
           <Link
-            to="#"
+            href="#"
             class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
           >
             <svg
@@ -99,7 +99,7 @@ onClickOutside(target, () => {
         </li>
         <li>
           <Link
-            to="/pages/settings"
+            href="/pages/settings"
             class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
           >
             <svg

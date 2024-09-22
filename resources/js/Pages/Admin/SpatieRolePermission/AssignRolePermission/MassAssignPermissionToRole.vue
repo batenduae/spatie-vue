@@ -1,6 +1,4 @@
 <script setup>
-import {Head} from "@inertiajs/vue3";
-import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {defineOptions, onMounted, onUpdated} from "vue";
 import Form from "@/Components/AdminComponents/Forms/Form.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";

@@ -1,9 +1,6 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
-import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
-import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";

@@ -59,7 +59,7 @@ const messagesList = ref([
   <li class="relative" ref="target">
     <Link
       class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
-      to="#"
+      href="#"
       @click.prevent="(dropdownOpen = !dropdownOpen), (notifying = false)"
     >
       <span
@@ -112,7 +112,7 @@ const messagesList = ref([
           <li>
             <Link
               class="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              :to="item.route"
+              :href="item.route"
             >
               <div class="h-12.5 w-12.5 rounded-full">
                 <img :src="item.userImg" alt="User" />

@@ -54,7 +54,7 @@ const sidebarStore = useSidebarStore()
           </span>
         </button>
         <!-- Hamburger Toggle BTN -->
-        <Link class="block flex-shrink-0 lg:hidden" to="/">
+        <Link class="block flex-shrink-0 lg:hidden" href="/">
           <img src="@/assets/images/logo/logo-icon.svg" alt="Logo" />
         </Link>
       </div>

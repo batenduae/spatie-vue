@@ -1,6 +1,5 @@
 <script setup>
 import { Head } from "@inertiajs/vue3";
-import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 defineOptions({ layout: SpatieAdminLayout });

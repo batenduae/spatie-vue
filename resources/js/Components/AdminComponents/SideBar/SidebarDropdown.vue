@@ -11,7 +11,7 @@ const items = ref(props.items)
 const handleItemClick = (index: number) => {
     let pageName: any;
     pageName = sidebarStore.selected === props.items[index].label ? '' : props.items[index].label;
-  sidebarStore.selected = pageName
+    sidebarStore.selected = pageName
 }
 </script>
 

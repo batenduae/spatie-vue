@@ -39,7 +39,7 @@ export function usePermissions() {
 
     function showFlash(){
         let flash = usePage().props.flash
-        console.log(usePage().props.flash)
+        // console.log(usePage().props.flash)
         if(flash.message){
             push.info({
                 title: 'Message',
