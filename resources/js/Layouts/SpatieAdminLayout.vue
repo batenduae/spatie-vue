@@ -62,8 +62,5 @@ onMounted(showFlash)
 .bgImage {
     background: #ffffff url(https://ibas.finance.gov.bd/acs/assets/img/bg_main.gif);
 }
-.bgImageDrk {
-
-}
 
 </style>

@@ -50,9 +50,9 @@ class PermissionController extends Controller implements HasMiddleware
      */
     public function store(CreatePermissionRequest $request): RedirectResponse
     {
-        Permission::create($request->validated());
+        $permission = Permission::create($request->validated());
         return to_route('permissions.index')
-            ->with('success','Permission Created Successfully');
+            ->with('success',"Permission : '".$permission->name."' Created Successfully");
     }
 
 

@@ -5,8 +5,7 @@ import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 import SidebarThirdItem from "@/Components/AdminComponents/SideBar/SidebarThirdItem.vue";
 const { hasPermission, showFlash} = usePermissions();
-onMounted(showFlash)
-onUpdated(showFlash)
+
 const currentPage = route().current()
 const sidebarStore = useSidebarStore()
 

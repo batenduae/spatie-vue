@@ -83,40 +83,33 @@ const menuGroups = ref([
                 icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                        </svg>`,
-                label: 'Group',
-                route: '#',
+                label: 'Profile',
+                route: '/profileView',
                 active: 'none',
-                permission: ['post.view','post.create','post.edit','post.delete'],
                 children: [
                     {
                         icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                        </svg>`,
-                        label: 'eCommerce1',
-                        route: 'roles.index',
-                        routeType: 'named',
-                        active: 'roles.*',
-                        permission: ['post.view','post.create','post.edit','post.delete'],
+                        label: 'Sign In',
+                        route: '/auth/signin',
+                        active: 'none',
                     },
                     {
                         icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                        </svg>`,
-                        label: 'users',
-                        route: 'users.index',
-                        routeType: 'named',
-                        active: 'users.*',
-                        permission: ['user.view','user.create','user.edit','user.delete'],
+                        label: 'Sign Up',
+                        route: '/auth/signup',
+                        active: 'none',
                         children: [
                             {
                                 icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                        </svg>`,
-                                label: 'eCommerce21',
-                                route: 'posts.index',
-                                routeType: 'named',
-                                active: 'posts.*',
-                                permission: ['post.view','post.create','post.edit','post.delete'],
+                                label: 'Settings',
+                                route: '/pages/settings',
+                                active: 'none',
                             }
                         ]
                     }
@@ -140,8 +133,8 @@ const menuGroups = ref([
     ref="target"
   >
     <!-- SIDEBAR HEADER -->
-    <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 max-w-80">
-      <Link href="/">
+    <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+      <Link href="/admin">
         <img src="@/assets/images/logo/logo.svg" alt="Logo" />
           //Brand Logo
       </Link>

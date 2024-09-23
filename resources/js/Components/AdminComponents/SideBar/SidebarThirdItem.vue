@@ -4,8 +4,6 @@ import {Link} from "@inertiajs/vue3";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 const { hasPermission, showFlash} = usePermissions();
-onMounted(showFlash)
-onUpdated(showFlash)
 const currentPage = route().current()
 const sidebarStore = useSidebarStore()
 

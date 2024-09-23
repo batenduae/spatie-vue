@@ -5,12 +5,13 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import GuestLayout from "@/Layouts/GuestLayout.vue";
+
 
 import userOne from '@/assets/images/user/user-01.png'
+import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 
 defineOptions({
-    layout: GuestLayout
+    layout: DefaultLayout
 })
 defineProps({
     canResetPassword: {
@@ -40,7 +41,7 @@ const submit = () => {
     <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
         {{ status }}
     </div>
-<div class="bgImage h-screen flex items-center justify-center">
+<div class="bgImage h-screen flex items-center justify-center no-scrollbar">
     <div class="bg-slate-500 text-white py-8 px-10 rounded-lg
     box-border h-80 w-100 ">
         <form @submit.prevent="submit">
