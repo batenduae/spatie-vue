@@ -1,14 +1,15 @@
 <script setup>
-import { Head, useForm } from "@inertiajs/vue3";
+import {useForm} from "@inertiajs/vue3";
 import {defineOptions, onMounted, onUpdated, ref} from "vue";
-import InputError from "@/Components/InputError.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import InputError from "@/Components/Default/InputError.vue";
+import PrimaryButton from "@/Components/Default/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-const { hasPermission,showFlash } = usePermissions();
+
+const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
 const props = defineProps({

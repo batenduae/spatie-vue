@@ -5,6 +5,7 @@ namespace App\SpatieContainer\SpatieControllers;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\SpatieContainer\SpatieRequests\CreateUserRequest;
 use App\SpatieContainer\SpatieResources\PermissionResource;
 use App\SpatieContainer\SpatieResources\RoleResource;
 use Illuminate\Http\RedirectResponse;
@@ -52,7 +53,7 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(\App\SpatieContainer\SpatieRequests\CreateUserRequest $request)
+    public function store(CreateUserRequest $request)
     {
         $user = User::create([
             'name' => $request->name,
@@ -91,21 +92,31 @@ class UserController extends Controller implements HasMiddleware
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|'.Rule::unique('users','email')->ignore($user),
-            'roles' =>  'sometimes|array',
-            'permissions' =>  'sometimes|array'
-            ]);
+            'email' => 'required|string|lowercase|email|max:255|' . Rule::unique('users', 'email')->ignore($user),
+            'status' => 'sometimes|array',
+            'roles' => 'sometimes|array',
+            'permissions' => 'sometimes|array'
+        ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
         ]);
+        if (in_array("asp", $request->status)) {
+            $user->update([
+                'asp' => true,
+            ]);
+        } else {
+            $user->update([
+                'asp' => false,
+            ]);
+        }
         $user->syncRoles($request->input('roles.*.name'));
 //        $user->syncRoles($request->roles);
         $user->syncPermissions($request->input('permissions.*.name'));
 //        $user->syncPermissions($request->permissions);
         return back()
-            ->with('info',"User : '".$user->name."' Updated Successfully");
+            ->with('info', "User : '" . $user->name . "' Updated Successfully");
 //        return to_route('users.index');
     }
 

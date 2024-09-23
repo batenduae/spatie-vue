@@ -9,28 +9,28 @@ import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 
-const { hasPermission,showFlash } = usePermissions();
+const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
 defineProps(["users"]);
-defineOptions({ layout: SpatieAdminLayout });
+defineOptions({layout: SpatieAdminLayout});
 </script>
 
 <template>
     <PageHeader text="Users Index Page" title="Users">
         <AdminButton
-            button-text="Create User"
-            button-type="create"
-            route-name="users.create"
             v-if="hasPermission('user.create')"
+            button-text="Create User's Profile"
+            button-type="create"
+            route-name="userProfile.create"
         />
     </PageHeader>
-    <div class="mx-auto" v-if="users.length">
+    <div v-if="users.length" class="mx-auto">
         <div class="">
             <Table>
                 <template #tableHeader>
                     <TableHeaderRow
-                        :contents="['ID','Name','Email','Status','Roles','Direct Permissions','All Permissions','Action']"/>
+                        :contents="['UserID','Image','Formal Photo','Birthday','Blood Group','Primary Phone','Secondary Phone','Action']"/>
                 </template>
                 <TableRow
                     v-for="user in users"
@@ -60,45 +60,45 @@ defineOptions({ layout: SpatieAdminLayout });
                         </ul>
                     </TableDataCell>
                     <TableDataCell>{{ user.permissions.length }}</TableDataCell>
-                    <TableDataCell>{{ user.permissionsAll.length}}</TableDataCell>
+                    <TableDataCell>{{ user.permissionsAll.length }}</TableDataCell>
                     <TableDataCell class="flex space-x-2 items-center">
                         <AdminButton
+                            v-if="hasPermission(['assign-role.to-user','assign-permission.to-user'])"
+                            :obj="user"
                             button-text="Assign-Role-Permit"
                             button-type="assign"
                             route-name="users.assignRolePermissionToUser"
-                            :obj="user"
-                            v-if="hasPermission(['assign-role.to-user','assign-permission.to-user'])"
                         />
                         <AdminButton
+                            v-if="hasPermission('user.edit')"
+                            :obj="user"
                             button-text="Edit"
                             button-type="edit"
                             route-name="users.edit"
-                            :obj="user"
-                            v-if="hasPermission('user.edit')"
                         />
                         <AdminButton
+                            v-if="hasPermission('user.delete')"
+                            :obj="user"
                             button-text="Delete"
                             button-type="deleteOnConfirm"
                             route-method="delete"
                             route-name="users.destroy"
-                            :obj="user"
                             text="User"
-                            v-if="hasPermission('user.delete')"
                         />
                         <AdminButton
+                            v-if="hasPermission('log-in.dynamically')"
+                            :obj="user"
                             button-text="Log in"
                             button-type="login"
                             route-method="post"
                             route-name="users.loginDynamically"
-                            :obj="user"
-                            v-if="hasPermission('log-in.dynamically')"
                         />
                     </TableDataCell>
                 </TableRow>
             </Table>
         </div>
     </div>
-    <div class="" v-else>
+    <div v-else class="">
         <div class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
             No User Found
         </div>

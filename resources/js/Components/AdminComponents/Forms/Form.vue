@@ -1,10 +1,11 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import InputError from "@/Components/Default/InputError.vue";
+import PrimaryButton from "@/Components/Default/PrimaryButton.vue";
+import {useForm} from "@inertiajs/vue3";
+import {ref} from "vue";
 import {usePermissions} from "@/composables/permissions.js";
-const { hasPermission } = usePermissions();
+
+const {hasPermission} = usePermissions();
 const props = defineProps({
     role: {
         type: Object,

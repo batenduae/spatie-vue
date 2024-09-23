@@ -4,6 +4,7 @@ import SidebarArea from "@/Components/AdminComponents/SideBar/SidebarArea.vue";
 import HeaderArea from "@/Components/AdminComponents/Header/HeaderArea.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted} from "vue";
+
 const { hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 </script>
@@ -33,7 +34,7 @@ onMounted(showFlash)
             <!-- ===== Header End ===== -->
 
             <!-- ===== Main Content Start ===== -->
-            <main class="w-full flex-1 bg-violet-900 bgImage dark:bg-boxdark-2 ">
+            <main class="w-full flex-1 bgImage dark:bg-boxdark-2 ">
                 <div class="items-center p-4 md:p-6 2xl:p-10">
                     <slot></slot>
                 </div>
@@ -63,4 +64,7 @@ onMounted(showFlash)
     background: #ffffff url(https://ibas.finance.gov.bd/acs/assets/img/bg_main.gif);
 }
 
+.bgImageDark {
+    background: #010101 url(https://img.freepik.com/free-vector/floral-ornamental-abstract-background_23-2148355961.jpg?w=740&t=st=1661002853~exp=1661003453~hmac=ee258d6ed697bb65c58b484f0552fea07bb87ea53667d4eecaa051869b3dd185);
+}
 </style>

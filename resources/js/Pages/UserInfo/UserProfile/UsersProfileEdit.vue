@@ -16,7 +16,7 @@ import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vu
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 
-const { hasPermission,showFlash } = usePermissions();
+const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
 const props = defineProps({
@@ -60,6 +60,7 @@ watch(
     (() => props.user, () => (form.roles = ref(props.user?.roles))),
     (() => props.user, () => (form.permissions = ref(props.user?.permissions)))
 );
+
 // object contains subObject
 function partialContains(object, subObject) {
     // Create arrays of property names
@@ -83,16 +84,16 @@ function partialContains(object, subObject) {
     return true;
 }
 
-defineOptions({ layout: SpatieAdminLayout });
+defineOptions({layout: SpatieAdminLayout});
 </script>
 
 <template>
     <PageHeader text="Edit User" title="Users/Edit">
         <AdminButton
+            v-if="hasPermission('user.view')"
             button-text="Go Back"
             button-type="backward"
             route-name="users.index"
-            v-if="hasPermission('user.view')"
         />
     </PageHeader>
     <Card type="cyan">
@@ -101,54 +102,54 @@ defineOptions({ layout: SpatieAdminLayout });
                 <div class="py-4 font-semibold">User Information</div>
                 <form @submit.prevent="form.put(route('users.update', user.id))">
                     <div>
-                        <InputLabel for="name" value="Name" />
+                        <InputLabel for="name" value="Name"/>
 
                         <TextInput
                             id="name"
-                            type="text"
                             v-model="form.name"
-                            required
-                            autofocus
                             autocomplete="name"
+                            autofocus
+                            required
+                            type="text"
                         />
 
-                        <InputError class="mt-2" :message="form.errors.name" />
+                        <InputError :message="form.errors.name" class="mt-2"/>
                     </div>
 
                     <div class="mt-4">
-                        <InputLabel for="email" value="Email" />
+                        <InputLabel for="email" value="Email"/>
 
                         <TextInput
                             id="email"
-                            type="email"
                             v-model="form.email"
-                            required
                             autocomplete="username"
+                            required
+                            type="email"
                         />
 
-                        <InputError class="mt-2" :message="form.errors.email" />
+                        <InputError :message="form.errors.email" class="mt-2"/>
                     </div>
 
-                    <div class="mt-4" v-if="hasPermission('assign-role.to-user')">
-                        <InputLabel for="role" value="Roles" />
+                    <div v-if="hasPermission('assign-role.to-user')" class="mt-4">
+                        <InputLabel for="role" value="Roles"/>
                         <multiselect
                             id="role"
                             v-model="form.roles"
-                            :options="roles"
-                            :multiple="true"
-                            :close-on-select="false"
+                            :allow-empty="true"
                             :clear-on-select="false"
+                            :close-on-select="false"
+                            :hide-selected="true"
+                            :multiple="true"
+                            :options="roles"
                             :preserve-search="true"
                             :searchable="true"
-                            :allow-empty="true"
-                            :hide-selected="true"
                             :taggable="true"
-                            placeholder="Assign Some Roles"
-                            open-direction="bottom"
-                            @tag="addTag"
-                            tag-placeholder="Assign Some Roles"
                             label="name"
+                            open-direction="bottom"
+                            placeholder="Assign Some Roles"
+                            tag-placeholder="Assign Some Roles"
                             track-by="name"
+                            @tag="addTag"
                         >
                             <template slot="tag" slot-scope="props">
                                 {{ form.roles }}
@@ -156,26 +157,26 @@ defineOptions({ layout: SpatieAdminLayout });
                         </multiselect>
                     </div>
 
-                    <div class="mt-4" v-if="hasPermission('assign-permission.to-user')">
-                        <InputLabel for="permission" value="Permissions" />
+                    <div v-if="hasPermission('assign-permission.to-user')" class="mt-4">
+                        <InputLabel for="permission" value="Permissions"/>
                         <Multiselect
                             id="permission"
                             v-model="form.permissions"
-                            :options="permissions"
-                            :multiple="true"
-                            :close-on-select="false"
+                            :allow-empty="true"
                             :clear-on-select="false"
+                            :close-on-select="false"
+                            :hide-selected="true"
+                            :multiple="true"
+                            :options="permissions"
                             :preserve-search="true"
                             :searchable="true"
-                            :allow-empty="true"
-                            :hide-selected="true"
                             :taggable="true"
-                            tag-placeholder="Assign Some Permissions"
-                            open-direction="bottom"
-                            @tag="addTag"
-                            placeholder="Assign Some Permissions"
                             label="name"
+                            open-direction="bottom"
+                            placeholder="Assign Some Permissions"
+                            tag-placeholder="Assign Some Permissions"
                             track-by="name"
+                            @tag="addTag"
                         >
                             <template slot="tag" slot-scope="props">
                                 {{ form.permissions }}
@@ -211,11 +212,11 @@ defineOptions({ layout: SpatieAdminLayout });
 
                     <div class="flex items-center justify-end mt-4">
                         <PrimaryButton
-                            class="ms-4"
+                            v-if="hasPermission('user.edit')"
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
 
-                            v-if="hasPermission('user.edit')"
+                            class="ms-4"
                         >
                             Update
                         </PrimaryButton>
@@ -223,8 +224,8 @@ defineOptions({ layout: SpatieAdminLayout });
                 </form>
             </Card>
 
-            <Card class="" v-if="props.user?.roles.length">
-                <div class="w-full" >
+            <Card v-if="props.user?.roles.length" class="">
+                <div class="w-full">
                     <div class="py-4 font-semibold">Assigned Roles</div>
                     <Table>
                         <template #tableHeader>
@@ -237,13 +238,13 @@ defineOptions({ layout: SpatieAdminLayout });
                         >
                             <TableDataCell class="flex space-x-2">
                                 <AdminButton
+                                    v-if="hasPermission('revoke-role.from-user')"
+                                    :obj="[user, role]"
+                                    :text="['User', 'Role']"
                                     button-text="Revoke"
                                     button-type="deleteOnConfirm"
                                     route-method="delete"
                                     route-name="users.revokeRole"
-                                    :obj="[user, role]"
-                                    :text="['User', 'Role']"
-                                    v-if="hasPermission('revoke-role.from-user')"
                                 />
                             </TableDataCell>
                         </TableRow>
@@ -251,8 +252,8 @@ defineOptions({ layout: SpatieAdminLayout });
                 </div>
             </Card>
 
-            <Card class="" v-if="props.user?.permissions.length">
-                <div class="w-full" >
+            <Card v-if="props.user?.permissions.length" class="">
+                <div class="w-full">
                     <div class="py-4 font-semibold">Direct Permissions</div>
                     <Table>
                         <template #tableHeader>
@@ -265,13 +266,13 @@ defineOptions({ layout: SpatieAdminLayout });
                         >
                             <TableDataCell class="flex space-x-2">
                                 <AdminButton
+                                    v-if="hasPermission('revoke-permission.from-user')"
+                                    :obj="[user, permission]"
+                                    :text="['User','Permission']"
                                     button-text="Revoke"
                                     button-type="deleteOnConfirm"
                                     route-method="delete"
                                     route-name="users.revokePermission"
-                                    :obj="[user, permission]"
-                                    :text="['User','Permission']"
-                                    v-if="hasPermission('revoke-permission.from-user')"
                                 />
                             </TableDataCell>
                         </TableRow>
@@ -281,11 +282,11 @@ defineOptions({ layout: SpatieAdminLayout });
         </div>
     </Card>
 
-    <Card type="green" v-if="(props.user?.permissions.length)+(props.user?.permissionsAll.length)">
+    <Card v-if="(props.user?.permissions.length)+(props.user?.permissionsAll.length)" type="green">
         <div class="flex flex-wrap justify-around justify-items-center justify-self-center">
             <Card
-                class=""
                 v-if="props.user?.roles.find((role) => role.assignedPermissions.length)"
+                class=""
             >
                 <div class="py-4 font-semibold">Permissions from Roles</div>
                 <Table>
@@ -302,23 +303,23 @@ defineOptions({ layout: SpatieAdminLayout });
                             <TableDataCell
                                 v-if="permission === role.assignedPermissions[0]"
                                 :rowspan="[role.assignedPermissions.length]"
-                                >{{ role.id }}
+                            >{{ role.id }}
                             </TableDataCell>
                             <TableDataCell
                                 v-if="permission === role.assignedPermissions[0]"
                                 :rowspan="[role.assignedPermissions.length]"
-                                >{{ role.name }}
+                            >{{ role.name }}
                             </TableDataCell>
-                            <TableDataCell>{{permission.id }}</TableDataCell>
-                            <TableDataCell>{{permission.name }}</TableDataCell>
+                            <TableDataCell>{{ permission.id }}</TableDataCell>
+                            <TableDataCell>{{ permission.name }}</TableDataCell>
                         </TableRow>
                     </template>
                 </Table>
             </Card>
 
             <Card
-                class=""
                 v-if="props.user?.permissionsAll.length"
+                class=""
             >
                 <div class="py-4 font-semibold">All Permissions</div>
                 <Table>
@@ -331,13 +332,13 @@ defineOptions({ layout: SpatieAdminLayout });
                         :contents="[ permission.id,permission.name]"
                     >
                         <TableDataCell class="flex space-x-2">
-                           <AdminButton
+                            <AdminButton
                                 v-if="hasPermission('delete-permission.from-user') && props.user?.permissions.find((object) =>partialContains(object, permission))"
+                                :obj="[user, permission]"
                                 button-text="remove"
                                 button-type="delete"
                                 route-method="delete"
                                 route-name="users.revokePermission"
-                                :obj="[user, permission]"
                                 text="User Permission"
 
                             />

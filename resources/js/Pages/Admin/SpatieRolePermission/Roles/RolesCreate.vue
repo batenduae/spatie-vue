@@ -1,9 +1,9 @@
 <script setup>
-import { useForm } from "@inertiajs/vue3";
-import TextInput from "@/Components/TextInput.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import {useForm} from "@inertiajs/vue3";
+import TextInput from "@/Components/Default/TextInput.vue";
+import InputLabel from "@/Components/Default/InputLabel.vue";
+import InputError from "@/Components/Default/InputError.vue";
+import PrimaryButton from "@/Components/Default/PrimaryButton.vue";
 import Multiselect from "vue-multiselect";
 import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
@@ -14,6 +14,7 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
