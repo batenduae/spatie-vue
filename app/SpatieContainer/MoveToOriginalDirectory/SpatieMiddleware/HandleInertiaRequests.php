@@ -47,8 +47,7 @@ class HandleInertiaRequests extends Middleware
                 ? new UserResource($request->user())
                 : null,
             'auth.user.permit' => $permissions,
-            'auth.user.assignedRoles' => $roles,// Returns a collection
-
+            'auth.user.permitRole' => $roles,
             'flash' => function () use ($request) {
                 return [
                     'message' => session('message'),

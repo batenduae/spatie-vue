@@ -2,6 +2,8 @@
 
 namespace App\SpatieContainer\MoveToOriginalDirectory\SpatieResources;
 
+use App\SpatieContainer\SpatieResources\PermissionResource;
+use App\SpatieContainer\SpatieResources\RoleResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,9 +22,9 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
 //            'roles' =>  $this->roles->pluck('name'),
-//            'roles' =>  RoleResource::collection($this->roles),
-//            'permissions'   =>  PermissionResource::collection($this->getDirectPermissions()),
-//            'permissionsAll'   =>  PermissionResource::collection($this->getAllPermissions()),
+            'roles' => RoleResource::collection($this->roles),
+            'permissions' => PermissionResource::collection($this->getDirectPermissions()),
+            'permissionsAll' => PermissionResource::collection($this->getAllPermissions()),
         ];
     }
 }
