@@ -227,6 +227,9 @@ defineOptions({ layout: SpatieAdminLayout });
                 <div class="w-full" >
                     <div class="py-4 font-semibold">Assigned Roles</div>
                     <Table>
+                        <template #caption>
+                            Table: User's Roles
+                        </template>
                         <template #tableHeader>
                             <TableHeaderRow :contents="['ID','Name','Action']"/>
                         </template>
@@ -234,8 +237,9 @@ defineOptions({ layout: SpatieAdminLayout });
                             v-for="role in props.user.roles"
                             :key="role.id"
                             :contents="[role.id,role.name]"
+                            :narrow=true
                         >
-                            <TableDataCell class="flex space-x-2">
+                            <TableDataCell>
                                 <AdminButton
                                     button-text="Revoke"
                                     button-type="deleteOnConfirm"
@@ -255,6 +259,9 @@ defineOptions({ layout: SpatieAdminLayout });
                 <div class="w-full" >
                     <div class="py-4 font-semibold">Direct Permissions</div>
                     <Table>
+                        <template #caption>
+                            Table: User's Direct Permissions
+                        </template>
                         <template #tableHeader>
                             <TableHeaderRow :contents="['ID','Name','Action']"/>
                         </template>
@@ -262,8 +269,9 @@ defineOptions({ layout: SpatieAdminLayout });
                             v-for="permission in props.user?.permissions"
                             :key="permission.id"
                             :contents="[permission.id, permission.name]"
+                            :narrow=true
                         >
-                            <TableDataCell class="flex space-x-2">
+                            <TableDataCell>
                                 <AdminButton
                                     button-text="Revoke"
                                     button-type="deleteOnConfirm"
@@ -289,6 +297,9 @@ defineOptions({ layout: SpatieAdminLayout });
             >
                 <div class="py-4 font-semibold">Permissions from Roles</div>
                 <Table>
+                    <template #caption>
+                        Table: User's Permissions from Roles
+                    </template>
                     <template #tableHeader>
                         <TableHeaderRow :contents="['ID','Role','Id','Permission']"/>
                     </template>
@@ -302,15 +313,23 @@ defineOptions({ layout: SpatieAdminLayout });
                             <TableDataCell
                                 v-if="permission === role.assignedPermissions[0]"
                                 :rowspan="[role.assignedPermissions.length]"
-                                >{{ role.id }}
+                                :narrow=true
+                            >
+                                {{ role.id }}
                             </TableDataCell>
                             <TableDataCell
                                 v-if="permission === role.assignedPermissions[0]"
                                 :rowspan="[role.assignedPermissions.length]"
-                                >{{ role.name }}
+                            >{{ role.name }}
                             </TableDataCell>
-                            <TableDataCell>{{permission.id }}</TableDataCell>
-                            <TableDataCell>{{permission.name }}</TableDataCell>
+                            <TableDataCell
+                                :narrow=true
+                            >
+                                {{ permission.id }}
+                            </TableDataCell>
+                            <TableDataCell>
+                                {{ permission.name }}
+                            </TableDataCell>
                         </TableRow>
                     </template>
                 </Table>
@@ -322,6 +341,9 @@ defineOptions({ layout: SpatieAdminLayout });
             >
                 <div class="py-4 font-semibold">All Permissions</div>
                 <Table>
+                    <template #caption>
+                        Table: User's All Permissions
+                    </template>
                     <template #tableHeader>
                         <TableHeaderRow :contents="['ID','Name','Action']"/>
                     </template>
@@ -329,9 +351,10 @@ defineOptions({ layout: SpatieAdminLayout });
                         v-for="permission in props.user?.permissionsAll"
                         :key="permission.id"
                         :contents="[ permission.id,permission.name]"
+                        :narrow=true
                     >
-                        <TableDataCell class="flex space-x-2">
-                           <AdminButton
+                        <TableDataCell>
+                            <AdminButton
                                 v-if="hasPermission('delete-permission.from-user') && props.user?.permissions.find((object) =>partialContains(object, permission))"
                                 button-text="remove"
                                 button-type="delete"

@@ -8,6 +8,7 @@ import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vu
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+
 const props = defineProps({
     permissions: {
         type: [Object,String],
@@ -33,6 +34,9 @@ defineOptions({ layout: SpatieAdminLayout });
         </PageHeader>
         <div class="mx-auto" v-if="permissions.length">
             <Table>
+                <template #caption>
+                    Table: Permissions Index
+                </template>
                 <template #tableHeader>
                     <TableHeaderRow :contents="['ID','Name','Action']"/>
                 </template>
@@ -40,8 +44,9 @@ defineOptions({ layout: SpatieAdminLayout });
                     v-for="permission in props.permissions"
                     :key="permission.id"
                     :contents="[ permission.id,permission.name]"
+                    :narrow=true
                 >
-                    <TableDataCell class="flex space-x-2">
+                    <TableDataCell>
                         <AdminButton
                             button-text="Edit"
                             button-type="edit"

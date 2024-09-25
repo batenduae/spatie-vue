@@ -18,10 +18,14 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@vueform/plugin-mask": "^1.0.7",
+        "@vueform/vueform": "^1.10.10",
         "@vueuse/core": "^11.1.0",
         "apexcharts": "^3.53.0",
         "flatpickr": "^4.6.13",
+        "gsap": "^3.12.5",
         "jsvectormap": "^1.6.0",
+        "maz-ui": "^3.45.4",
         "notivue": "^2.4.4",
         "pinia": "^2.2.2",
         "sweetalert2": "^11.12.4",

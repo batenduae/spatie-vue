@@ -3,6 +3,7 @@
 namespace App\SpatieContainer\SpatieControllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserProfileResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\SpatieContainer\SpatieRequests\CreateUserRequest;
@@ -76,12 +77,14 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user): Response
+    public function edit(User $user)
     {
-        return Inertia::render('Admin/SpatieRolePermission/Users/UsersEdit',[
-            'user'  => new UserResource($user),
-            'roles'=> RoleResource::collection(Role::all()),
-            'permissions'   =>  PermissionResource::collection(Permission::all())
+        $userProfile = $user->userProfile()->get();
+        return Inertia::render('Admin/SpatieRolePermission/Users/UsersEdit', [
+            'user' => new UserResource($user),
+            'roles' => RoleResource::collection(Role::all()),
+            'permissions' => PermissionResource::collection(Permission::all()),
+            'userProfile' => UserProfileResource::collection($userProfile),
         ]);
     }
 

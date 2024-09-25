@@ -125,6 +125,9 @@ defineOptions({ layout: SpatieAdminLayout });
                 Permissions To Role: {{ role.name }}
             </div>
             <Table>
+                <template #caption>
+                    Table: Role's Permissions
+                </template>
                 <template #tableHeader>
                     <TableRow>
                         <TableHeaderCell>ID</TableHeaderCell>
@@ -137,7 +140,7 @@ defineOptions({ layout: SpatieAdminLayout });
                     :key="permission.id"
                     :contents="[permission.id,permission.name]"
                 >
-                    <TableDataCell class="flex space-x-2">
+                    <TableDataCell>
                         <AdminButton
                             button-text="Revoke"
                             button-type="deleteOnConfirm"

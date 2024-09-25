@@ -7,13 +7,16 @@ import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 import {usePermissions} from "@/composables/permissions.js";
-import {onMounted, onUpdated} from "vue";
+import {onMounted, onUpdated, ref} from "vue";
+import {usePage} from "@inertiajs/vue3";
 
-const { hasPermission,showFlash } = usePermissions();
+const authUserId = ref(usePage().props.auth.user.id);
+const {hasPermission, hasRole, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
 defineProps(["users"]);
-defineOptions({ layout: SpatieAdminLayout });
+defineOptions({layout: SpatieAdminLayout});
+
 </script>
 
 <template>
@@ -28,6 +31,9 @@ defineOptions({ layout: SpatieAdminLayout });
     <div class="mx-auto" v-if="users.length">
         <div class="">
             <Table>
+                <template #caption>
+                    Table: User's Index Table
+                </template>
                 <template #tableHeader>
                     <TableHeaderRow
                         :contents="['ID','Name','Email','Status','Roles','Direct Permissions','All Permissions','Action']"/>
@@ -36,10 +42,10 @@ defineOptions({ layout: SpatieAdminLayout });
                     v-for="user in users"
                     :key="user.id"
                     :contents="[ user.id,user.name,user.email]"
+                    :narrow=true
                 >
-                    <TableDataCell class="items-center align-middle space-x-2">
-                        <ul>{{ user.status.length }}</ul>
-                        <ul class="flex">
+                    <TableDataCell>
+                        <ul v-if="user.status.length" class="flex justify-center justify-items-center">
                             <li
                                 v-for="item in user.status"
                                 class="mr-2 text-center px-2 rounded-lg text-xs  font-bold bg-gradient-to-br from-teal-500 to-fuchsia-500 mb-2"
@@ -47,21 +53,28 @@ defineOptions({ layout: SpatieAdminLayout });
                                 {{ item }}
                             </li>
                         </ul>
+                        <ul v-else>--</ul>
                     </TableDataCell>
-                    <TableDataCell class="items-center align-middle space-x-2">
-                        <ul>{{ user.roles.length }}</ul>
-                        <ul class="flex">
+                    <TableDataCell>
+                        <ul v-if="user.roles.length" class="flex">
                             <li
                                 v-for="role in user.roles"
                                 class="mr-2 text-center px-2 rounded-lg text-xs  font-bold bg-gradient-to-br from-teal-500 to-fuchsia-500 mb-2"
                             >
                                 {{ role.name }}
+
                             </li>
                         </ul>
+                        <ul v-else>--</ul>
                     </TableDataCell>
-                    <TableDataCell>{{ user.permissions.length }}</TableDataCell>
-                    <TableDataCell>{{ user.permissionsAll.length}}</TableDataCell>
-                    <TableDataCell class="flex space-x-2 items-center">
+                    <TableDataCell>
+                        {{ user.permissions.length }}
+                    </TableDataCell>
+                    <TableDataCell>
+                        {{ user.permissionsAll.length }}
+                        {{ hasRole('super admin') }}
+                    </TableDataCell>
+                    <TableDataCell v-if="(user.id!==1)||(authUserId===1)||hasRole('super admin')">
                         <AdminButton
                             button-text="Assign-Role-Permit"
                             button-type="assign"
@@ -83,7 +96,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             route-name="users.destroy"
                             :obj="user"
                             text="User"
-                            v-if="hasPermission('user.delete')"
+                            v-if="(hasPermission('user.delete')&& (authUserId === user.id))||(hasPermission('delete.otherUser'))"
                         />
                         <AdminButton
                             button-text="Log in"

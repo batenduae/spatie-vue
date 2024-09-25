@@ -8,11 +8,13 @@ import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vu
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+
 defineProps(["roles"]);
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
 defineOptions({ layout: SpatieAdminLayout });
+
 </script>
 
 <template>
@@ -31,8 +33,12 @@ defineOptions({ layout: SpatieAdminLayout });
                 v-if="hasPermission('role.create')"
             />
         </PageHeader>
+
         <div class="mx-auto" v-if="roles.length">
             <Table>
+                <template #caption>
+                    Table: Role's Index
+                </template>
                 <template #tableHeader>
                     <TableHeaderRow :contents="['ID','Name','Action']"/>
                 </template>
@@ -40,8 +46,9 @@ defineOptions({ layout: SpatieAdminLayout });
                     v-for="role in roles"
                     :key="role.id"
                     :contents="[ role.id,role.name]"
+                    :narrow=true
                 >
-                    <TableDataCell class="flex space-x-2">
+                    <TableDataCell>
                         <AdminButton
                             button-text="Assign-permit"
                             button-type="assign"

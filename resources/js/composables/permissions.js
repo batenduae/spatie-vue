@@ -1,23 +1,44 @@
-import { usePage } from "@inertiajs/vue3";
+import {usePage} from "@inertiajs/vue3";
 import {push} from "notivue";
-import {watch} from "vue";
 
 export function usePermissions() {
-    function hasRole(roleArray) {
-        let roles = usePage().props.auth.user.roles;
-        if (roles.find((role) => roleArray.includes(role.name))) {
-            return true;
+    // function hasRole(roleArray) {
+    //     let roles = usePage().props.auth.user.roles;
+    //     return !!roles.find((role) => roleArray.includes(role.name));
+    // }
+
+    function hasRole(rolesArray, option) {
+        let assignedRoles = usePage().props.auth.user.roles;
+        option = option || "any";
+        // console.log("option",option);
+
+        if (Array.isArray(rolesArray)) {
+            console.log("Array Found")
+            switch (option) {
+                case 'all':
+                    // console.log("Option: All Mandatory ")
+                    // console.log(rolesArray, rolesArray.every((role) => assignedRoles.includes(role)))
+                    return rolesArray.every((role) => assignedRoles.includes(role))
+                    break;
+                default:
+                    // console.log("Option: Any")
+                    // console.log(rolesArray, rolesArray.find((role) => assignedRoles.includes(role)))
+                    return rolesArray.find((role) => assignedRoles.includes(role))
+            }
         } else {
-            return false;
+            console.log('String Found')
+            console.log(rolesArray, assignedRoles.includes(rolesArray))
+            console.log(rolesArray, assignedRoles)
+            return assignedRoles.includes(rolesArray)
         }
     }
 
-    function hasPermission(permissionArray,option) {
+    function hasPermission(permissionArray, option) {
         let permits = usePage().props.auth.user.permit;
         option = option || "any";
         // console.log("option",option);
 
-        if(Array.isArray(permissionArray)){
+        if (Array.isArray(permissionArray)) {
             // console.log("Array Found")
             switch (option) {
                 case 'all':

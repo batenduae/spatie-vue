@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserEducationalBackgroundResource extends JsonResource
+class UserEducationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,6 +16,7 @@ class UserEducationalBackgroundResource extends JsonResource
     {
         return [
             'user_id' => $this->user_id,
+            'userName' => $this->user()->name,
             'degree' => $this->degree,
             'institution' => $this->institution,
             'session' => $this->session,

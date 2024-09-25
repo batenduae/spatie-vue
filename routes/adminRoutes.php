@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::resource('/posts', PostController::class);
-Route::resource('/userAddress', UserAddressController::class);
-Route::resource('/userEducation', UserEducationalBackgroundController::class);
-Route::resource('/userProfile', UserProfileController::class);
-Route::resource('/userSocial', UserSocialController::class);
+Route::resource('/usersAddress', UserAddressController::class);
+Route::resource('/usersEducation', UserEducationalBackgroundController::class);
+Route::resource('/usersProfile', UserProfileController::class);
+Route::resource('/usersSocial', UserSocialController::class);
 

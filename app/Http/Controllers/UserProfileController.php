@@ -2,24 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserProfileResource;
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class UserProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return Inertia::render('UsersInfo/UsersProfile/UsersProfileIndex', [
+            'usersProfile' => UserProfileResource::collection(UserProfile::all()),
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('UsersInfo/UsersProfile/UsersProfileCreate', [
+            'users' => UserResource::collection(User::all()),
+        ]);
     }
 
     /**

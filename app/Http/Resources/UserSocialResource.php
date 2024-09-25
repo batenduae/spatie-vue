@@ -16,6 +16,7 @@ class UserSocialResource extends JsonResource
     {
         return [
             'user_id' => $this->user_id,
+            'userName' => $this->user()->name,
             'facebook' => $this->facebook,
             'instagram' => $this->instagram,
             'x_twitter' => $this->x_twitter,

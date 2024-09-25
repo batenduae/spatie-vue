@@ -1,16 +1,21 @@
 <script setup>
+import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
+
 defineProps({
     contents: {
-        type: [String,Array]
+        type: [String, Array]
+    },
+    narrow: {
+        type: [String, Boolean]
     }
 })
 </script>
 <template>
-    <tr class="border-t border-slate-300 dark:border-slate-600">
-        <td class="px-6 py-3" v-for="content in contents">
+    <tr class="">
+        <TableDataCell v-for="(content, index) in contents" :class="(narrow && (index === 0))?'w-16':''">
             {{ content }}
-        </td>
-        <slot />
+        </TableDataCell>
+        <slot/>
     </tr>
 </template>
 

@@ -5,7 +5,6 @@ namespace App\SpatieContainer\MoveToOriginalDirectory\SpatieMiddleware;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 use Spatie\Permission\Models\Permission;
 
@@ -41,21 +40,23 @@ class HandleInertiaRequests extends Middleware
                 }
             }
         }
+        $roles = Auth::user()->getRoleNames();
         return [
             ...parent::share($request),
-            'auth.user' => fn () => $request->user()
+            'auth.user' => fn() => $request->user()
                 ? new UserResource($request->user())
                 : null,
             'auth.user.permit' => $permissions,
+            'auth.user.assignedRoles' => $roles,// Returns a collection
 
             'flash' => function () use ($request) {
                 return [
-                    'message'   => session('message'),
-                    'info'      => session('info'),
-                    'success'   => session('success'),
-                    'warning'   => session('warning'),
-                    'error'     => session('error'),
-                    'danger'    => session('danger'),
+                    'message' => session('message'),
+                    'info' => session('info'),
+                    'success' => session('success'),
+                    'warning' => session('warning'),
+                    'error' => session('error'),
+                    'danger' => session('danger'),
                 ];
             }
         ];

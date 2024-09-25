@@ -1,17 +1,19 @@
 <script setup>
+import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.vue";
+
 defineProps({
     contents: {
-        type: [String,Array]
+        type: [String, Array]
     }
 })
 </script>
 
 <template>
-    <tr class="rounded-lg">
-        <th class="px-6 py-3" v-for="content in contents">
+    <tr class="">
+        <TableHeaderCell v-for="content in contents">
             {{ content }}
-        </th>
-        <slot />
+        </TableHeaderCell>
+        <slot/>
     </tr>
 </template>
 

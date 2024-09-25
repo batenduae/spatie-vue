@@ -12,20 +12,20 @@ import {onMounted, onUpdated} from "vue";
 const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
-defineProps(["users"]);
+defineProps(["usersProfile"]);
 defineOptions({layout: SpatieAdminLayout});
 </script>
 
 <template>
-    <PageHeader text="Users Index Page" title="Users">
+    <PageHeader text="User's Profile Index Page" title="User's Profile">
         <AdminButton
             v-if="hasPermission('user.create')"
             button-text="Create User's Profile"
             button-type="create"
-            route-name="userProfile.create"
+            route-name="usersProfile.create"
         />
     </PageHeader>
-    <div v-if="users.length" class="mx-auto">
+    <div v-if="usersProfile.length" class="mx-auto">
         <div class="">
             <Table>
                 <template #tableHeader>
@@ -100,9 +100,8 @@ defineOptions({layout: SpatieAdminLayout});
     </div>
     <div v-else class="">
         <div class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
-            No User Found
+            No User's Profile Found
         </div>
     </div>
 </template>
-
 <style scoped></style>
