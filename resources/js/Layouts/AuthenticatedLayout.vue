@@ -7,6 +7,7 @@ import NavLink from "@/Components/Default/NavLink.vue";
 import ResponsiveNavLink from "@/Components/Default/ResponsiveNavLink.vue";
 import {Link} from "@inertiajs/vue3";
 import {usePermissions} from "@/composables/permissions.js";
+import {Notification, NotificationProgress, Notivue, outlinedIcons, pastelTheme} from "notivue";
 
 const showingNavigationDropdown = ref(false);
 
@@ -15,8 +16,17 @@ const {hasRole, hasPermission} = usePermissions();
 
 <template>
     <div class="">
+        <Notivue v-slot="item">
+            <Notification
+                :icons="outlinedIcons"
+                :item="item"
+                :theme="pastelTheme"
+            >
+                <NotificationProgress :item="item"/>
+            </Notification>
+        </Notivue>
         <div class="min-h-screen bgImage text-black dark:text-white">
-            <nav class="border-b bg-white text-black dark:bg-boxdark-2 dark:text-white border-gray-100 roun">
+            <nav class="border-b bg-white dark:bg-boxdark-2 text-black dark:text-white border-gray-100 roun">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">

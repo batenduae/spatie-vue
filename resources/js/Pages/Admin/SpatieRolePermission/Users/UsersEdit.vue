@@ -15,6 +15,7 @@ import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+import UsersProfileCreate from "@/Pages/UsersInfo/UsersProfile/UsersProfileCreate.vue";
 
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
@@ -47,18 +48,18 @@ const form = useForm({
     name: props.user?.name,
     email: props.user?.email,
     status: ref(props.user?.status),
-    roles: ref(props.user?.roles),
-    permissions: ref(props.user?.permissions),
+    roles: ref(props.user?.assignedRoles),
+    permissions: ref(props.user?.assignedPermissions),
 });
 
 onMounted(() => {
-    form.roles = props.user?.roles;
-    form.permissions = props.user?.permissions;
+    form.roles = props.user?.assignedRoles;
+    form.permissions = props.user?.assignedPermissions;
 });
 
 watch(
-    (() => props.user, () => (form.roles = ref(props.user?.roles))),
-    (() => props.user, () => (form.permissions = ref(props.user?.permissions)))
+    (() => props.user, () => (form.roles = ref(props.user?.assignedRoles))),
+    (() => props.user, () => (form.permissions = ref(props.user?.assignedPermissions)))
 );
 // object contains subObject
 function partialContains(object, subObject) {
@@ -223,8 +224,8 @@ defineOptions({ layout: SpatieAdminLayout });
                 </form>
             </Card>
 
-            <Card class="" v-if="props.user?.roles.length">
-                <div class="w-full" >
+            <Card v-if="props.user?.assignedRoles.length" class="">
+                <div class="w-full">
                     <div class="py-4 font-semibold">Assigned Roles</div>
                     <Table>
                         <template #caption>
@@ -234,10 +235,10 @@ defineOptions({ layout: SpatieAdminLayout });
                             <TableHeaderRow :contents="['ID','Name','Action']"/>
                         </template>
                         <TableRow
-                            v-for="role in props.user.roles"
+                            v-for="role in props.user.assignedRoles"
                             :key="role.id"
                             :contents="[role.id,role.name]"
-                            :narrow=true
+                            narrow="narrower"
                         >
                             <TableDataCell>
                                 <AdminButton
@@ -255,8 +256,8 @@ defineOptions({ layout: SpatieAdminLayout });
                 </div>
             </Card>
 
-            <Card class="" v-if="props.user?.permissions.length">
-                <div class="w-full" >
+            <Card v-if="props.user?.permissionsDirect.length" class="">
+                <div class="w-full">
                     <div class="py-4 font-semibold">Direct Permissions</div>
                     <Table>
                         <template #caption>
@@ -266,10 +267,10 @@ defineOptions({ layout: SpatieAdminLayout });
                             <TableHeaderRow :contents="['ID','Name','Action']"/>
                         </template>
                         <TableRow
-                            v-for="permission in props.user?.permissions"
+                            v-for="permission in props.user?.permissionsDirect"
                             :key="permission.id"
                             :contents="[permission.id, permission.name]"
-                            :narrow=true
+                            narrow="narrower"
                         >
                             <TableDataCell>
                                 <AdminButton
@@ -289,22 +290,43 @@ defineOptions({ layout: SpatieAdminLayout });
         </div>
     </Card>
 
-    <Card type="green" v-if="(props.user?.permissions.length)+(props.user?.permissionsAll.length)">
+    <Card v-if="(props.user?.assignedPermissions.length)+(props.user?.status.length)" type="green">
         <div class="flex flex-wrap justify-around justify-items-center justify-self-center">
             <Card
                 class=""
-                v-if="props.user?.roles.find((role) => role.assignedPermissions.length)"
+                v-if="props.user?.status.length"
             >
-                <div class="py-4 font-semibold">Permissions from Roles</div>
+                <div class="py-4 font-semibold">User's Status</div>
                 <Table>
                     <template #caption>
-                        Table: User's Permissions from Roles
+                        Table: User's All Status
+                    </template>
+                    <template #tableHeader>
+                        <TableHeaderRow :contents="['ID','Name']"/>
+                    </template>
+                    <TableRow
+                        v-for="(item,index) in props.user?.status"
+                        :key="item"
+                        :contents="[ index+1,item]"
+                        narrow="narrower"
+                    />
+                </Table>
+            </Card>
+
+            <Card
+                v-if="props.user?.assignedRoles.find((role) => role.assignedPermissions.length)"
+                class=""
+            >
+                <div class="py-4 font-semibold">Permissions Via Roles</div>
+                <Table>
+                    <template #caption>
+                        Table: User's Permissions Via Roles
                     </template>
                     <template #tableHeader>
                         <TableHeaderRow :contents="['ID','Role','Id','Permission']"/>
                     </template>
                     <template
-                        v-for="role in props.user.roles"
+                        v-for="role in props.user.assignedRoles"
                         :key="role.id"
                     >
                         <TableRow
@@ -313,7 +335,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             <TableDataCell
                                 v-if="permission === role.assignedPermissions[0]"
                                 :rowspan="[role.assignedPermissions.length]"
-                                :narrow=true
+                                narrow="narrower"
                             >
                                 {{ role.id }}
                             </TableDataCell>
@@ -323,7 +345,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             >{{ role.name }}
                             </TableDataCell>
                             <TableDataCell
-                                :narrow=true
+                                narrow="narrower"
                             >
                                 {{ permission.id }}
                             </TableDataCell>
@@ -337,7 +359,7 @@ defineOptions({ layout: SpatieAdminLayout });
 
             <Card
                 class=""
-                v-if="props.user?.permissionsAll.length"
+                v-if="props.user?.assignedPermissions.length"
             >
                 <div class="py-4 font-semibold">All Permissions</div>
                 <Table>
@@ -348,14 +370,14 @@ defineOptions({ layout: SpatieAdminLayout });
                         <TableHeaderRow :contents="['ID','Name','Action']"/>
                     </template>
                     <TableRow
-                        v-for="permission in props.user?.permissionsAll"
+                        v-for="permission in props.user?.assignedPermissions"
                         :key="permission.id"
                         :contents="[ permission.id,permission.name]"
-                        :narrow=true
+                        narrow="narrower"
                     >
                         <TableDataCell>
                             <AdminButton
-                                v-if="hasPermission('delete-permission.from-user') && props.user?.permissions.find((object) =>partialContains(object, permission))"
+                                v-if="hasPermission('delete-permission.from-user') && props.user?.permissionsDirect.find((object) =>partialContains(object, permission))"
                                 button-text="remove"
                                 button-type="delete"
                                 route-method="delete"
@@ -369,6 +391,10 @@ defineOptions({ layout: SpatieAdminLayout });
                 </Table>
             </Card>
         </div>
+    </Card>
+
+    <Card type="cyan">
+        <UsersProfileCreate :user="user"/>
     </Card>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

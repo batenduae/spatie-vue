@@ -13,6 +13,8 @@ export default {
         './node_modules/@vueform/vueform/themes/tailwind/**/*.vue',
         './node_modules/@vueform/vueform/themes/tailwind/**/*.js',
         //
+        "./resources/js/primevue/presets/**/*.{js,vue,ts}",
+        //
     ],
     darkMode: 'class',
     theme: {
@@ -322,5 +324,6 @@ export default {
     plugins: [
         forms,
         require('@vueform/vueform/tailwind'),
+        require('tailwindcss-primeui')
     ],
 };

@@ -21,10 +21,10 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-//            'roles' =>  $this->roles->pluck('name'),
             'roles' => RoleResource::collection($this->roles),
-            'permissions' => PermissionResource::collection($this->getDirectPermissions()),
-            'permissionsAll' => PermissionResource::collection($this->getAllPermissions()),
+            'permissionsDirect' => PermissionResource::collection($this->getDirectPermissions()), // Direct permissions
+            'permissionsViaRole' => PermissionResource::collection($this->getPermissionsViaRoles()), // Permissions Via Role
+            'permissionsAll' => PermissionResource::collection($this->getAllPermissions()), //All Permissions
         ];
     }
 }

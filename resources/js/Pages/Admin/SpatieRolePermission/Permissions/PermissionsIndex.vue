@@ -44,7 +44,7 @@ defineOptions({ layout: SpatieAdminLayout });
                     v-for="permission in props.permissions"
                     :key="permission.id"
                     :contents="[ permission.id,permission.name]"
-                    :narrow=true
+                    narrow="narrower"
                 >
                     <TableDataCell>
                         <AdminButton

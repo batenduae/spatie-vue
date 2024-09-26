@@ -3,7 +3,6 @@
 namespace App\SpatieContainer\SpatieControllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserProfileResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\SpatieContainer\SpatieRequests\CreateUserRequest;
@@ -84,7 +83,6 @@ class UserController extends Controller implements HasMiddleware
             'user' => new UserResource($user),
             'roles' => RoleResource::collection(Role::all()),
             'permissions' => PermissionResource::collection(Permission::all()),
-            'userProfile' => UserProfileResource::collection($userProfile),
         ]);
     }
 

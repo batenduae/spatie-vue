@@ -21,15 +21,25 @@ class UserResource extends JsonResource
         if ($this->asp) {
             array_push($status, 'asp');
         }
+        if ($this->hasAnyPermission('admin panel')) {
+            array_push($status, 'panel');
+        }
+        if ($this->hasAnyPermission('restricted')) {
+            array_push($status, 'restricted');
+        }
+        if ($this->hasAnyPermission('banned')) {
+            array_push($status, 'banned');
+        }
 
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
             'status' => $status,
-            'roles' => RoleResource::collection($this->roles),
-            'permissions' => PermissionResource::collection($this->getDirectPermissions()),
-            'permissionsAll' => PermissionResource::collection($this->getAllPermissions()),
+            'assignedRoles' => RoleResource::collection($this->roles),
+            'permissionsDirect' => PermissionResource::collection($this->getDirectPermissions()), // Direct permissions
+            'permissionsViaRole' => PermissionResource::collection($this->getPermissionsViaRoles()), // Permissions Via Role
+            'assignedPermissions' => PermissionResource::collection($this->getAllPermissions()), //All Permissions
         ];
     }
 }

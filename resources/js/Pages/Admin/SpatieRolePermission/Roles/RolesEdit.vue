@@ -8,13 +8,13 @@ import {onMounted, onUpdated, ref, watch} from "vue";
 import Table from "@/Components/AdminComponents/Table/Table.vue";
 import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
 import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
-import TableHeaderCell from "@/Components/AdminComponents/Table/TableHeaderCell.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {useForm} from "@inertiajs/vue3";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
@@ -129,16 +129,15 @@ defineOptions({ layout: SpatieAdminLayout });
                     Table: Role's Permissions
                 </template>
                 <template #tableHeader>
-                    <TableRow>
-                        <TableHeaderCell>ID</TableHeaderCell>
-                        <TableHeaderCell>Name</TableHeaderCell>
-                        <TableHeaderCell>Action</TableHeaderCell>
-                    </TableRow>
+                    <TableHeaderRow
+                        :contents="['ID','Name','Action']"
+                    />
                 </template>
                 <TableRow
                     v-for="permission in props.role?.assignedPermissions"
                     :key="permission.id"
                     :contents="[permission.id,permission.name]"
+                    narrow="narrower"
                 >
                     <TableDataCell>
                         <AdminButton

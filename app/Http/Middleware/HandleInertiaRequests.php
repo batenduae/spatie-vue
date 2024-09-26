@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 use Spatie\Permission\Models\Permission;
 
@@ -35,18 +34,23 @@ class HandleInertiaRequests extends Middleware
     {
         $permissions = [];
         foreach (Permission::all() as $permission) {
-            if(Auth::user()){
+            if (Auth::user()) {
                 if (Auth::user()->can($permission->name)) {
                     $permissions[] = $permission->name;
                 }
             }
         }
+//        $roles = [];
+//        if(Auth::user()){
+//            $roles = Auth::user()->getRoleNames();
+//        }
         return [
             ...parent::share($request),
-            'auth.user' => fn () => $request->user()
+            'auth.user' => fn() => $request->user()
                 ? new UserResource($request->user())
                 : null,
             'auth.user.permit' => $permissions,
+//            'auth.user.permitRole' => $roles,
 
             'flash' => function () use ($request) {
                 return [

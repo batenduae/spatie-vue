@@ -120,6 +120,7 @@ defineOptions({ layout: SpatieAdminLayout });
                 </form>
             </div>
         </div>
+
         <div class="my-2" v-if="hasPermission('assign-permission.to-user')">
             <div class="mt-4 text-xl py-2 text-green-600 font-bold">
                 Permissions:

@@ -5,12 +5,14 @@ namespace App\SpatieContainer\SpatieMiddleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+
 class SpatiePermissionMiddleware
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param Closure(Request): (Response) $next
      */
     public function handle(Request $request, Closure $next)
     {
@@ -29,8 +31,9 @@ class SpatiePermissionMiddleware
             }elseif((($user->email === 'batenduae@gmail.com')||($user->email === 'superadmin@gmail.com'))) {
                 return $next($request);
             }
-
+            return to_route('dashboard')->with('error', "User doesn't have any access to this page");
             abort(403,"User doesn't have any access to this page");
+
 
         }
         abort(403,'Please Login to get Access');

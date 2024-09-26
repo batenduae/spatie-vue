@@ -18,8 +18,8 @@ const sidebarStore = useSidebarStore()
       <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
         <!-- Hamburger Toggle BTN -->
         <button
-          class="z-999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
-          @click="
+            class="z-999 block rounded-sm border border-stroke bg-white text-black p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white lg:hidden"
+            @click="
             () => {
               console.log('Toggling Sidebar')
               toggleSidebar()

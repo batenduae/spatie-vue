@@ -1,32 +1,41 @@
-import 'maz-ui/styles' // or import 'maz-ui/css/main.css'
-//
+//main
 import "./bootstrap";
 import "../css/app.css";
-//
+import "../css/primevue.css"
+
+//jsvector and flatpickr styles
 import "jsvectormap/dist/jsvectormap.min.css"
 import "flatpickr/dist/flatpickr.min.css"
 
-//
+
+////////////////////////////////////////
+//main
 import {createApp, h} from "vue";
 import {createInertiaApp} from "@inertiajs/vue3";
 import {ZiggyVue} from "../../vendor/tightenco/ziggy";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-//
+
+//pinia
 import {createPinia} from 'pinia'
+
+//vueapexcharts
 import VueApexCharts from 'vue3-apexcharts'
-//
+
+//vueform
 import Vueform from '@vueform/vueform'
 import vueformConfig from './../../vueform.config.js'
-//
-//
+
+//notivue
 import {createNotivue} from 'notivue'
 import 'notivue/notification.css' // Only needed if using built-in notifications
 import 'notivue/animations.css' // Only needed if using built-in animations
 import 'notivue/notification-progress.css'
+//primevue
+import PrimeVue from 'primevue/config';
+// import Aura from '@primevue/themes/aura';
+import Aura from '@/primevue/presets/aura';
 
-const appName = import.meta.env.VITE_APP_NAME || "Laravel";
-//
-
+//notivue
 const notivue = createNotivue({
     position: 'top-right',
     // limit: 5,
@@ -38,11 +47,10 @@ const notivue = createNotivue({
     }
 })
 
+
+////////////////////////////////////////
+const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 //
-
-
-//
-
 createInertiaApp({
     title: function (title) {
         if (title) {
@@ -62,20 +70,32 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             //
-
             //
             .use(createPinia())
+            //
             .use(VueApexCharts)
             //
             .use(Vueform, vueformConfig)
-            //
-
             //
             .use(notivue, {
                 animations: {
                     enter: 'slide-in',
                     leave: 'slide-out',
                     clearAll: 'fade'
+                }
+            })
+            //
+            .use(PrimeVue, {
+                // Default theme configuration
+                // unstyled: true,
+                // pt: Aura,
+                theme: {
+                    preset: Aura,
+                    options: {
+                        prefix: 'p',
+                        darkModeSelector: 'class',
+                        cssLayer: true
+                    }
                 }
             })
             //

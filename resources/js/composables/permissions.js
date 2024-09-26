@@ -8,13 +8,20 @@ export function usePermissions() {
     // }
 
     function hasRole(rolesArray, option) {
-        let assignedRoles = usePage().props.auth.user.roles;
+        let assignedRoles = usePage().props.auth.user?.assignedRoles;
         option = option || "any";
         // console.log("option",option);
+        // console.log('roles',usePage().props.auth.user.assignedRoles)
+        // console.log('Roles',usePage().props.auth.user.assignedRoles.flat())
 
         if (Array.isArray(rolesArray)) {
-            console.log("Array Found")
+            assignedRoles = assignedRoles.flat();
+            // console.log("Array Found")
             switch (option) {
+                case 'exact':
+                    // console.log(rolesArray,assignedRoles,JSON.stringify(rolesArray.sort()) == JSON.stringify(assignedRoles.sort()))
+                    return (JSON.stringify(rolesArray.sort()) === JSON.stringify(assignedRoles.sort()))
+                    break;
                 case 'all':
                     // console.log("Option: All Mandatory ")
                     // console.log(rolesArray, rolesArray.every((role) => assignedRoles.includes(role)))
@@ -26,25 +33,50 @@ export function usePermissions() {
                     return rolesArray.find((role) => assignedRoles.includes(role))
             }
         } else {
-            console.log('String Found')
-            console.log(rolesArray, assignedRoles.includes(rolesArray))
-            console.log(rolesArray, assignedRoles)
+            // console.log('String Found')
+            // console.log(rolesArray, assignedRoles.includes(rolesArray))
+            // console.log(rolesArray, assignedRoles)
             return assignedRoles.includes(rolesArray)
         }
     }
 
     function hasPermission(permissionArray, option) {
-        let permits = usePage().props.auth.user.permit;
+        let permits = usePage().props.auth.user?.permit;
         option = option || "any";
         // console.log("option",option);
+        // console.log('roles',usePage().props.auth.user.assignedPermissions)
+        // console.log('Roles',usePage().props.auth.user.assignedPermissions.flat())
 
         if (Array.isArray(permissionArray)) {
+            permits = permits.flat().sort();
+            permissionArray = permissionArray.sort();
+            let jsonPermissionArray;
+            jsonPermissionArray = JSON.stringify(permissionArray);
+            let jsonPermits;
+            jsonPermits = JSON.stringify(permits);
+
             // console.log("Array Found")
             switch (option) {
+                case 'exact':
+                    // console.log(permissionArray,permits,JSON.stringify(permissionArray.sort()) === JSON.stringify(permits.sort()))
+                    return (jsonPermissionArray === jsonPermits)
+                    break;
                 case 'all':
                     // console.log("Option: All Mandatory ")
                     // console.log(permissionArray, permissionArray.every((permission) => permits.includes(permission)))
                     return permissionArray.every((permission) => permits.includes(permission))
+                    break;
+                case 'direct':
+                    // console.log(permissionArray,permits,JSON.stringify(permissionArray.sort()) === JSON.stringify(permits.sort()))
+                    return (JSON.stringify(permissionArray) === JSON.stringify(permits))
+                    break;
+                case 'exactDirect':
+                    // console.log(permissionArray,permits,JSON.stringify(permissionArray.sort()) === JSON.stringify(permits.sort()))
+                    return (JSON.stringify(permissionArray.sort()) === JSON.stringify(permits.sort()))
+                    break;
+                case 'allDirect':
+                    // console.log(permissionArray,permits,JSON.stringify(permissionArray.sort()) === JSON.stringify(permits.sort()))
+                    return (JSON.stringify(permissionArray.sort()) === JSON.stringify(permits.sort()))
                     break;
                 default:
                     // console.log("Option: Any")

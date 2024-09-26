@@ -46,7 +46,7 @@ defineOptions({ layout: SpatieAdminLayout });
                     v-for="role in roles"
                     :key="role.id"
                     :contents="[ role.id,role.name]"
-                    :narrow=true
+                    narrow="narrower"
                 >
                     <TableDataCell>
                         <AdminButton

@@ -75,8 +75,8 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
         $user = User::findOrFail($userId);
         Auth::login($user);
         session()->regenerate();
-        return back()
-            ->with('success',"logged in as '".$user->name."' successfully");
+        return redirect()->route('users.index')
+            ->with('success', "logged in as '" . $user->name . "' successfully");
     }
 
 

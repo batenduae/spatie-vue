@@ -22,15 +22,15 @@ onMounted(showFlash)
         </Notivue>
     </div>
     <!-- ===== Page Wrapper Start ===== -->
-    <div class="flex h-screen overflow-hidden text-black dark:text-white">
-                <!-- ===== Sidebar Start ===== -->
+    <div class="flex h-screen overflow-hidden bg-white dark:bg-boxdark-2 text-black dark:text-white">
+        <!-- ===== Sidebar Start ===== -->
         <SidebarArea/>
         <!-- ===== Sidebar End ===== -->
 
         <!-- ===== Content Area Start ===== -->
         <div class="relative w-full flex flex-col overflow-y-auto no-scrollbar overflow-x-hidden">
             <!-- ===== Header Start ===== -->
-            <HeaderArea />
+            <HeaderArea/>
             <!-- ===== Header End ===== -->
 
             <!-- ===== Main Content Start ===== -->

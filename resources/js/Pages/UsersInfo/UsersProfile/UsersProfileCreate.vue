@@ -44,7 +44,7 @@ defineOptions({layout: SpatieAdminLayout});
     </PageHeader>
     <Card class="mx-auto max-w-150">
         <div class="py-4 font-semibold">User Information</div>
-        <form @submit.prevent="form.post(route('users.store',user.id))">
+        <form @submit.prevent="form.put(route('usersProfile.update',user.id))">
             <div>
                 <InputLabel for="user_id" value="Image"/>
 

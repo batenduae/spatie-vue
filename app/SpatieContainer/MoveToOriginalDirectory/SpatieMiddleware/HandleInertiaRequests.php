@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
+use Laratrust\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class HandleInertiaRequests extends Middleware
@@ -34,13 +35,21 @@ class HandleInertiaRequests extends Middleware
     {
         $permissions = [];
         foreach (Permission::all() as $permission) {
-            if(Auth::user()){
+            if (Auth::user()) {
                 if (Auth::user()->can($permission->name)) {
                     $permissions[] = $permission->name;
                 }
             }
         }
-        $roles = Auth::user()->getRoleNames();
+        $roles = [];
+        foreach (Role::all() as $role) {
+            if (Auth::user()) {
+                if (Auth::user()->hasRole($role->name)) {
+                    $roles[] = $role->name;
+                }
+            }
+        }
+//        $roles = Auth::user()->getRoleNames();
         return [
             ...parent::share($request),
             'auth.user' => fn() => $request->user()
