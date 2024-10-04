@@ -42,7 +42,7 @@ const menuGroups = ref([
                 route: 'users.index',
                 routeType: 'named',
                 active: 'users.*',
-                permission: ['user.view','user.create','user.edit','user.delete']
+                permission: ['users.index']
             },
             {
                 icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" >
@@ -52,7 +52,7 @@ const menuGroups = ref([
                 route: 'roles.index',
                 routeType: 'named',
                 active: 'roles.*',
-                permission: ['role.view','role.create','role.edit','role.delete']
+                permission: ['roles.index']
             },
             {
                 icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -62,7 +62,7 @@ const menuGroups = ref([
                 route: 'permissions.index',
                 routeType: 'named',
                 active: 'permissions.*',
-                permission: ['permission.view','permission.create','permission.edit','permission.delete']
+                permission: ['permissions.index']
             },
             {
                 icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -72,7 +72,7 @@ const menuGroups = ref([
                 route: 'posts.index',
                 routeType: 'named',
                 active: 'posts.*',
-                permission: ['post.view','post.create','post.edit','post.delete']
+                permission: ['posts.index']
             },
         ]
     },
