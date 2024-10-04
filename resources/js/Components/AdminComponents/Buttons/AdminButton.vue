@@ -1,7 +1,6 @@
 <script setup>
-import {Link} from "@inertiajs/vue3";
+import {Link, useForm} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
-import {useForm} from "@inertiajs/vue3";
 import Swal from 'sweetalert2'
 import {push} from "notivue";
 
@@ -22,7 +21,7 @@ const props = defineProps({
     },
     buttonText:{
         type: String,
-        default: 'Buttons'
+        default: ''
     },
     text: {
         type: [String, Object],
@@ -111,8 +110,11 @@ function definebtnText(){
             case 'assign':
                 btnText = "Assign";
                 break;
+            case 'button':
+                btnText = "Button";
+                break;
             default:
-                btnText = "Buttons";
+                btnText = "";
         }
     }
     return btnText
@@ -121,7 +123,7 @@ let deleteBtn = ref(false)
 computed(
    className = defineClass(),
     btnText = definebtnText(),
-    deleteBtn = props.buttonType=='deleteOnConfirm'
+    deleteBtn = props.buttonType === 'deleteOnConfirm'
 )
 
 const form = useForm({})
@@ -132,29 +134,29 @@ function alertNow(props){
     let swalTextConfirmed = "";
     let errorText = "";
     let warningText = "";
-    console.log()
-    if(props.obj.length>1){
+    // console.log()
+    if(props.obj.length>1) {
         text0 = props.text[0];
         text1 = props.text[1];
-        console.log('Obj length',props.obj.length,props.obj)
-        swalText = text1+": '"+props.obj[1][props.property]+"' will be deleted permanently for "+text0+" '"+props.obj[0][props.property]+"'";
-        swalTextConfirmed = text1+": '"+props.obj[1][props.property]+"' has been deleted for "+text0+" '"+props.obj[0][props.property]+"'";
-        errorText = text1+": '"+props.obj[1][props.property]+"' deleting confirmed for "+text0+" '"+props.obj[0][props.property]+"'";
-        warningText = text1+": '"+props.obj[1][props.property]+"' deleting cancelled for "+text0+" '"+props.obj[0][props.property]+"'";
-        console.log(swalText)
-        console.log(swalTextConfirmed)
-        console.log(errorText)
-        console.log(warningText)
-    }else{
+        // console.log('Obj length',props.obj.length,props.obj)
+        swalText = text1 + ": '" + props.obj[1][props.property] + "' will be deleted permanently for " + text0 + " '" + props.obj[0][props.property] + "'";
+        swalTextConfirmed = text1 + ": '" + props.obj[1][props.property] + "' has been deleted for " + text0 + " '" + props.obj[0][props.property] + "'";
+        errorText = text1 + ": '" + props.obj[1][props.property] + "' deleting confirmed for " + text0 + " '" + props.obj[0][props.property] + "'";
+        warningText = text1 + ": '" + props.obj[1][props.property] + "' deleting cancelled for " + text0 + " '" + props.obj[0][props.property] + "'";
+        // console.log(swalText)
+        // console.log(swalTextConfirmed)
+        // console.log(errorText)
+        // console.log(warningText)
+    }else {
         text1 = props.text;
-        swalText = text1+": '"+props.obj[props.property]+"' will be deleted permanently.";
-        swalTextConfirmed = text1+": '"+props.obj[props.property]+"' has been deleted.";
-        errorText = text1+": '"+props.obj[props.property]+"' deleting confirmed.";
-        warningText = text1+": '"+props.obj[props.property]+"' deleting cancelled.";
-        console.log(swalText)
-        console.log(swalTextConfirmed)
-        console.log(errorText)
-        console.log(warningText)
+        swalText = text1 + ": '" + props.obj[props.property] + "' will be deleted permanently.";
+        swalTextConfirmed = text1 + ": '" + props.obj[props.property] + "' has been deleted.";
+        errorText = text1 + ": '" + props.obj[props.property] + "' deleting confirmed.";
+        warningText = text1 + ": '" + props.obj[props.property] + "' deleting cancelled.";
+        // console.log(swalText)
+        // console.log(swalTextConfirmed)
+        // console.log(errorText)
+        // console.log(warningText)
     }
 
     Swal.fire({
@@ -191,7 +193,10 @@ function alertNow(props){
             :class="className"
             preserve-scroll
         >
-            {{ btnText }}
+            <template v-if="props.buttonText">
+                {{ btnText }}
+            </template>
+            <slot></slot>
         </Link>
     </template>
     <template v-else>
@@ -200,7 +205,10 @@ function alertNow(props){
             class="px-2 rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
             :class="className"
         >
-            {{ btnText }}
+            <template v-if="props.buttonText">
+                {{ btnText }}
+            </template>
+            <slot></slot>
         </button>
     </template>
 </template>

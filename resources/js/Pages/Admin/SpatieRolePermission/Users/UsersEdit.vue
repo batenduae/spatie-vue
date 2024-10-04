@@ -17,9 +17,16 @@ import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 import UsersProfileCreate from "@/Pages/UsersInfo/UsersProfile/UsersProfileCreate.vue";
 
-const { hasPermission,showFlash } = usePermissions();
+const {hasPermission, hasPermissionSelf, hasPermissionOthers, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
+
+const statusOptions = [
+    'asp',
+    'dudsf',
+    'dudaa',
+    '43rd'
+]
 const props = defineProps({
     user: {
         type: Object,
@@ -49,17 +56,17 @@ const form = useForm({
     email: props.user?.email,
     status: ref(props.user?.status),
     roles: ref(props.user?.assignedRoles),
-    permissions: ref(props.user?.assignedPermissions),
+    permissions: ref(props.user?.permissionsDirect),
 });
 
 onMounted(() => {
     form.roles = props.user?.assignedRoles;
-    form.permissions = props.user?.assignedPermissions;
+    form.permissions = props.user?.permissionsDirect;
 });
 
 watch(
     (() => props.user, () => (form.roles = ref(props.user?.assignedRoles))),
-    (() => props.user, () => (form.permissions = ref(props.user?.assignedPermissions)))
+    (() => props.user, () => (form.permissions = ref(props.user?.permissionsDirect)))
 );
 // object contains subObject
 function partialContains(object, subObject) {
@@ -93,7 +100,7 @@ defineOptions({ layout: SpatieAdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="users.index"
-            v-if="hasPermission('user.view')"
+            v-if="hasPermission(['users.index'])"
         />
     </PageHeader>
     <Card type="cyan">
@@ -130,8 +137,8 @@ defineOptions({ layout: SpatieAdminLayout });
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
 
-                    <div class="mt-4" v-if="hasPermission('assign-role.to-user')">
-                        <InputLabel for="role" value="Roles" />
+                    <div v-if="hasPermission('users.sync.role')" class="mt-4">
+                        <InputLabel for="role" value="Roles"/>
                         <multiselect
                             id="role"
                             v-model="form.roles"
@@ -157,8 +164,8 @@ defineOptions({ layout: SpatieAdminLayout });
                         </multiselect>
                     </div>
 
-                    <div class="mt-4" v-if="hasPermission('assign-permission.to-user')">
-                        <InputLabel for="permission" value="Permissions" />
+                    <div v-if="hasPermission('users.sync.permission')" class="mt-4">
+                        <InputLabel for="permission" value="Permissions"/>
                         <Multiselect
                             id="permission"
                             v-model="form.permissions"
@@ -184,7 +191,7 @@ defineOptions({ layout: SpatieAdminLayout });
                         </Multiselect>
                     </div>
 
-                    <div v-if="hasPermission('assign-permission.to-user')" class="mt-4">
+                    <div v-if="hasPermission('users.sync.status')" class="mt-4">
                         <InputLabel for="status" value="Status"/>
                         <Multiselect
                             id="status"
@@ -194,7 +201,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             :close-on-select="false"
                             :hide-selected="true"
                             :multiple="true"
-                            :options="['asp']"
+                            :options="statusOptions"
                             :preserve-search="true"
                             :searchable="true"
                             :taggable="true"
@@ -216,7 +223,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
 
-                            v-if="hasPermission('user.edit')"
+                            v-if="(hasPermissionSelf('users.self.edit',user.id) || hasPermissionOthers('users.others.edit',user.id))"
                         >
                             Update
                         </PrimaryButton>
@@ -248,7 +255,7 @@ defineOptions({ layout: SpatieAdminLayout });
                                     route-name="users.revokeRole"
                                     :obj="[user, role]"
                                     :text="['User', 'Role']"
-                                    v-if="hasPermission('revoke-role.from-user')"
+                                    v-if="hasPermission(['users.sync.role','users.revoke.role'])"
                                 />
                             </TableDataCell>
                         </TableRow>
@@ -280,7 +287,7 @@ defineOptions({ layout: SpatieAdminLayout });
                                     route-name="users.revokePermission"
                                     :obj="[user, permission]"
                                     :text="['User','Permission']"
-                                    v-if="hasPermission('revoke-permission.from-user')"
+                                    v-if="hasPermission(['users.sync.permission','users.revoke.permission'])"
                                 />
                             </TableDataCell>
                         </TableRow>
@@ -377,14 +384,13 @@ defineOptions({ layout: SpatieAdminLayout });
                     >
                         <TableDataCell>
                             <AdminButton
-                                v-if="hasPermission('delete-permission.from-user') && props.user?.permissionsDirect.find((object) =>partialContains(object, permission))"
+                                v-if="hasPermission(['users.sync.permission','users.revoke.permission']) && props.user?.permissionsDirect.find((object) =>partialContains(object, permission))"
                                 button-text="remove"
                                 button-type="delete"
                                 route-method="delete"
                                 route-name="users.revokePermission"
                                 :obj="[user, permission]"
                                 text="User Permission"
-
                             />
                         </TableDataCell>
                     </TableRow>
@@ -394,7 +400,7 @@ defineOptions({ layout: SpatieAdminLayout });
     </Card>
 
     <Card type="cyan">
-        <UsersProfileCreate :user="user"/>
+        <UsersProfileCreate :userId="props.user.id"/>
     </Card>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

@@ -31,7 +31,7 @@ defineOptions({ layout: SpatieAdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="permissions.index"
-            v-if="hasPermission('permission.view')"
+            v-if="hasPermission('permissions.index')"
         />
     </PageHeader>
     <div
@@ -60,7 +60,7 @@ defineOptions({ layout: SpatieAdminLayout });
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
-                    v-if="hasPermission('permission.edit')"
+                    v-if="hasPermission('permissions.edit')"
                 >
                     Update
                 </PrimaryButton>

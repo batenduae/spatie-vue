@@ -23,13 +23,13 @@ defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
-    <div class="" v-if="hasPermission('permission.view')">
+    <div v-if="hasPermission('permissions.index')" class="">
         <PageHeader text="Permissions Index Page" title="Permissions">
             <AdminButton
                 button-text="Create Permission"
                 button-type="create"
                 route-name="permissions.create"
-                v-if="hasPermission('permission.create')"
+                v-if="hasPermission('permissions.create')"
             />
         </PageHeader>
         <div class="mx-auto" v-if="permissions.length">
@@ -52,7 +52,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             button-type="edit"
                             route-name="permissions.edit"
                             :obj="permission"
-                            v-if="hasPermission('permission.edit')"
+                            v-if="hasPermission('permissions.edit')"
                         />
                         <AdminButton
                             button-text="Delete"
@@ -61,7 +61,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             route-name="permissions.destroy"
                             :obj="permission"
                             text="Permission"
-                            v-if="hasPermission('permission.delete')"
+                            v-if="hasPermission('permissions.delete')"
                         />
                     </TableDataCell>
                 </TableRow>

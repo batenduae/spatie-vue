@@ -1,7 +1,8 @@
 <script setup>
-import { Head } from "@inertiajs/vue3";
+import {Head, usePage} from "@inertiajs/vue3";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+
 defineOptions({ layout: SpatieAdminLayout });
 </script>
 
@@ -16,6 +17,15 @@ defineOptions({ layout: SpatieAdminLayout });
         <div class="min-h-96">
             This is Admin Page. Here You are welcome. Explore the cool feature of this admin panel.
             Best of luck.
+
+            Here The List of Permission {{ usePage().props.auth.name }} holds:
+
+            <div class="flex space-x-2 flex-wrap">
+                <div v-for="item in usePage().props.auth.user.permit">
+                    {{ item }}
+                </div>
+
+            </div>
         </div>
     </Card>
 </template>

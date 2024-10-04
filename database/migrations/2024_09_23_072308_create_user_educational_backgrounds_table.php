@@ -12,15 +12,19 @@ return new class extends Migration {
     {
         Schema::create('user_educational_backgrounds', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->string('degree');
             $table->string('institution');
             $table->string('session');
             $table->string('dept_group');
             $table->string('passingYear');
-            $table->string('result');
-            $table->string('description');
+            $table->string('result')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

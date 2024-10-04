@@ -18,7 +18,7 @@ const props = defineProps({
     routeName: {
         type: String,
         required: true,
-        default: "roles.assignPermissionsToRole",
+        default: "roles.syncPermission",
     },
     submitText: {
         type: String,
@@ -58,8 +58,8 @@ const form = useForm({
                 class="ms-4"
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
-                @click="push.success('Permission to Role: `'+role.name+'` Updated Successfully')"
-                v-if="hasPermission('assign-permission.to-role')"
+                v-if="hasPermission('roles.sync.permission')"
+                @click="push.success('Permission to Role: `'+role.name+'` Synced Successfully')"
             >
                 {{ props.submitText }}
             </PrimaryButton>

@@ -12,11 +12,17 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name' => 'super admin']);
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'editor']);
-        Role::create(['name' => 'moderator']);
-        Role::create(['name' => 'staff']);
-        Role::create(['name' => 'user']);
+        Role::create(['name' => 'super admin'])
+            ->syncPermissions(['*']);
+        Role::create(['name' => 'admin'])
+            ->syncPermissions(['admin panel', 'users.others.login', 'users.index', 'users.*', 'roles.*', 'permissions.*']);
+        Role::create(['name' => 'editor'])
+            ->syncPermissions(['admin panel', 'users.others.login', 'users.index', 'users.self.*', 'users.others.edit', 'roles.*']);
+        Role::create(['name' => 'moderator'])
+            ->syncPermissions(['admin panel', 'users.others.login', 'users.index', 'users.assign.*', 'permissions.*']);
+        Role::create(['name' => 'staff'])
+            ->syncPermissions(['admin panel', 'users.others.login', 'users.index', 'users.revoke.*',]);
+        Role::create(['name' => 'user'])
+            ->syncPermissions(['admin panel', 'users.others.login', 'users.index']);
     }
 }

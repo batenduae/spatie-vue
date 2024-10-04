@@ -8,6 +8,7 @@ import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 import {onMounted, onUpdated} from "vue";
+
 defineProps(["posts"]);
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
@@ -17,17 +18,17 @@ defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
-    <div class="" v-if="hasPermission('post.view')">
+    <div v-if="hasPermission('posts.index')" class="">
         <PageHeader text="Post Index Page" title="Posts">
             <AdminButton
                 button-text="Create Post"
                 button-type="create"
                 route-name="posts.create"
-                v-if="hasPermission('create post')"
+                v-if="hasPermission('posts.create')"
             />
         </PageHeader>
 
-        <div class="mx-auto" v-if="posts.length" >
+        <div v-if="posts.length" class="mx-auto">
             <Table>
                 <template #tableHeader>
                     <TableHeaderRow :contents="['ID','Title','Action']"/>
@@ -44,7 +45,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             button-type="edit"
                             route-name="posts.edit"
                             :obj="post"
-                            v-if="hasPermission('edit post')"
+                            v-if="hasPermission('posts.edit')"
                         />
                         <AdminButton
                             button-text="Delete"
@@ -54,7 +55,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             :obj="post"
                             property="title"
                             text="Post"
-                            v-if="hasPermission('delete post')"
+                            v-if="hasPermission('posts.delete')"
                         />
                     </TableDataCell>
                 </TableRow>

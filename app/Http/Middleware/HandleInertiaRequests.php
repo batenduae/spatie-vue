@@ -40,17 +40,13 @@ class HandleInertiaRequests extends Middleware
                 }
             }
         }
-//        $roles = [];
-//        if(Auth::user()){
-//            $roles = Auth::user()->getRoleNames();
-//        }
+
         return [
             ...parent::share($request),
             'auth.user' => fn() => $request->user()
                 ? new UserResource($request->user())
                 : null,
             'auth.user.permit' => $permissions,
-//            'auth.user.permitRole' => $roles,
 
             'flash' => function () use ($request) {
                 return [

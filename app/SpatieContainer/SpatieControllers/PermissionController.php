@@ -8,7 +8,6 @@ use App\SpatieContainer\SpatieResources\PermissionResource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Middleware\PermissionMiddleware;
@@ -20,10 +19,10 @@ class PermissionController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware(PermissionMiddleware::using('permission.view'), only: ['index']),
-            new Middleware(PermissionMiddleware::using('permission.create'), only: ['create','store']),
-            new Middleware(PermissionMiddleware::using('permission.edit'), only: ['edit','update']),
-            new Middleware(PermissionMiddleware::using('permission.delete'), only: ['destroy']),
+            new Middleware(PermissionMiddleware::using('permissions.view'), only: ['index']),
+            new Middleware(PermissionMiddleware::using('permissions.create'), only: ['create', 'store']),
+            new Middleware(PermissionMiddleware::using('permissions.edit'), only: ['edit', 'update']),
+            new Middleware(PermissionMiddleware::using('permissions.delete'), only: ['destroy']),
         ];
     }
 

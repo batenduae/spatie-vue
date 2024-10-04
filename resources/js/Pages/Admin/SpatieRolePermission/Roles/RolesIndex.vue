@@ -18,19 +18,19 @@ defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
-    <div class="" v-if="hasPermission('role.view')">
+    <div v-if="hasPermission('roles.index')" class="">
         <PageHeader text="Roles Index Page" title="Roles">
             <AdminButton
-                button-text="Mass Assign Permission To Role"
+                v-if="hasPermission(['roles.sync.mass-permission'])"
                 button-type="create"
-                route-name="roles.massAssignPermissionToRole"
-                v-if="hasPermission('mass-assign-permission.to-role')"
+                button-text="Sync Mass Permission To Role"
+                route-name="roles.syncMassPermissionView"
             />
             <AdminButton
                 button-text="Create Role"
                 button-type="create"
                 route-name="roles.create"
-                v-if="hasPermission('role.create')"
+                v-if="hasPermission('roles.create')"
             />
         </PageHeader>
 
@@ -50,18 +50,18 @@ defineOptions({ layout: SpatieAdminLayout });
                 >
                     <TableDataCell>
                         <AdminButton
-                            button-text="Assign-permit"
+                            v-if="hasPermission(['roles.sync.permission'])"
                             button-type="assign"
-                            route-name="roles.assignPermissionToRoleView"
+                            button-text="sync-permit"
                             :obj="role"
-                            v-if="hasPermission('assign-permission.to-role')"
+                            route-name="roles.syncPermissionView"
                         />
                         <AdminButton
                             button-text="Edit"
                             button-type="edit"
                             route-name="roles.edit"
                             :obj="role"
-                            v-if="hasPermission('role.edit')"
+                            v-if="hasPermission('roles.edit')"
                         />
                         <AdminButton
                             button-text="Delete"
@@ -70,7 +70,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             route-name="roles.destroy"
                             :obj="role"
                             text="Role"
-                            v-if="hasPermission('role.delete')"
+                            v-if="hasPermission('roles.delete')"
                         />
                     </TableDataCell>
                 </TableRow>

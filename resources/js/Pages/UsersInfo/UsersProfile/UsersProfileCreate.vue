@@ -15,9 +15,9 @@ const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
 const props = defineProps({
-    user: {
-        type: Object,
-        required: true,
+    userId: {
+        type: [Object, Number, String],
+        default: 2,
     },
 });
 
@@ -42,18 +42,22 @@ defineOptions({layout: SpatieAdminLayout});
             route-name="usersProfile.index"
         />
     </PageHeader>
+
     <Card class="mx-auto max-w-150">
         <div class="py-4 font-semibold">User Information</div>
-        <form @submit.prevent="form.put(route('usersProfile.update',user.id))">
+        {{ userId }}
+        <form @submit.prevent="form.put(route('usersProfile.update',userId),{
+            // forceFormData: true,
+            imagePath: form.imagePath,
+            formalPhoto: form.formalPhoto,
+        })">
             <div>
                 <InputLabel for="user_id" value="Image"/>
 
                 <TextInput
                     id="imagePath"
-                    v-model="form.imagePath"
                     type="file"
                     @input="form.imagePath = $event.target.files[0]"
-                    required
                 />
 
                 <InputError :message="form.errors.imagePath" class="mt-2"/>
@@ -64,10 +68,9 @@ defineOptions({layout: SpatieAdminLayout});
 
                 <TextInput
                     id="formalPhoto"
-                    v-model="form.formalPhoto"
                     type="file"
                     @input="form.formalPhoto = $event.target.files[0]"
-                    required
+
                 />
 
                 <InputError :message="form.errors.formalPhoto" class="mt-2"/>
@@ -80,7 +83,7 @@ defineOptions({layout: SpatieAdminLayout});
                     id="birthDay"
                     v-model="form.birthDay"
                     autocomplete="birthDay"
-                    required
+
                     type="date"
                 />
 
@@ -107,7 +110,7 @@ defineOptions({layout: SpatieAdminLayout});
                         :native="false"
                         autocomplete="bloodGroup"
                         name="bloodGroup"
-                        required
+
                     />
                 </Vueform>
                 <InputError :message="form.errors.bloodGroup" class="mt-2"/>
@@ -120,7 +123,7 @@ defineOptions({layout: SpatieAdminLayout});
                     id="primaryPhone"
                     v-model="form.primaryPhone"
                     autocomplete="primaryPhone"
-                    required
+
                     type="tel"
                 />
 
@@ -135,12 +138,17 @@ defineOptions({layout: SpatieAdminLayout});
                     id="secondaryPhone"
                     v-model="form.secondaryPhone"
                     autocomplete="secondaryPhone"
-                    required
+
                     type="tel"
                 />
 
                 <InputError :message="form.errors.secondaryPhone" class="mt-2"
                 />
+            </div>
+            <div class="mt-4">
+                <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                    {{ form.progress.percentage }}%
+                </progress>
             </div>
 
             <div class="flex items-center justify-end mt-4">

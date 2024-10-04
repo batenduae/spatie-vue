@@ -57,14 +57,14 @@ defineOptions({ layout: SpatieAdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="roles.index"
-            v-if="hasPermission('role.view')"
+            v-if="hasPermission('roles.index')"
         />
     </PageHeader>
     <div class="flex flex-wrap justify-between">
         <Card type="orange" class="w-96">
             <form @submit.prevent="form.put(route('roles.update', role))">
-                <div>
-                    <InputLabel for="role" value="Role" />
+                <div v-if="hasPermission(['roles.edit'])">
+                    <InputLabel for="role" value="Role"/>
 
                     <TextInput
                         id="role"
@@ -79,8 +79,8 @@ defineOptions({ layout: SpatieAdminLayout });
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
 
-                <div class="mt-4" v-if="hasPermission('assign-permission.to-role')">
-                    <InputLabel for="permission" value="Permissions" />
+                <div v-if="hasPermission(['roles.sync.permission'])" class="mt-4">
+                    <InputLabel for="permission" value="Permissions"/>
                     <multiselect
                         id="permission"
                         v-model="form.permissions"
@@ -112,7 +112,7 @@ defineOptions({ layout: SpatieAdminLayout });
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                         @click="push.success('Role Updated Successfully')"
-                        v-if="hasPermission(['role.edit','assign-permission.to-role'])"
+                        v-if="hasPermission(['roles.edit','roles.sync.permission'])"
                     >
                         Update
                     </PrimaryButton>
@@ -147,7 +147,7 @@ defineOptions({ layout: SpatieAdminLayout });
                             route-name="roles.revokePermission"
                             :obj="[role,permission]"
                             :text="['Role','Permission']"
-                            v-if="hasPermission('revoke-permission.from-role')"
+                            v-if="hasPermission('roles.revoke.permission')"
                         />
                     </TableDataCell>
                 </TableRow>

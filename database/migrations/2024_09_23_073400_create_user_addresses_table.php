@@ -12,18 +12,22 @@ return new class extends Migration {
     {
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->string('addressType');
             $table->string('district');
             $table->string('typeVillageMunicipalityCity');
             $table->string('upazillaCity');
             $table->string('unionMunicipality');
-            $table->string('wardCouncil');
-            $table->string('villageMohokuma');
-            $table->string('roadNo');
-            $table->string('houseNo');
-            $table->string('otherDetails');
+            $table->string('wardCouncil')->nullable();
+            $table->string('villageMohokuma')->nullable();
+            $table->string('roadNo')->nullable();
+            $table->string('houseNo')->nullable();
+            $table->string('otherDetails')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

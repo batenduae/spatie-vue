@@ -23,54 +23,102 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware(PermissionMiddleware::using('assign-role.to-user'), only:['assignRoleToUser']),
-            new Middleware(PermissionMiddleware::using('revoke-role.from-user'), only:['revokeRoleFromUser']),
-            new Middleware(PermissionMiddleware::using('assign-permission.to-user'), only:['assignPermissionToUser']),
-            new Middleware(PermissionMiddleware::using('revoke-permission.from-user'), only:['revokePermissionFromUser']),
-            new Middleware(PermissionMiddleware::using('log-in.dynamically'), only:['loginDynamically']),
+            new Middleware(PermissionMiddleware::using('users.sync.role'), only: ['usersSyncRole']),
+            new Middleware(PermissionMiddleware::using('users.assign.role'), only: ['usersAssignRole']),
+            new Middleware(PermissionMiddleware::using('users.revoke.role'), only: ['usersRevokeRole']),
 
-            new Middleware(PermissionMiddleware::using('assign-permission.to-role'), only:['assignPermissionToRoleView','assignPermissionToRole']),
-            new Middleware(PermissionMiddleware::using('revoke-permission.from-role'), only:['revokePermissionFromRole']),
-            new Middleware(PermissionMiddleware::using('mass-assign-permission.to-role'), only:['massAssignPermissionToRole']),
+            new Middleware(PermissionMiddleware::using('users.sync.permission'), only: ['usersSyncPermission']),
+            new Middleware(PermissionMiddleware::using('users.assign.permission'), only: ['usersAssignPermission']),
+            new Middleware(PermissionMiddleware::using('users.revoke.permission'), only: ['usersRevokePermission']),
+
+            new Middleware(PermissionMiddleware::using('users.others.login'), only: ['usersOthersLogin']),
+
+            new Middleware(PermissionMiddleware::using('roles.sync.permission'), only: ['rolesSyncPermissionView', 'rolesSyncPermission']),
+            new Middleware(PermissionMiddleware::using('roles.assign.permission'), only: ['rolesAssignPermissionView', 'rolesAssignPermission']),
+            new Middleware(PermissionMiddleware::using('roles.revoke.permission'), only: ['rolesRevokePermission']),
+
+            new Middleware(PermissionMiddleware::using('roles.sync.mass-permission'), only: ['rolesSyncMassPermissionView']),
+            new Middleware(PermissionMiddleware::using('roles.assign.mass-permission'), only: ['rolesAssignMassPermissionView', 'rolesAssignMassPermission']),
+            new Middleware(PermissionMiddleware::using('roles.revoke.mass-permission'), only: ['rolesRevokeMassPermissionView', 'rolesRevokeMassPermission']),
         ];
     }
 
-    public function assignRolePermissionToUserView(string $userId): Response
+    public function usersAssignRolePermissionView(string $userId): Response
     {
         $user = User::findOrFail($userId);
-        return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/AssignRolePermissionToUser',[
-            'user'   =>  new UserResource($user),
-            'roles'  => RoleResource::collection(Role::all()),
-            'permissions'   =>   PermissionResource::collection(Permission::all()),
-            'assignedRoles' =>  $user->roles->pluck('name'),
-            'assignedPermissions'   =>   $user->permissions->pluck('name'),
-            'assignedPermissionsViaRole'  =>    $user->getPermissionsViaRoles()->pluck('name'),
+        return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/UsersSyncRolePermission', [
+            'user' => new UserResource($user),
+            'roles' => RoleResource::collection(Role::all()),
+            'permissions' => PermissionResource::collection(Permission::all()),
+            'assignedRoles' => $user->roles->pluck('name'),
+            'assignedPermissions' => $user->permissions->pluck('name'),
+            'assignedPermissionsViaRole' => $user->getPermissionsViaRoles()->pluck('name'),
         ]);
     }
 
-    public function assignRoleToUser(Request $request, $userId): RedirectResponse
+    //Role to User
+    public function usersSyncRole(Request $request, $userId): RedirectResponse
     {
         $request->validate([
-            'roles'    =>  ''
+            'roles' => ''
         ]);
         $user = User::findOrFail($userId);
         $user->syncRoles($request->roles);
         return back()
-            ->with('success',"Role Updated to user: '".$user->name."'");
+            ->with('success', "Role Synced to user: '" . $user->name . "' successfully");
     }
 
-    public function assignPermissionToUser(Request $request, $userId): RedirectResponse
+    public function usersAssignRole(Request $request, $userId): RedirectResponse
     {
         $request->validate([
-            'permissions'    =>  ''
+            'roles' => ''
+        ]);
+        $user = User::findOrFail($userId);
+        $user->assignRole($request->roles);
+        return back()
+            ->with('success', "Role Assigned to user: '" . $user->name . "' successfully");
+    }
+
+    public function usersRevokeRole(User $user, Role $role): RedirectResponse
+    {
+        $user->removeRole($role);
+        return back()
+            ->with('warning', "Role : '" . $role->name . "' removed from User : '" . $user->name . "' successfully");
+    }
+
+    //Permission to User
+
+    public function usersSyncPermission(Request $request, $userId): RedirectResponse
+    {
+        $request->validate([
+            'permissions' => ''
         ]);
         $user = User::findOrFail($userId);
         $user->syncPermissions($request->permissions);
         return back()
-            ->with('success',"Permission Updated to user: '".$user->name."'");
+            ->with('success', "Permission Synced to user: '" . $user->name . "' successfully");
     }
 
-    public function loginDynamically(string $userId): RedirectResponse
+    public function usersAssignPermission(Request $request, $userId): RedirectResponse
+    {
+        $request->validate([
+            'permissions' => ''
+        ]);
+        $user = User::findOrFail($userId);
+        $user->givePermissionTo($request->permissions);
+        return back()
+            ->with('success', "Permission Asigned to user: '" . $user->name . "' successfully");
+    }
+
+    public function usersRevokePermission(User $user, Permission $permission): RedirectResponse
+    {
+        $user->revokePermissionTo($permission);
+        return back()
+            ->with('warning', "Permission : '" . $permission->name . "' removed from User : '" . $user->name . "' successfully");
+    }
+
+    //
+    public function usersOthersLogin(string $userId): RedirectResponse
     {
         $user = User::findOrFail($userId);
         Auth::login($user);
@@ -79,55 +127,58 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
             ->with('success', "logged in as '" . $user->name . "' successfully");
     }
 
+    //Permission to Role
 
-    public function assignPermissionToRoleView($roleId): Response
+    public function rolesSyncPermissionView($roleId): Response
     {
-        return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/AssignPermissionToRole',[
-            'role'  => new RoleResource(Role::findOrFail($roleId)),
-            'permissions'   => PermissionResource::collection(Permission::all()),
+        return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/RolesSyncPermission', [
+            'role' => new RoleResource(Role::findOrFail($roleId)),
+            'permissions' => PermissionResource::collection(Permission::all()),
         ]);
     }
 
-    public function assignPermissionToRole(Request $request, $roleId): RedirectResponse
+    public function rolesSyncPermission(Request $request, $roleId): RedirectResponse
     {
         $request->validate([
-            'permissions'    =>  ''
+            'permissions' => ''
         ]);
 
         $role = Role::findOrFail($roleId);
         $role->syncPermissions($request->input('permissions.*.name'));
 
         return back()
-            ->with('success',"Permissions updated to role: '".$role->name."'");
+            ->with('success', "Permissions Synced to role: '" . $role->name . "' successfully");
     }
 
-    public function massAssignPermissionToRole(): Response
-    {
-        return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/MassAssignPermissionToRole',[
-            'roles'  => RoleResource::collection(Role::all()),
-            'permissions'   =>  PermissionResource::collection(Permission::all()),
-        ]);
-    }
     //
-    public function revokeRoleFromUser(User $user,Role $role): RedirectResponse
+    public function rolesAssignPermission(Request $request, $roleId): RedirectResponse
     {
-        $user->removeRole($role);
+        $request->validate([
+            'permissions' => ''
+        ]);
+
+        $role = Role::findOrFail($roleId);
+        $role->givePermissionTo($request->input('permissions.*.name'));
+
         return back()
-            ->with('warning',"Role : '".$role->name."' removed from User : '".$user->name."'");
+            ->with('success', "Permissions Assigned to role: '" . $role->name . "' successfully");
     }
 
-    public function revokePermissionFromUser(User $user,Permission $permission): RedirectResponse
-    {
-        $user->revokePermissionTo($permission);
-        return back()
-            ->with('warning',"Permission : '".$permission->name."' removed from User : '".$user->name."'");
-    }
-
-
-    public function revokePermissionFromRole(Role $role,Permission $permission): RedirectResponse
+    public function rolesRevokePermission(Role $role, Permission $permission): RedirectResponse
     {
         $role->revokePermissionTo($permission);
         return back()
-            ->with('warning',"Permission : '".$permission->name."' removed from Role : '".$role->name."'");
+            ->with('warning', "Permission : '" . $permission->name . "' removed from Role : '" . $role->name . "' successfully");
     }
+
+
+    public function rolesSyncMassPermissionView(): Response
+    {
+        return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/RolesSyncMassPermission', [
+            'roles' => RoleResource::collection(Role::all()),
+            'permissions' => PermissionResource::collection(Permission::all()),
+        ]);
+    }
+
+
 }

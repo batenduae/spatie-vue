@@ -12,14 +12,18 @@ return new class extends Migration {
     {
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->string('imagePath');
-            $table->string('formalPhoto');
-            $table->date('birthDay');
-            $table->string('bloodGroup');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->string('imagePath')->nullable();
+            $table->string('formalPhoto')->nullable();
+            $table->date('birthDay')->nullable();
+            $table->string('bloodGroup')->nullable();
             $table->unique('primaryPhone');
             $table->string('secondaryPhone');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

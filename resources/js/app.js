@@ -32,8 +32,7 @@ import 'notivue/animations.css' // Only needed if using built-in animations
 import 'notivue/notification-progress.css'
 //primevue
 import PrimeVue from 'primevue/config';
-// import Aura from '@primevue/themes/aura';
-import Aura from '@/primevue/presets/aura';
+import Aura from '@primevue/themes/aura';
 
 //notivue
 const notivue = createNotivue({

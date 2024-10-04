@@ -24,10 +24,10 @@ class UserResource extends JsonResource
         if ($this->hasAnyPermission('admin panel')) {
             array_push($status, 'panel');
         }
-        if ($this->hasAnyPermission('restricted')) {
+        if ($this->hasDirectPermission('restricted')) {
             array_push($status, 'restricted');
         }
-        if ($this->hasAnyPermission('banned')) {
+        if ($this->hasDirectPermission('banned')) {
             array_push($status, 'banned');
         }
 

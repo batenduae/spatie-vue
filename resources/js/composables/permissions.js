@@ -40,6 +40,20 @@ export function usePermissions() {
         }
     }
 
+    function hasPermissionSelf(permissionArray, userId, option) {
+        if (usePage().props.auth.user.id === userId) {
+            return hasPermission(permissionArray, option);
+        }
+        return false;
+    }
+
+    function hasPermissionOthers(permissionArray, userId, option) {
+        if (usePage().props.auth.user.id !== userId) {
+            return hasPermission(permissionArray, option);
+        }
+        return false;
+    }
+
     function hasPermission(permissionArray, option) {
         let permits = usePage().props.auth.user?.permit;
         option = option || "any";
@@ -132,7 +146,7 @@ export function usePermissions() {
 
     }
 
-    return { hasRole, hasPermission, showFlash };
+    return {hasRole, hasPermission, hasPermissionSelf, hasPermissionOthers, showFlash};
 }
 
 

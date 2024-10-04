@@ -55,14 +55,14 @@ defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
-    <PageHeader text="Assign Role & Permission to User:"
+    <PageHeader text="Sync Role & Permission to User:"
                 :content="user.name"
                 title="Users/AssignRolePermissionToUser">
         <AdminButton
             button-text="Go Back"
             button-type="backward"
             route-name="users.index"
-            v-if="hasPermission('user.view')"
+            v-if="hasPermission('users.index')"
         />
     </PageHeader>
     <Card type="green">
@@ -76,8 +76,8 @@ defineOptions({ layout: SpatieAdminLayout });
         </div>
     </Card>
 
-    <Card type="cyan" v-if="hasPermission(['assign-role.to-user','assign-permission.to-user'])">
-        <div class="my-2" v-if="hasPermission('assign-role.to-user')">
+    <Card v-if="hasPermission(['users.sync.role','users.sync.permission'])" type="cyan">
+        <div v-if="hasPermission('users.sync.role')" class="my-2">
             <div class="text-xl py-2 text-blue-600 font-bold">
                 Roles:
             </div>
@@ -86,7 +86,7 @@ defineOptions({ layout: SpatieAdminLayout });
             >
                 <form
                     @submit.prevent="
-                        form1.put(route('users.assignRoleToUser', user.id))
+                        form1.put(route('users.syncRole', user.id))
                     "
                 >
                     <div class="grid sm:grid-cols-4">
@@ -112,16 +112,15 @@ defineOptions({ layout: SpatieAdminLayout });
                             class="ms-4"
                             :class="{ 'opacity-25': form1.processing }"
                             :disabled="form1.processing"
-                            @click="push.success('Role to User: `'+user.name+'` Updated Successfully')"
                         >
-                            Update
+                            Sync
                         </PrimaryButton>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div class="my-2" v-if="hasPermission('assign-permission.to-user')">
+        <div v-if="hasPermission('users.sync.permission')" class="my-2">
             <div class="mt-4 text-xl py-2 text-green-600 font-bold">
                 Permissions:
             </div>
@@ -131,7 +130,7 @@ defineOptions({ layout: SpatieAdminLayout });
                 <form
                     @submit.prevent="
                         form2.put(
-                            route('users.assignPermissionToUser', user.id)
+                            route('users.syncPermission', user.id)
                         )
                     "
                 >
@@ -172,9 +171,8 @@ defineOptions({ layout: SpatieAdminLayout });
                             class="ms-4"
                             :class="{ 'opacity-25': form2.processing }"
                             :disabled="form2.processing"
-                            @click="push.success('Permission to User: `'+user.name+'` Updated Successfully')"
                         >
-                            Update
+                            Sync
                         </PrimaryButton>
                     </div>
                 </form>

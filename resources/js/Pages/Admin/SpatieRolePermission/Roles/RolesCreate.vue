@@ -55,7 +55,7 @@ defineOptions({ layout: SpatieAdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="roles.index"
-            v-if="hasPermission('role.view')"
+            v-if="hasPermission('roles.index')"
         />
     </PageHeader>
     <div class="flex">
@@ -78,8 +78,8 @@ defineOptions({ layout: SpatieAdminLayout });
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
 
-                <div class="mt-4">
-                    <InputLabel for="permission" value="Permissions" />
+                <div v-if="hasPermission('roles.assign.permission')" class="mt-4">
+                    <InputLabel for="permission" value="Permissions"/>
                     <Multiselect
                         id="permission"
                         v-model="form.permissions"
@@ -110,7 +110,7 @@ defineOptions({ layout: SpatieAdminLayout });
                         class="ms-4"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
-                        v-if="hasPermission('role.create')"
+                        v-if="hasPermission('roles.create')"
                     >
                         Create
                     </PrimaryButton>
@@ -136,7 +136,7 @@ defineOptions({ layout: SpatieAdminLayout });
                     :key="permission.id"
                     :contents="[permission.id,permission.name]"
                 >
-                    <TableDataCell class="flex space-x-2">
+                    <TableDataCell>
                         <button
                             v-on:click="revokePermission(permission.id)"
                             class="px-2 rounded-lg text-xs text-black font-bold bg-gradient-to-br from-red-500 to-amber-500"

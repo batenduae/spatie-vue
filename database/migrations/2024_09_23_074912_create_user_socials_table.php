@@ -12,15 +12,19 @@ return new class extends Migration {
     {
         Schema::create('user_socials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->string('facebook');
-            $table->string('instagram');
-            $table->string('x_twitter');
-            $table->string('whatsapp');
-            $table->string('linkedIn');
-            $table->string('youtube');
-            $table->string('website');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('x_twitter')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('linkedIn')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('website')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -29,7 +29,7 @@ defineOptions({ layout: SpatieAdminLayout });
             button-text="Go Back"
             button-type="backward"
             route-name="users.index"
-            v-if="hasPermission('user.view')"
+            v-if="hasPermission('users.index')"
         />
     </PageHeader>
     <Card class="mx-auto w-96">
@@ -103,7 +103,7 @@ defineOptions({ layout: SpatieAdminLayout });
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
-                    v-if="hasPermission('user.create')"
+                    v-if="hasPermission('users.others.create')"
                 >
                     Create
                 </PrimaryButton>
