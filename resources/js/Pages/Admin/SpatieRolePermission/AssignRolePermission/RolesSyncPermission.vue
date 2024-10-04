@@ -30,7 +30,7 @@ defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
-    <div class="" v-if="hasPermission('assign-permission.to-role')">
+    <div v-if="hasPermission('roles.sync.permission')" class="">
         <PageHeader text="Assign Permission to Role:"
                     :content="role.name"
                     title="Roles/AssignPermissionToRole">
@@ -38,11 +38,11 @@ defineOptions({ layout: SpatieAdminLayout });
                 button-text="Go Back"
                 button-type="backward"
                 route-name="roles.index"
-                v-if="hasPermission('role.view')"
+                v-if="hasPermission('roles.view')"
             />
         </PageHeader>
 
-        <Card type="cyan" v-if="hasPermission('assign-permission.to-role')">
+        <Card v-if="hasPermission('roles.sync.permission')" type="cyan">
             <div class="text-xl py-2 text-fuchsia-900 font-bold">
                 Permissions:
             </div>
@@ -51,7 +51,7 @@ defineOptions({ layout: SpatieAdminLayout });
                 class="mx-auto p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200"
             >
                 <form
-                    @submit.prevent="form.put(route('roles.assignPermissionsToRole', role.id))"
+                    @submit.prevent="form.put(route('roles.syncPermission', role.id))"
                 >
                     <div class="grid grid-cols-4">
                     <span v-for="permission in permissions">
@@ -77,10 +77,9 @@ defineOptions({ layout: SpatieAdminLayout });
                             class="ms-4"
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
-                            @click="push.success('Permission to Role: `'+role.name+'` Updated Successfully')"
-                            v-if="hasPermission('assign-permission.to-role')"
+                            v-if="hasPermission('roles.sync.permission')"
                         >
-                            Update
+                            Sync
                         </PrimaryButton>
                     </div>
                 </form>
