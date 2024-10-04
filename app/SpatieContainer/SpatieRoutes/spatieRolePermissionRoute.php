@@ -13,40 +13,53 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['isAdmin'])->group(function () {
-    Route::get('/check',function (){
-        return "hi";
-    });
-});
-
 
 Route::middleware(['isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])
         ->name('admin.index');
+
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
 
-    Route::get('users/{user}/assignRolePermissionToUserView',[AssignRolePermissionController::class,'assignRolePermissionToUserView'])
-        ->name('users.assignRolePermissionToUser');
-    Route::put('users/{user}/assignRoleToUser',[AssignRolePermissionController::class,'assignRoleToUser'])
-        ->name('users.assignRoleToUser');
-    Route::put('users/{user}/assignPermissionToUser',[AssignRolePermissionController::class,'assignPermissionToUser'])
-        ->name('users.assignPermissionToUser');
-    Route::post('users/{user}/loginDynamically',[AssignRolePermissionController::class,'loginDynamically'])
-        ->name('users.loginDynamically');
-    Route::delete('users/{user}/revokeRole/{role}',[AssignRolePermissionController::class,'revokeRoleFromUser'])
+    Route::get('users/{user}/assignRolePermissionView', [AssignRolePermissionController::class, 'usersAssignRolePermissionView'])
+        ->name('users.assignRolePermissionView');
+
+    Route::put('users/{user}/syncRole', [AssignRolePermissionController::class, 'usersSyncRole'])
+        ->name('users.syncRole');
+    Route::put('users/{user}/assignRole', [AssignRolePermissionController::class, 'usersAssignRole'])
+        ->name('users.assignRole');
+    Route::delete('users/{user}/revokeRole/{role}', [AssignRolePermissionController::class, 'usersRevokeRole'])
         ->name('users.revokeRole');
-    Route::delete('users/{user}/revokePermission/{permission}',[AssignRolePermissionController::class,'revokePermissionFromUser'])
+
+    Route::put('users/{user}/syncPermission', [AssignRolePermissionController::class, 'usersSyncPermission'])
+        ->name('users.syncPermission');
+    Route::put('users/{user}/assignPermission', [AssignRolePermissionController::class, 'usersAssignPermission'])
+        ->name('users.assignPermission');
+    Route::delete('users/{user}/revokePermission/{permission}', [AssignRolePermissionController::class, 'usersRevokePermission'])
         ->name('users.revokePermission');
 
-    Route::get('roles/{role}/assignPermissionToRoleView',[AssignRolePermissionController::class,'assignPermissionToRoleView'])
-        ->name('roles.assignPermissionToRoleView');
-    Route::put('roles/{role}/assignPermissionsToRole',[AssignRolePermissionController::class,'assignPermissionToRole'])
-        ->name('roles.assignPermissionsToRole');
-    Route::get('massAssignPermissionToRole',[AssignRolePermissionController::class,'massAssignPermissionToRole'])
-        ->name('roles.massAssignPermissionToRole');;
-    Route::delete('roles/{role}/revokePermission/{permission}',[AssignRolePermissionController::class,'revokePermissionFromRole'])
+    Route::post('users/{user}/OthersLogin', [AssignRolePermissionController::class, 'usersOthersLogin'])
+        ->name('users.OthersLogin');
+
+    Route::get('roles/{role}/syncPermissionView', [AssignRolePermissionController::class, 'rolesSyncPermissionView'])
+        ->name('roles.syncPermissionView');
+    Route::put('roles/{role}/syncPermission', [AssignRolePermissionController::class, 'rolesSyncPermission'])
+        ->name('roles.syncPermission');
+    Route::put('roles/{role}/assignPermission', [AssignRolePermissionController::class, 'rolesAssignPermission'])
+        ->name('roles.assignPermission');
+    Route::delete('roles/{role}/revokePermission/{permission}', [AssignRolePermissionController::class, 'rolesRevokePermission'])
         ->name('roles.revokePermission');
+
+    Route::get('roles/syncMassPermissionView', [AssignRolePermissionController::class, 'rolesSyncMassPermissionView'])
+        ->name('roles.syncMassPermissionView');
+
+    Route::get('roles/assignMassPermissionView', [AssignRolePermissionController::class, 'rolesAssignMassPermissionView'])
+        ->name('roles.assignMassPermissionView');
+    Route::get('roles/assignMassPermission', [AssignRolePermissionController::class, 'rolesAssignMassPermission'])
+        ->name('roles.assignMassPermission');
+    Route::get('roles/revokeMassPermission', [AssignRolePermissionController::class, 'rolesRevokeMassPermission'])
+        ->name('roles.revokeMassPermission');
+
 });
 
