@@ -7,7 +7,7 @@ export function usePermissions() {
     //     return !!roles.find((role) => roleArray.includes(role.name));
     // }
 
-    function hasRole(rolesArray, option) {
+    function hasRole(rolesArray, option = null) {
         let assignedRoles = usePage().props.auth.user?.assignedRoles;
         option = option || "any";
         // console.log("option",option);
@@ -20,17 +20,15 @@ export function usePermissions() {
             switch (option) {
                 case 'exact':
                     // console.log(rolesArray,assignedRoles,JSON.stringify(rolesArray.sort()) == JSON.stringify(assignedRoles.sort()))
-                    return (JSON.stringify(rolesArray.sort()) === JSON.stringify(assignedRoles.sort()))
-                    break;
+                    return (JSON.stringify(rolesArray.sort()) === JSON.stringify(assignedRoles.sort()));
                 case 'all':
                     // console.log("Option: All Mandatory ")
                     // console.log(rolesArray, rolesArray.every((role) => assignedRoles.includes(role)))
-                    return rolesArray.every((role) => assignedRoles.includes(role))
-                    break;
+                    return rolesArray.every((role) => assignedRoles.includes(role));
                 default:
                     // console.log("Option: Any")
                     // console.log(rolesArray, rolesArray.find((role) => assignedRoles.includes(role)))
-                    return rolesArray.find((role) => assignedRoles.includes(role))
+                    return rolesArray.find((role) => assignedRoles.includes(role));
             }
         } else {
             // console.log('String Found')
@@ -40,21 +38,21 @@ export function usePermissions() {
         }
     }
 
-    function hasPermissionSelf(permissionArray, userId, option) {
+    function hasPermissionSelf(permissionArray, userId, option = null) {
         if (usePage().props.auth.user.id === userId) {
             return hasPermission(permissionArray, option);
         }
         return false;
     }
 
-    function hasPermissionOthers(permissionArray, userId, option) {
+    function hasPermissionOthers(permissionArray, userId, option = null) {
         if (usePage().props.auth.user.id !== userId) {
             return hasPermission(permissionArray, option);
         }
         return false;
     }
 
-    function hasPermission(permissionArray, option) {
+    function hasPermission(permissionArray, option = null) {
         let permits = usePage().props.auth.user?.permit;
         option = option || "any";
         // console.log("option",option);
