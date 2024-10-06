@@ -123,5 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+//for asset handling
+    'asset_url' => env('ASSET_URL', 'https://www.spatie-vue.test'),
 
 ];
