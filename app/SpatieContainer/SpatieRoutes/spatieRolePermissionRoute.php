@@ -51,8 +51,8 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::delete('roles/{role}/revokePermission/{permission}', [AssignRolePermissionController::class, 'rolesRevokePermission'])
         ->name('roles.revokePermission');
 
-    Route::get('roles/syncMassPermissionView', [AssignRolePermissionController::class, 'rolesSyncMassPermissionView'])
-        ->name('roles.syncMassPermissionView');
+    Route::get('rolesSyncMassPermission', [AssignRolePermissionController::class, 'rolesSyncMassPermission'])
+        ->name('roles.syncMassPermission');
 
     Route::get('roles/assignMassPermissionView', [AssignRolePermissionController::class, 'rolesAssignMassPermissionView'])
         ->name('roles.assignMassPermissionView');

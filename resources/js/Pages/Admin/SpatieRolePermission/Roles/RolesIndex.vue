@@ -24,7 +24,7 @@ defineOptions({ layout: SpatieAdminLayout });
                 v-if="hasPermission(['roles.sync.mass-permission'])"
                 button-type="create"
                 button-text="Sync Mass Permission To Role"
-                route-name="roles.syncMassPermissionView"
+                route-name="roles.syncMassPermission"
             />
             <AdminButton
                 button-text="Create Role"

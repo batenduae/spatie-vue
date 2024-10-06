@@ -37,7 +37,7 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
             new Middleware(PermissionMiddleware::using('roles.assign.permission'), only: ['rolesAssignPermissionView', 'rolesAssignPermission']),
             new Middleware(PermissionMiddleware::using('roles.revoke.permission'), only: ['rolesRevokePermission']),
 
-            new Middleware(PermissionMiddleware::using('roles.sync.mass-permission'), only: ['rolesSyncMassPermissionView']),
+            new Middleware(PermissionMiddleware::using('roles.sync.mass-permission'), only: ['rolesSyncMassPermission']),
             new Middleware(PermissionMiddleware::using('roles.assign.mass-permission'), only: ['rolesAssignMassPermissionView', 'rolesAssignMassPermission']),
             new Middleware(PermissionMiddleware::using('roles.revoke.mass-permission'), only: ['rolesRevokeMassPermissionView', 'rolesRevokeMassPermission']),
         ];
@@ -172,7 +172,7 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
     }
 
 
-    public function rolesSyncMassPermissionView(): Response
+    public function rolesSyncMassPermission(): Response
     {
         return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/RolesSyncMassPermission', [
             'roles' => RoleResource::collection(Role::all()),

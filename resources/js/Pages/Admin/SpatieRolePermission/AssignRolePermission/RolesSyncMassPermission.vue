@@ -5,6 +5,7 @@ import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+import PermissionForm from "@/Components/AdminComponents/Forms/PermissionForm.vue";
 
 const { hasPermission,showFlash } = usePermissions();
 onMounted(showFlash)
@@ -34,18 +35,21 @@ defineOptions({ layout: SpatieAdminLayout });
         />
     </PageHeader>
 
-    <Card v-for="role in roles" v-if="hasPermission(['roles.sync.mass-permission','roles.sync.permission'])" class="mt-4"
+    <Card v-for="role in roles" v-if="hasPermission(['roles.sync.mass-permission','roles.sync.permission'])"
+          class="mt-4"
           type="cyan">
-        <div class="">Roles: {{ role.name }}</div>
+        <div class="text-xl py-2 text-blue-600 font-bold">
+            Role: {{ role.name }}
+        </div>
         <div class="mx-auto">
             <Card type="green">
-                <!--                <Form-->
-                <!--                    :key="role.id"-->
-                <!--                    :permissions="permissions"-->
-                <!--                    :role="role"-->
-                <!--                    route-name="roles.syncPermission"-->
-                <!--                >-->
-                <!--                </Form>-->
+                <PermissionForm
+                    :key="role.id"
+                    :permissions="permissions"
+                    :role="role"
+                    route-name="roles.syncPermission"
+                >
+                </PermissionForm>
             </Card>
         </div>
     </Card>

@@ -22,7 +22,7 @@ const props = defineProps({
     },
     submitText: {
         type: String,
-        default: "Update",
+        default: "Sync",
     },
 });
 
@@ -59,7 +59,6 @@ const form = useForm({
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
                 v-if="hasPermission('roles.sync.permission')"
-                @click="push.success('Permission to Role: `'+role.name+'` Synced Successfully')"
             >
                 {{ props.submitText }}
             </PrimaryButton>
