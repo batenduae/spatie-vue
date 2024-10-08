@@ -55,14 +55,44 @@ class UserController extends Controller implements HasMiddleware
      */
     public function store(CreateUserRequest $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255|' . Rule::unique('users', 'email'),
+            'status' => 'sometimes|array',
+            'roles' => 'sometimes|array',
+            'permissions' => 'sometimes|array'
+        ]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
+        if ($request->status) {
+            if (in_array("asp", $request->status)) {
+                $user->update([
+                    'asp' => true,
+                ]);
+            } else {
+                $user->update([
+                    'asp' => false,
+                ]);
+            }
+        }
+
+        if ($request->has('roles')) {
+            $user->syncRoles($request->input('roles.*.name'));
+//        $user->syncRoles($request->roles);
+        }
+
+        if ($request->has('permissions')) {
+            $user->syncPermissions($request->input('permissions.*.name'));
+//        $user->syncPermissions($request->permissions);
+        }
+
         return to_route('users.index')
-            ->with('success',"User : '".$user->name."' Created Successfully");
+            ->with('success', "User : '" . $user->name . "' Created Successfully");
     }
 
     /**

@@ -2,6 +2,8 @@
 import "./bootstrap";
 import "../css/app.css";
 import "../css/primevue.css"
+import "../css/primeflags.css"
+import 'primeicons/primeicons.css'
 
 //jsvector and flatpickr styles
 import "jsvectormap/dist/jsvectormap.min.css"
@@ -32,7 +34,9 @@ import 'notivue/animations.css' // Only needed if using built-in animations
 import 'notivue/notification-progress.css'
 //primevue
 import PrimeVue from 'primevue/config';
+import ToastService from 'primevue/toastservice';
 import Aura from '@primevue/themes/aura';
+
 
 //notivue
 const notivue = createNotivue({
@@ -85,18 +89,16 @@ createInertiaApp({
             })
             //
             .use(PrimeVue, {
-                // Default theme configuration
-                // unstyled: true,
-                // pt: Aura,
                 theme: {
                     preset: Aura,
                     options: {
                         prefix: 'p',
-                        darkModeSelector: 'class',
-                        cssLayer: true
+                        darkModeSelector: '.dark',
+                        cssLayer: false
                     }
                 }
             })
+            .use(ToastService)
             //
             .mount(el);
     },

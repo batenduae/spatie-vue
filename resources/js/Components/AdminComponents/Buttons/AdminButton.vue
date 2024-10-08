@@ -7,7 +7,7 @@ import {push} from "notivue";
 
 const props = defineProps({
     obj: {
-        type: [String, Object],
+        type: [String, Object, Number],
     },
     routeName: {
         type: String,
@@ -48,7 +48,10 @@ function defineClass(){
             className = "text-xs from-red-400 to-red-600";
             break;
         case 'deleteOnConfirm':
-            className = "text-xs from-red-500 to-amber-500";
+            className = "text-xs from-red-500 to-amber-700";
+            break;
+        case 'deleteOnConfirm1':
+            className = "";
             break;
         case 'submit':
             className = "text-xs from-red-500 to-amber-500";
@@ -95,6 +98,9 @@ function definebtnText(){
             case 'deleteOnConfirm':
                 btnText = "Delete After Confirm";
                 break;
+            case 'deleteOnConfirm1':
+                btnText = "Delete After Confirm";
+                break;
             case 'submit':
                 btnText = "Submit";
                 break;
@@ -123,7 +129,7 @@ let deleteBtn = ref(false)
 computed(
    className = defineClass(),
     btnText = definebtnText(),
-    deleteBtn = props.buttonType === 'deleteOnConfirm'
+    deleteBtn = props.buttonType === 'deleteOnConfirm' || props.buttonType === 'deleteOnConfirm1'
 )
 
 const form = useForm({})
@@ -189,7 +195,7 @@ function alertNow(props){
             :href="route(routeName, obj)"
             :method="routeMethod"
             as="button"
-            class="px-2 rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
+            class="rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
             :class="className"
             preserve-scroll
         >
@@ -202,7 +208,7 @@ function alertNow(props){
     <template v-else>
         <button
             @click.prevent="alertNow(props)"
-            class="px-2 rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
+            class="rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
             :class="className"
         >
             <template v-if="props.buttonText">

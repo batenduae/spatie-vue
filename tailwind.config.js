@@ -324,6 +324,6 @@ export default {
     plugins: [
         forms,
         require('@vueform/vueform/tailwind'),
-        require('tailwindcss-primeui')
+        require('tailwindcss-primeui'),
     ],
 };
