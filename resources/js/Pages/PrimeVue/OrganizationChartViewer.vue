@@ -16,7 +16,7 @@ const data = ref({
             org: 'Police Headquarters',
             post: 'Inspector General of Police (IGP)',
             grade: 1,
-            styleClass: '!bg-purple-100 text-white rounded-xl',
+            styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
             data: {
                 image: 'https://primefaces.org/cdn/primevue/images/avatar/annafali.png',
                 name: 'Anna Fali',
@@ -28,20 +28,96 @@ const data = ref({
                     org: 'SB',
                     post: 'Addl.IG',
                     grade: 1,
-                    styleClass: '!bg-purple-100 text-white rounded-xl'
+                    styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                    children: [
+                        {
+                            key: '0_1_1',
+                            org: 'Intelligence School',
+                            styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                        }
+                    ]
                 },
                 {
                     key: '0_2',
                     org: 'CID',
                     post: 'Addl.IG',
                     grade: '2',
-                    styleClass: '!bg-purple-100 text-white rounded-xl'
+                    styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                    children: [
+                        {
+                            key: '0_2_1',
+                            org: 'Detective School',
+                            post: 'Addl. DIG',
+                            styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                        }
+                    ]
                 },
                 {
                     key: '0_3',
                     org: 'Range-8',
                     post: 'DIG',
-                    styleClass: '!bg-purple-100 text-white rounded-xl'
+                    styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                    children: [
+                        {
+                            key: '0_3_1',
+                            org: 'District (64)',
+                            post: 'SP',
+                            styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                            children: [
+                                {
+                                    key: '0_3_1_1',
+                                    org: 'Circle (239)',
+                                    post: 'Addl. SP/ASP',
+                                    styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                                    children: [
+                                        {
+                                            key: '0_3_1_1_1',
+                                            org: 'Police Station (528)',
+                                            post: 'Inspector',
+                                            styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                                            children: [
+                                                {
+                                                    key: '0_3_1_1_1_1',
+                                                    org: 'Investigation Center (204)',
+                                                    post: 'Inspector',
+                                                    styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                                                    children: [
+                                                        {
+                                                            key: '0_3_1_1_1_1_1',
+                                                            org: 'Out Post (254)',
+                                                            post: 'Inspector',
+                                                            styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                                                            children: [
+                                                                {
+                                                                    key: '0_3_1_1_1_1_1',
+                                                                    org: 'Camp (161)',
+                                                                    post: 'SI',
+                                                                    styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            key: '0_3_2',
+                            org: 'In-Service Training Centre (28)',
+                            post: 'SP',
+                            styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                        },
+                        {
+                            key: '0_3_3',
+                            org: 'RRF-7',
+                            post: 'Addl. DIG',
+                            styleClass: '!bg-gradient-to-b from-sky-500 via-blue-400 via-blue-400 to-sky-600 text-3xl',
+                        }
+
+                    ]
                 },
                 {
                     key: '0_4',

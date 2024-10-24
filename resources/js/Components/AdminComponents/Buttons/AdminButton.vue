@@ -195,7 +195,7 @@ function alertNow(props){
             :href="route(routeName, obj)"
             :method="routeMethod"
             as="button"
-            class="rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
+            class="rounded-lg text-black dark:text-white font-bold bg-gradient-to-br px-2"
             :class="className"
             preserve-scroll
         >
@@ -208,7 +208,7 @@ function alertNow(props){
     <template v-else>
         <button
             @click.prevent="alertNow(props)"
-            class="rounded-lg text-black dark:text-white font-bold bg-gradient-to-br"
+            class="rounded-lg text-black dark:text-white font-bold bg-gradient-to-br px-2"
             :class="className"
         >
             <template v-if="props.buttonText">
