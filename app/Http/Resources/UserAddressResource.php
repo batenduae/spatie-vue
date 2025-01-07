@@ -15,12 +15,13 @@ class UserAddressResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'user_id' => $this->user_id,
-            'userName' => $this->user()->name,
             'addressType' => $this->addressType,
             'district' => $this->district,
             'typeVillageMunicipalityCity' => $this->typeVillageMunicipalityCity,
             'upazillaCity' => $this->upazillaCity,
+            'policeStation' => $this->policeStation,
             'unionMunicipality' => $this->unionMunicipality,
             'wardCouncil' => $this->wardCouncil,
             'villageMohokuma' => $this->villageMohokuma,

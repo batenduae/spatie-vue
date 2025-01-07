@@ -37,14 +37,12 @@ class UserProfileController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->query('userId'));
         $imagePath = $request->file('imagePath')->storeAs(
             'imagePath', $request->user()->id
         );
         $formalPhoto = $request->file('formalPhoto')->storeAs(
             'formalPhoto', $request->user()->id
         );
-        dd($request);
         return $request;
     }
 

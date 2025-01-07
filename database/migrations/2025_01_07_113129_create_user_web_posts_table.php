@@ -12,7 +12,15 @@ return new class extends Migration {
     {
         Schema::create('user_web_posts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->string('bannerImage')->nullable();
+            $table->string('heading')->nullable();
+            $table->string('content');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

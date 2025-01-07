@@ -19,6 +19,8 @@ class UserProfileResource extends JsonResource
             'userName' => $this->user()->name,
             'imagePath' => $this->imagePath,
             'formalPhoto' => $this->formalPhoto,
+            'religion' => $this->religion,
+            'gender' => $this->gender,
             'birthDay' => $this->birthDay,
             'bloodGroup' => $this->bloodGroup,
             'primaryPhone' => $this->primaryPhone,

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserAddressResource;
+use App\Models\User;
+use App\Models\UserAddress;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class UserAddressController extends Controller
 {
@@ -11,7 +15,9 @@ class UserAddressController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('UsersInfo/UsersAddress/UsersAddressIndex', [
+            'usersAddress' => UserAddressResource::collection(UserAddress::all()),
+        ]);
     }
 
     /**
@@ -19,7 +25,9 @@ class UserAddressController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('UsersInfo/UsersAddress/UsersAddressCreate', [
+            'users' => User::all(),
+        ]);
     }
 
     /**
@@ -27,7 +35,23 @@ class UserAddressController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $address = UserAddress::create([
+            'user_id' => $request->user_id,
+            'addressType' => $request->addressType,
+            'district' => $request->district,
+            'typeVillageMunicipalityCity' => $request->typeVillageMunicipalityCity,
+            'upazillaCity' => $request->upazillaCity,
+            'policeStation' => $request->policeStation,
+            'unionMunicipality' => $request->unionMunicipality,
+            'wardCouncil' => $request->wardCouncil,
+            'villageMohokuma' => $request->villageMohokuma,
+            'roadNo' => $request->roadNo,
+            'houseNo' => $request->houseNo,
+            'otherDetails' => $request->otherDetails,
+        ]);
+        return to_route('usersAddress.index')
+            ->with('success', "User Address for :  Created Successfully");
+
     }
 
     /**

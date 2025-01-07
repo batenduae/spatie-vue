@@ -55,12 +55,12 @@ class User extends Authenticatable
 
     public function userProfile(): HasOne
     {
-        return $this->hasOne(UserProfile::class);
+        return $this->hasOne(UserHonorGift::class);
     }
 
     public function userEducation(): HasMany
     {
-        return $this->hasMany(UserProfile::class);
+        return $this->hasMany(UserHonorGift::class);
     }
 
     public function userAddress(): HasMany
@@ -72,4 +72,30 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserSocial::class);
     }
+
+    public function UserFamily(): HasMany
+    {
+        return $this->hasMany(UserFamily::class);
+    }
+
+    public function UserHonorGift(): HasMany
+    {
+        return $this->hasMany(UserHonorGift::class);
+    }
+
+    public function UserPosting(): HasMany
+    {
+        return $this->hasMany(UserPosting::class);
+    }
+
+    public function UserSuccess(): HasMany
+    {
+        return $this->hasMany(UserSuccess::class);
+    }
+
+    public function UserWebPost(): HasMany
+    {
+        return $this->hasMany(UserWebPost::class);
+    }
+
 }

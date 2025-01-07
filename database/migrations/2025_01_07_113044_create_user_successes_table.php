@@ -12,7 +12,18 @@ return new class extends Migration {
     {
         Schema::create('user_successes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->foreignId('user_posting_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->string('operation')->nullable();
+            $table->string('details')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

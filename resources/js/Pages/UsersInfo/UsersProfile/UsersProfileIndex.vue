@@ -19,7 +19,7 @@ defineOptions({layout: SpatieAdminLayout});
 <template>
     <PageHeader text="User's Profile Index Page" title="User's Profile">
         <AdminButton
-            v-if="hasPermission('user.create')"
+            v-if="hasPermission('users.others.create')"
             button-text="Create User's Profile"
             button-type="create"
             route-name="usersProfile.create"

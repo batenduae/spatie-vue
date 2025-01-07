@@ -12,7 +12,23 @@ return new class extends Migration {
     {
         Schema::create('user_postings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->string('range')->nullable();
+            $table->string('district')->nullable();
+            $table->string('division')->nullable();
+            $table->string('unit')->nullable();
+            $table->string('grade')->nullable();
+            $table->string('post')->nullable();
+            $table->date('startDate')->nullable();
+            $table->date('endDate')->nullable();
+            $table->string('status')->nullable();
+            $table->string('experience')->nullable();
+            $table->string('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
