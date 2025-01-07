@@ -18,6 +18,7 @@ class UserAddress extends Model
         'district',
         'typeVillageMunicipalityCity',
         'upazillaCity',
+        'policeStation',
         'unionMunicipality',
         'wardCouncil',
         'villageMohokuma',

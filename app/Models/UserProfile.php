@@ -16,6 +16,8 @@ class UserProfile extends Model
         'user_id',
         'imagePath',
         'formalPhoto',
+        'religion',
+        'gender',
         'birthDay',
         'bloodGroup',
         'primaryPhone',

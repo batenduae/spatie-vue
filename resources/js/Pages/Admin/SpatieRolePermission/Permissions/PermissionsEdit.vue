@@ -21,6 +21,7 @@ const props = defineProps({
 });
 const form = useForm({
     name: props.permission.name,
+    group: props.permission.group,
 });
 defineOptions({ layout: SpatieAdminLayout });
 </script>
@@ -41,7 +42,7 @@ defineOptions({ layout: SpatieAdminLayout });
             @submit.prevent="form.put(route('permissions.update', permission))"
         >
             <div>
-                <InputLabel for="name" value="Permissions" />
+                <InputLabel for="name" value="Permission Name"/>
 
                 <TextInput
                     id="name"
@@ -52,7 +53,22 @@ defineOptions({ layout: SpatieAdminLayout });
                     autocomplete="name"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError :message="form.errors.name" class="mt-2"/>
+            </div>
+
+            <div class="mt-2">
+                <InputLabel for="group" value="Permission Group"/>
+
+                <TextInput
+                    id="group"
+                    v-model="form.group"
+                    autocomplete="group"
+                    autofocus
+                    required
+                    type="text"
+                />
+
+                <InputError :message="form.errors.group" class="mt-2"/>
             </div>
 
             <div class="flex items-center justify-end mt-4">

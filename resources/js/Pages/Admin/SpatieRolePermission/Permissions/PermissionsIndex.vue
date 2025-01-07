@@ -8,14 +8,15 @@ import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vu
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+import PermissionsDataTable from "@/Components/AdminComponents/DataTable/Primevue/PermissionsDataTable.vue";
 
 const props = defineProps({
     permissions: {
-        type: [Object,String],
+        type: [Object, String],
         required: true
     }
 });
-const { hasPermission,showFlash } = usePermissions();
+const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
 defineOptions({ layout: SpatieAdminLayout });
@@ -23,6 +24,7 @@ defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
+    <PermissionsDataTable :permissions="permissions"/>
     <div v-if="hasPermission('permissions.index')" class="">
         <PageHeader text="Permissions Index Page" title="Permissions">
             <AdminButton
@@ -38,12 +40,12 @@ defineOptions({ layout: SpatieAdminLayout });
                     Table: Permissions Index
                 </template>
                 <template #tableHeader>
-                    <TableHeaderRow :contents="['ID','Name','Action']"/>
+                    <TableHeaderRow :contents="['ID','Name','Group','Action']"/>
                 </template>
                 <TableRow
                     v-for="permission in props.permissions"
                     :key="permission.id"
-                    :contents="[ permission.id,permission.name]"
+                    :contents="[ permission.id,permission.name, permission.group]"
                     narrow="narrower"
                 >
                     <TableDataCell>

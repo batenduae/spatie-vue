@@ -1,12 +1,11 @@
 <?php
 
-namespace App\SpatieContainer\SpatieRequests;
+namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class CreatePermissionRequest extends FormRequest
+class StoreImage extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +23,7 @@ class CreatePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:100', 'string', Rule::unique('permissions', 'name')->ignore($this->permission)],
-            'group' => ['max:100', 'string'],
+            'image' => 'required|image|mimes:jpeg,jpg,png,gif,svg|max:12048'
         ];
     }
 }

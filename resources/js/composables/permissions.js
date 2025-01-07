@@ -39,6 +39,10 @@ export function usePermissions() {
     }
 
     function hasPermissionSelf(permissionArray, userId, option = null) {
+        if (Array.isArray(userId)) {
+            return (userId.map((id, index, array) =>
+                (usePage().props.auth.user.id === id && hasPermission(permissionArray, option)) ? array[index] : -1));
+        }
         if (usePage().props.auth.user.id === userId) {
             return hasPermission(permissionArray, option);
         }
@@ -46,6 +50,10 @@ export function usePermissions() {
     }
 
     function hasPermissionOthers(permissionArray, userId, option = null) {
+        if (Array.isArray(userId)) {
+            return (userId.map((id, index, array) =>
+                (usePage().props.auth.user.id !== id && hasPermission(permissionArray, option)) ? array[index] : -1));
+        }
         if (usePage().props.auth.user.id !== userId) {
             return hasPermission(permissionArray, option);
         }

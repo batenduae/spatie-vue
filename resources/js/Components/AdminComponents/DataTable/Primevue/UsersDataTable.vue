@@ -4,6 +4,7 @@ import {FilterMatchMode} from '@primevue/core/api';
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import {useToast} from 'primevue/usetoast';
 import {usePermissions} from "@/composables/permissions.js";
+import {useForm} from "@inertiajs/vue3";
 
 const {hasPermission, hasPermissionSelf, hasPermissionOthers, hasRole, showFlash} = usePermissions();
 const props = defineProps([
@@ -13,16 +14,18 @@ const toast = useToast();
 const dt = ref();
 const users = ref();
 users.value = props.users;
-const userDialog = ref(false);
-const deleteUserDialog = ref(false);
-const deleteUsersDialog = ref(false);
-const user = ref({});
-const selectedUsers = ref();
+
+
 const filters = ref({
     'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
 });
+
+//For create new user
+
+const user = ref({});
+const userDialog = ref(false);
 const submitted = ref(false);
-const openNew = () => {
+const createNewUser = () => {
     user.value = {};
     submitted.value = false;
     userDialog.value = true;
@@ -40,22 +43,50 @@ const saveUser = () => {
             users.value[findIndexById(user.value.id)] = user.value;
             toast.add({severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000});
         } else {
-            user.value.id = createId();
-            user.value.code = createId();
-            user.value.image = 'user-placeholder.svg';
-            user.value.inventoryStatus = user.value.inventoryStatus ? user.value.inventoryStatus.value : 'INSTOCK';
-            users.value.push(user.value);
+            const form = useForm({
+                name: user.value.name,
+                email: user.value.email,
+                password: user.value.password,
+                password_confirmation: user.value.password,
+            });
+            form.post(route('users.store'))
             toast.add({severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000});
         }
-
         userDialog.value = false;
         user.value = {};
     }
 };
+//For create new user
+
 const editUser = (prod) => {
     user.value = {...prod};
     userDialog.value = true;
 };
+
+//for batch mode operation
+//to delete user
+const selectedUsers = ref();
+const deleteUsersDialog = ref(false);
+const confirmDeleteSelected = () => {
+    deleteUsersDialog.value = true;
+};
+const deleteSelectedUsers = () => {
+    deleteUsersDialog.value = false;
+    let ids = selectedUsers.value.map(({id}) => id);
+    let filteredIds = [...new Set([...hasPermissionSelf('users.self.delete', ids), ...hasPermissionOthers('users.others.delete', ids)])].filter((value) => value > 1);
+    console.log(filteredIds)
+    const form = useForm({
+        ids: filteredIds,
+    });
+    form.delete(route('users.destroyMany', filteredIds))
+    selectedUsers.value = null;
+    toast.add({severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000});
+};
+
+//for batch mode operation
+//to delete user
+
+
 const confirmDeleteUser = (prod) => {
     user.value = prod;
     deleteUserDialog.value = true;
@@ -77,37 +108,21 @@ const findIndexById = (id) => {
 
     return index;
 };
-const createId = () => {
-    let id = '';
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-}
+
 const exportCSV = () => {
     dt.value.exportCSV();
 };
-const confirmDeleteSelected = () => {
-    deleteUsersDialog.value = true;
-};
-const deleteSelectedUsers = () => {
-    console.log(selectedUsers)
-    users.value = users.value.filter(val => !selectedUsers.value.includes(val));
-    deleteUsersDialog.value = false;
-    selectedUsers.value = null;
-    toast.add({severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000});
-};
+
 
 const getStatusLabel = (status) => {
     switch (status) {
-        case 'INSTOCK':
+        case 'asp':
             return 'success';
 
-        case 'LOWSTOCK':
+        case 'restricted' :
             return 'warn';
 
-        case 'OUTOFSTOCK':
+        case 'banned':
             return 'danger';
 
         default:
@@ -120,12 +135,18 @@ const getStatusLabel = (status) => {
 <template>
     <div>
         <div class="card mb-4">
+            <!--            For operation-->
             <Toolbar class="mb-6">
                 <template #start>
-                    <Button v-if="hasPermission('users.others.create')" class="mr-2" icon="pi pi-plus" label="New"
-                            @click="openNew"/>
-                    <Button :disabled="!selectedUsers || !selectedUsers.length" icon="pi pi-trash" label="Delete" outlined severity="danger"
-                            @click="confirmDeleteSelected"/>
+                    <!--                    create new user-->
+                    <Button v-if="hasPermission('users.others.create')" class="mr-2" icon="pi pi-plus"
+                            label="Create User"
+                            @click="createNewUser"/>
+                    <Button :disabled="!selectedUsers || !selectedUsers.length" icon="pi pi-trash" label="Delete"
+                            outlined severity="danger"
+                            @click="confirmDeleteSelected"
+                    />
+
                 </template>
 
                 <template #end>
@@ -135,20 +156,24 @@ const getStatusLabel = (status) => {
                 </template>
             </Toolbar>
 
+            <!--            show chart-->
             <DataTable
                 ref="dt"
                 v-model:selection="selectedUsers"
                 :filters="filters"
                 :paginator="true"
-                :rows="5"
-                :rowsPerPageOptions="[5, 10, 25, 50, 100]"
+                :rows="25"
+                :rowsPerPageOptions="[5, 10, 25, 50, 100, 1000]"
                 :value="props.users"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users from Page {currentPage} of {totalPages}" dataKey="id"
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageInput" removableSort
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users from Page {currentPage} of {totalPages}"
+                dataKey="id"
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageInput"
+                removableSort
                 showGridlines
                 size="small"
                 sortMode="multiple"
                 stripedRows
+                scrollHeight="400px" scrollable
             >
                 <template #header>
                     <div class="flex flex-wrap gap-2 items-center justify-between">
@@ -164,11 +189,12 @@ const getStatusLabel = (status) => {
 
                 <Column :exportable="false" selectionMode="multiple" style="width: 2rem"></Column>
                 <Column field="id" header="Id" sortable style="min-width: 2rem"></Column>
-                <Column field="name" header="Name" sortable style="min-width: 2rem"></Column>
+                <Column field="name" frozen header="Name" sortable style="min-width: 2rem"></Column>
                 <Column header="Image">
                     <template #body="slotProps">
                         <img :alt="slotProps.data.image"
-                             :src="`https://primefaces.org/cdn/primevue/images/user/${slotProps.data.image}`" class="rounded" style="width: 64px"/>
+                             :src="`https://primefaces.org/cdn/primevue/images/user/${slotProps.data.image}`"
+                             class="rounded" style="width: 64px"/>
                     </template>
                 </Column>
                 <Column field="email" header="Email" sortable style="min-width: 3rem"/>
@@ -285,53 +311,33 @@ const getStatusLabel = (status) => {
                      :src="`https://primefaces.org/cdn/primevue/images/user/${user.image}`" class="block m-auto pb-4"/>
                 <div>
                     <label class="block font-bold mb-3" for="name">Name</label>
-                    <InputText id="name" v-model.trim="user.name" :invalid="submitted && !user.name" autofocus
-                               fluid required="true"/>
+                    <InputText
+                        id="name" v-model.trim="user.name" :invalid="submitted && !user.name"
+                        autofocus fluid
+                        required="true"/>
                     <small v-if="submitted && !user.name" class="text-red-500">Name is required.</small>
                 </div>
+
                 <div>
-                    <label class="block font-bold mb-3" for="description">Description</label>
-                    <Textarea id="description" v-model="user.description" cols="20" fluid required="true" rows="3"/>
-                </div>
-                <div>
-                    <label class="block font-bold mb-3" for="inventoryStatus">Inventory Status</label>
-                    <Select id="inventoryStatus" v-model="user.inventoryStatus" :options="statuses" fluid
-                            optionLabel="label" placeholder="Select a Status"></Select>
+                    <label class="block font-bold mb-3" for="email">Email</label>
+                    <InputText
+                        id="email" v-model.trim="user.email" :invalid="submitted && !user.email"
+                        fluid
+                        required="true"/>
+                    <small v-if="submitted && !user.email" class="text-red-500">Email is required.</small>
                 </div>
 
                 <div>
-                    <span class="block font-bold mb-4">Category</span>
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="flex items-center gap-2 col-span-6">
-                            <RadioButton id="category1" v-model="user.category" name="category" value="Accessories"/>
-                            <label for="category1">Accessories</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <RadioButton id="category2" v-model="user.category" name="category" value="Clothing"/>
-                            <label for="category2">Clothing</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <RadioButton id="category3" v-model="user.category" name="category" value="Electronics"/>
-                            <label for="category3">Electronics</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <RadioButton id="category4" v-model="user.category" name="category" value="Fitness"/>
-                            <label for="category4">Fitness</label>
-                        </div>
-                    </div>
+                    <label class="block font-bold mb-3" for="password">Password</label>
+                    <Password
+                        id="password"
+                        v-model.trim="user.password" :invalid="submitted && !user.password"
+                        fluid
+                        required
+                        toggleMask/>
+                    <small v-if="submitted && !user.password" class="text-red-500">Password is required.</small>
                 </div>
 
-                <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-6">
-                        <label class="block font-bold mb-3" for="price">Price</label>
-                        <InputNumber id="price" v-model="user.price" currency="USD" fluid locale="en-US"
-                                     mode="currency"/>
-                    </div>
-                    <div class="col-span-6">
-                        <label class="block font-bold mb-3" for="quantity">Quantity</label>
-                        <InputNumber id="quantity" v-model="user.quantity" fluid integeronly/>
-                    </div>
-                </div>
             </div>
 
             <template #footer>

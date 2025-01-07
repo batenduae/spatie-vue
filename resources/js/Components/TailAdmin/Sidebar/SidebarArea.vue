@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {Link} from "@inertiajs/vue3";
-import { useSidebarStore } from '@/stores/sidebar'
-import { onClickOutside } from '@vueuse/core'
-import { ref } from 'vue'
+import {useSidebarStore} from '@/stores/sidebar'
+import {onClickOutside} from '@vueuse/core'
+import {ref} from 'vue'
 import SidebarItem from './SidebarItem.vue'
 
 const target = ref(null)
@@ -10,7 +10,7 @@ const target = ref(null)
 const sidebarStore = useSidebarStore()
 
 onClickOutside(target, () => {
-  sidebarStore.isSidebarOpen = false
+    sidebarStore.isSidebarOpen = false
 })
 
 const menuGroups = ref([
@@ -292,19 +292,19 @@ const menuGroups = ref([
 </script>
 
 <template>
-  <aside
-    class="absolute left-0 top-0 z-9999 flex h-screen flex-col overflow-y-hidden bg-body duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
-    :class="{
+    <aside
+        ref="target"
+        :class="{
       'translate-x-0': sidebarStore.isSidebarOpen,
       '-translate-x-full': !sidebarStore.isSidebarOpen
     }"
-    ref="target"
-  >
-    <!-- SIDEBAR HEADER -->
-    <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-      <Link href="/">
-        <img src="@/assets/images/logo/logo.svg" alt="Logo" />
-      </Link>
+        class="absolute left-0 top-0 z-1000 flex h-screen flex-col overflow-y-hidden bg-body duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
+    >
+        <!-- SIDEBAR HEADER -->
+        <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+            <Link href="/">
+                <img alt="Logo" src="@/assets/images/logo/logo.svg"/>
+            </Link>
 
       <button class="block lg:hidden" @click="sidebarStore.isSidebarOpen = false">
         <svg

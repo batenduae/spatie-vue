@@ -8,9 +8,10 @@ import ResponsiveNavLink from "@/Components/Default/ResponsiveNavLink.vue";
 import {Link} from "@inertiajs/vue3";
 import {usePermissions} from "@/composables/permissions.js";
 import {Notification, NotificationProgress, Notivue, outlinedIcons, pastelTheme} from "notivue";
+import DarkModeSwitcher from "@/Components/TailAdmin/Header/DarkModeSwitcher.vue";
+import LeftSideDrawer from "@/Components/PrimevueComponents/LeftSideDrawer.vue";
 
 const showingNavigationDropdown = ref(false);
-
 const {hasRole, hasPermission} = usePermissions();
 </script>
 
@@ -26,11 +27,31 @@ const {hasRole, hasPermission} = usePermissions();
             </Notification>
         </Notivue>
         <div class="min-h-screen bgImage text-black dark:text-white">
-            <nav class="border-b bg-white dark:bg-boxdark-2 text-black dark:text-white border-gray-100 roun">
+            <!-- top-banner-->
+            <div class="bg-indigo-800 dark:bg-indigo-800">
+                <Message class="h-20 bg-indigo-800 dark:bg-indigo-800 items-center"
+                         closable
+                >
+                    <div class="my-auto flex items-center justify-center gap-x-1 md:gap-x-2" role="button">
+                        <img
+                            alt="banner icon"
+                            class="max-w-20 w-auto  max-h-20 h-auto  md:max-w-20 md:max-h-20 "
+                            src="https://res.cloudinary.com/cross-border-education-technologies-pte-ltd/image/upload/v1732684015/Web-Portal/brandmark_1_sujlse.png">
+                        <span class="my-auto text-center font-bangla md:mt-2">
+                            <span class="text-[14px] font-medium leading-[160%]  underline md:text-[18px]"
+                                  style="color:#FFFFFF">নিয়ে এলো Shikho স্টুডেন্টদের জন্যে<!-- --> </span>
+                            <span class="text-[14px] font-bold leading-[160%]  underline md:text-[18px]"
+                                  style="color:#FFF22E">১০ GB ইন্টারনেট মাত্র ১৯৬ টাকায়!</span>
+                        </span>
+                    </div>
+                </Message>
+            </div>
+            <nav class="h-20 border-b bg-white dark:bg-boxdark-2 text-black dark:text-white border-gray-100">
                 <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
+
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
@@ -60,11 +81,20 @@ const {hasRole, hasPermission} = usePermissions();
                             </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ms-6 text-black ">
+                        <div class="flex ">
+                            <div
+                                class="my-auto mr-0"
+                            >
+                                <!-- Dark Mode Toggler -->
+                                <DarkModeSwitcher/>
+                                <!-- Dark Mode Toggle r -->
+                            </div>
                             <!-- Settings Dropdown -->
-                            <div class="ms-3 relative">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
+                            <div class="hidden sm:flex sm:items-center sm:ms-6 text-black ">
+                                <!-- Settings Dropdown -->
+                                <div class="ms-3 relative">
+                                    <Dropdown align="right" width="48">
+                                        <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
@@ -88,68 +118,77 @@ const {hasRole, hasPermission} = usePermissions();
                                                 </svg>
                                             </button>
                                         </span>
-                                    </template>
+                                        </template>
 
-                                    <template #content>
-                                        <DropdownLink
-                                            :href="route('profile.edit')"
-                                        >
-                                            Profile
-                                        </DropdownLink>
-                                        <DropdownLink
-                                            :href="route('logout')"
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
+                                        <template #content>
+                                            <DropdownLink
+                                                :href="route('profile.edit')"
+                                            >
+                                                Profile
+                                            </DropdownLink>
+                                            <DropdownLink
+                                                :href="route('logout')"
+                                                as="button"
+                                                method="post"
+                                            >
+                                                Log Out
+                                            </DropdownLink>
+                                        </template>
+                                    </Dropdown>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button
-                                @click="
+                            <!-- Left Side Drawer -->
+                            <div class="-me-2 flex items-center sm:hidden">
+                                <LeftSideDrawer/>
+                            </div>
+
+                            <!-- Hamburger -->
+                            <div class="-me-2 flex items-center sm:hidden">
+                                <button
+                                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                                    @click="
                                     showingNavigationDropdown =
                                         !showingNavigationDropdown
                                 "
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                            >
-                                <svg
-                                    class="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
                                 >
-                                    <path
-                                        :class="{
+                                    <svg
+                                        class="h-6 w-6"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            :class="{
                                             hidden: showingNavigationDropdown,
                                             'inline-flex':
                                                 !showingNavigationDropdown,
                                         }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
+                                            d="M4 6h16M4 12h16M4 18h16"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                        />
+                                        <path
+                                            :class="{
                                             hidden: !showingNavigationDropdown,
                                             'inline-flex':
                                                 showingNavigationDropdown,
                                         }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
+                                            d="M6 18L18 6M6 6l12 12"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+
                         </div>
+
                     </div>
                 </div>
+
 
                 <!-- Responsive Navigation Menu -->
                 <div
@@ -157,7 +196,7 @@ const {hasRole, hasPermission} = usePermissions();
                         block: showingNavigationDropdown,
                         hidden: !showingNavigationDropdown,
                     }"
-                    class="sm:hidden"
+                    class="sm:hidden bg-indigo-600 h-screen"
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink

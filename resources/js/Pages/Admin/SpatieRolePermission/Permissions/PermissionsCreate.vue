@@ -35,7 +35,7 @@ defineOptions({ layout: SpatieAdminLayout });
     >
         <form @submit.prevent="form.post(route('permissions.store'))">
             <div>
-                <InputLabel for="name" value="name" />
+                <InputLabel for="name" value="Permission Name"/>
 
                 <TextInput
                     id="name"
@@ -47,7 +47,9 @@ defineOptions({ layout: SpatieAdminLayout });
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
+
             </div>
+
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton
                     class="ms-4"

@@ -158,6 +158,21 @@ class UserController extends Controller implements HasMiddleware
     {
         $user->delete();
         return back()
-            ->with('danger',"User : '".$user->name."' Deleted Successfully");
+            ->with('danger', "User : '" . $user->name . "' Deleted Successfully");
+    }
+
+    public function destroyMany(Request $request)
+    {
+        $ids = $request->ids;
+        $text = "";
+        foreach ($ids as $id) {
+            $user = User::findOrFail($id);
+            if ($id > 1) {
+                $user->delete();
+            }
+            $text = $text . $user->name . ", ";
+        }
+        return back()
+            ->with('danger', "Users : '" . $text . "' Deleted Successfully");
     }
 }

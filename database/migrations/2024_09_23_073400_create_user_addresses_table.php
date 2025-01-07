@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('district');
             $table->string('typeVillageMunicipalityCity');
             $table->string('upazillaCity');
+            $table->string('policeStation');
             $table->string('unionMunicipality');
             $table->string('wardCouncil')->nullable();
             $table->string('villageMohokuma')->nullable();

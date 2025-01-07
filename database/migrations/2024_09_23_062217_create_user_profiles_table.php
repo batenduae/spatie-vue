@@ -18,6 +18,8 @@ return new class extends Migration {
                 ->cascadeOnDelete();
             $table->string('imagePath')->nullable();
             $table->string('formalPhoto')->nullable();
+            $table->string('religion')->nullable();
+            $table->string('gender')->nullable();
             $table->date('birthDay')->nullable();
             $table->string('bloodGroup')->nullable();
             $table->unique('primaryPhone');
