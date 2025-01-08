@@ -4,6 +4,9 @@ import {useForm} from "@inertiajs/vue3";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
+import districts from "@/bangladeshGeocode/districts/districts.json";
+import upazilas from "@/bangladeshGeocode/upazilas/upazilas.json";
+import unions from "@/bangladeshGeocode/unions/unions.json";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 
@@ -38,7 +41,6 @@ var usersList = props.users.map(function (a) {
         label: a.name + "  ( id: " + a.id + ", email: " + a.email + ")",
         name: a.name,
         email: a.email,
-
     }
 });
 
@@ -64,7 +66,7 @@ defineOptions({layout: SpatieAdminLayout});
 
     <Card class="mx-auto max-w-150">
         <div class="py-4 font-semibold">User Information</div>
-        <!-- src/App.vue -->
+        {{ upazillas }}
         <Vueform v-model="form" :display-errors="false"
                  :endpoint="false"
                  :multilingual="false"
@@ -116,32 +118,62 @@ defineOptions({layout: SpatieAdminLayout});
                     label="Chose Category"
                     name="typeVillageMunicipalityCity"
                 />
+
                 <SelectElement
                     :columns="{
                                   container: 6,
                                   label: 12,
                                   wrapper: 12,
                                 }"
-                    :items="['Dhaka','Ctg','Tangail']"
+                    :items="districts"
                     :native="false"
                     :rules="['required','max:255']"
                     :search="true"
+                    :track-by="['name']"
+                    label-prop="name"
+                    value-prop="name"
                     autocomplete="disabled"
                     input-type="search"
                     label="District"
                     name="district"
                 />
-                <TextElement
+                <SelectElement
                     :columns="{
                                   container: 6,
                                   label: 12,
                                   wrapper: 12,
                                 }"
+                    :items="upazilas"
+                    :native="false"
                     :rules="['required','max:255']"
-                    input-type="text"
-                    label="Upazilla / City Corporation"
+                    :search="true"
+                    :track-by="['name']"
+                    autocomplete="disabled"
+                    input-type="search"
+                    label="Upazila / City Corporation"
+                    label-prop="name"
+                    value-prop="name"
                     name="upazillaCity"
                 />
+                <SelectElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :items="unions"
+                    :native="false"
+                    :rules="['required','max:255']"
+                    :search="true"
+                    :track-by="['name']"
+                    autocomplete="disabled"
+                    input-type="search"
+                    label="Union / Municipality"
+                    label-prop="name"
+                    name="unionMunicipality"
+                    value-prop="name"
+                />
+
                 <TextElement
                     :columns="{
                                   container: 6,
@@ -152,17 +184,6 @@ defineOptions({layout: SpatieAdminLayout});
                     input-type="text"
                     label="Police Station"
                     name="policeStation"
-                />
-                <TextElement
-                    :columns="{
-                                  container: 6,
-                                  label: 12,
-                                  wrapper: 12,
-                                }"
-                    :rules="['required','max:255']"
-                    input-type="text"
-                    label="Union / Municipality"
-                    name="unionMunicipality"
                 />
 
                 <TextElement

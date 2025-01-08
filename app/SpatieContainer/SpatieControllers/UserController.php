@@ -55,14 +55,6 @@ class UserController extends Controller implements HasMiddleware
      */
     public function store(CreateUserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|' . Rule::unique('users', 'email'),
-            'status' => 'sometimes|array',
-            'roles' => 'sometimes|array',
-            'permissions' => 'sometimes|array'
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -108,7 +100,6 @@ class UserController extends Controller implements HasMiddleware
      */
     public function edit(User $user)
     {
-        $userProfile = $user->userProfile()->get();
         return Inertia::render('Admin/SpatieRolePermission/Users/UsersEdit', [
             'user' => new UserResource($user),
             'roles' => RoleResource::collection(Role::all()),

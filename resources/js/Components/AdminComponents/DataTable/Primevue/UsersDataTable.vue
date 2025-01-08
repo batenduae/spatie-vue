@@ -36,31 +36,18 @@ const hideDialog = () => {
 };
 const saveUser = () => {
     submitted.value = true;
-
     if (user?.value.name?.trim()) {
-        if (user.value.id) {
-            user.value.inventoryStatus = user.value.inventoryStatus.value ? user.value.inventoryStatus.value : user.value.inventoryStatus;
-            users.value[findIndexById(user.value.id)] = user.value;
-            toast.add({severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000});
-        } else {
-            const form = useForm({
-                name: user.value.name,
-                email: user.value.email,
-                password: user.value.password,
-                password_confirmation: user.value.password,
-            });
-            form.post(route('users.store'))
-            toast.add({severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000});
-        }
+        const form = useForm({
+            name: user.value.name,
+            email: user.value.email,
+            password: user.value.password,
+            password_confirmation: user.value.password,
+        });
+        form.post(route('users.store'))
+        toast.add({severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000});
         userDialog.value = false;
         user.value = {};
     }
-};
-//For create new user
-
-const editUser = (prod) => {
-    user.value = {...prod};
-    userDialog.value = true;
 };
 
 //for batch mode operation
@@ -83,51 +70,8 @@ const deleteSelectedUsers = () => {
     toast.add({severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000});
 };
 
-//for batch mode operation
-//to delete user
-
-
-const confirmDeleteUser = (prod) => {
-    user.value = prod;
-    deleteUserDialog.value = true;
-};
-const deleteUser = () => {
-    users.value = users.value.filter(val => val.id !== user.value.id);
-    deleteUserDialog.value = false;
-    user.value = {};
-    toast.add({severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
-};
-const findIndexById = (id) => {
-    let index = -1;
-    for (let i = 0; i < users.value.length; i++) {
-        if (users.value[i].id === id) {
-            index = i;
-            break;
-        }
-    }
-
-    return index;
-};
-
 const exportCSV = () => {
     dt.value.exportCSV();
-};
-
-
-const getStatusLabel = (status) => {
-    switch (status) {
-        case 'asp':
-            return 'success';
-
-        case 'restricted' :
-            return 'warn';
-
-        case 'banned':
-            return 'danger';
-
-        default:
-            return null;
-    }
 };
 
 </script>

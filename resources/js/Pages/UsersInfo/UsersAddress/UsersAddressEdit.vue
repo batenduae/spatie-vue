@@ -1,353 +1,253 @@
 <script setup>
+import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 import {useForm} from "@inertiajs/vue3";
-import TextInput from "@/Components/Default/TextInput.vue";
-import InputLabel from "@/Components/Default/InputLabel.vue";
-import InputError from "@/Components/Default/InputError.vue";
-import PrimaryButton from "@/Components/Default/PrimaryButton.vue";
-import Multiselect from "vue-multiselect";
-import {onMounted, onUpdated, ref, watch} from "vue";
-import Table from "@/Components/AdminComponents/Table/Table.vue";
-import TableRow from "@/Components/AdminComponents/Table/TableRow.vue";
-import TableDataCell from "@/Components/AdminComponents/Table/TableDataCell.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
-import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
+import districts from "@/bangladeshGeocode/districts/districts.json";
+import upazilas from "@/bangladeshGeocode/upazilas/upazilas.json";
+import unions from "@/bangladeshGeocode/unions/unions.json";
 import {usePermissions} from "@/composables/permissions.js";
-import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+import {onMounted, onUpdated, ref} from "vue";
 
 const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
 const props = defineProps({
+    userAddress: {
+        type: Object,
+        required: true,
+    },
     user: {
         type: Object,
         required: true,
     },
-    roles: {
-        type: Object,
-        required: true,
-    },
-    permissions: {
+    users: {
         type: Object,
         required: true,
     },
 });
-
-function addTag(newTag) {
-    const tag = {
-        name: newTag,
-        code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000),
-    };
-    this.permissions.push(tag);
-    this.form.permissions.push(tag);
-}
-
 const form = useForm({
-    name: props.user?.name,
-    email: props.user?.email,
-    status: ref(props.user?.status),
-    roles: ref(props.user?.roles),
-    permissions: ref(props.user?.permissions),
+    id: ref(props.userAddress.id),
+    user_id: ref(props.userAddress?.user_id),
+    addressType: ref(props.userAddress?.addressType),
+    district: ref(props.userAddress?.district),
+    typeVillageMunicipalityCity: ref(props.userAddress?.typeVillageMunicipalityCity),
+    upazillaCity: ref(props.userAddress?.upazillaCity),
+    policeStation: ref(props.userAddress?.policeStation),
+    unionMunicipality: ref(props.userAddress?.unionMunicipality),
+    wardCouncil: ref(props.userAddress?.wardCouncil),
+    villageMohokuma: ref(props.userAddress?.villageMohokuma),
+    roadNo: ref(props.userAddress?.roadNo),
+    houseNo: ref(props.userAddress?.houseNo),
+    otherDetails: ref(props.userAddress?.otherDetails),
 });
 
-onMounted(() => {
-    form.roles = props.user?.roles;
-    form.permissions = props.user?.permissions;
+var usersList = props.users.map(function (a) {
+    return {
+        id: a.id,
+        value: a.id,
+        label: a.name + "  ( id: " + a.id + ", email: " + a.email + ")",
+        name: a.name,
+        email: a.email,
+    }
 });
 
-watch(
-    (() => props.user, () => (form.roles = ref(props.user?.roles))),
-    (() => props.user, () => (form.permissions = ref(props.user?.permissions)))
-);
-
-// object contains subObject
-function partialContains(object, subObject) {
-    // Create arrays of property names
-    const objProps = Object.getOwnPropertyNames(object);
-    const subProps = Object.getOwnPropertyNames(subObject);
-
-    if (subProps.length > objProps.length) {
-        return false;
-    }
-
-    for (const subProp of subProps) {
-        if (!object.hasOwnProperty(subProp)) {
-            return false;
-        }
-
-        if (object[subProp] !== subObject[subProp]) {
-            return false;
-        }
-    }
-
-    return true;
+function updateUserAddress() {
+    form.put(route('usersAddress.update', form.id));
+    console.log(form)
+    console.log("data updated");
 }
 
 defineOptions({layout: SpatieAdminLayout});
 </script>
 
 <template>
-    <PageHeader text="Edit User" title="Users/Edit">
+
+    <PageHeader text="Edit User's Address" title="User's Address/Edit">
         <AdminButton
-            v-if="hasPermission('user.view')"
+            v-if="hasPermission('users.*')"
             button-text="Go Back"
             button-type="backward"
-            route-name="users.index"
+            route-name="usersAddress.index"
         />
     </PageHeader>
-    <Card type="cyan">
-        <div class="flex flex-wrap justify-between">
-            <Card class="max-w-96">
-                <div class="py-4 font-semibold">User Information</div>
-                <form @submit.prevent="form.put(route('users.update', user.id))">
-                    <div>
-                        <InputLabel for="name" value="Name"/>
 
-                        <TextInput
-                            id="name"
-                            v-model="form.name"
-                            autocomplete="name"
-                            autofocus
-                            required
-                            type="text"
-                        />
-
-                        <InputError :message="form.errors.name" class="mt-2"/>
-                    </div>
-
-                    <div class="mt-4">
-                        <InputLabel for="email" value="Email"/>
-
-                        <TextInput
-                            id="email"
-                            v-model="form.email"
-                            autocomplete="username"
-                            required
-                            type="email"
-                        />
-
-                        <InputError :message="form.errors.email" class="mt-2"/>
-                    </div>
-
-                    <div v-if="hasPermission('assign-role.to-user')" class="mt-4">
-                        <InputLabel for="role" value="Roles"/>
-                        <multiselect
-                            id="role"
-                            v-model="form.roles"
-                            :allow-empty="true"
-                            :clear-on-select="false"
-                            :close-on-select="false"
-                            :hide-selected="true"
-                            :multiple="true"
-                            :options="roles"
-                            :preserve-search="true"
-                            :searchable="true"
-                            :taggable="true"
-                            label="name"
-                            open-direction="bottom"
-                            placeholder="Assign Some Roles"
-                            tag-placeholder="Assign Some Roles"
-                            track-by="name"
-                            @tag="addTag"
-                        >
-                            <template slot="tag" slot-scope="props">
-                                {{ form.roles }}
-                            </template>
-                        </multiselect>
-                    </div>
-
-                    <div v-if="hasPermission('assign-permission.to-user')" class="mt-4">
-                        <InputLabel for="permission" value="Permissions"/>
-                        <Multiselect
-                            id="permission"
-                            v-model="form.permissions"
-                            :allow-empty="true"
-                            :clear-on-select="false"
-                            :close-on-select="false"
-                            :hide-selected="true"
-                            :multiple="true"
-                            :options="permissions"
-                            :preserve-search="true"
-                            :searchable="true"
-                            :taggable="true"
-                            label="name"
-                            open-direction="bottom"
-                            placeholder="Assign Some Permissions"
-                            tag-placeholder="Assign Some Permissions"
-                            track-by="name"
-                            @tag="addTag"
-                        >
-                            <template slot="tag" slot-scope="props">
-                                {{ form.permissions }}
-                            </template>
-                        </Multiselect>
-                    </div>
-
-                    <div v-if="hasPermission('assign-permission.to-user')" class="mt-4">
-                        <InputLabel for="status" value="Status"/>
-                        <Multiselect
-                            id="status"
-                            v-model="form.status"
-                            :allow-empty="true"
-                            :clear-on-select="false"
-                            :close-on-select="false"
-                            :hide-selected="true"
-                            :multiple="true"
-                            :options="['asp']"
-                            :preserve-search="true"
-                            :searchable="true"
-                            :taggable="true"
-                            open-direction="bottom"
-                            placeholder="Assign Some Status"
-                            tag-placeholder="Assign Some Status"
-                            @tag="addTag"
-
-                        >
-                            <template slot="tag" slot-scope="props">
-                                {{ form.permissions }}
-                            </template>
-                        </Multiselect>
-                    </div>
-
-                    <div class="flex items-center justify-end mt-4">
-                        <PrimaryButton
-                            v-if="hasPermission('user.edit')"
-                            :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing"
-
-                            class="ms-4"
-                        >
-                            Update
-                        </PrimaryButton>
-                    </div>
-                </form>
-            </Card>
-
-            <Card v-if="props.user?.roles.length" class="">
-                <div class="w-full">
-                    <div class="py-4 font-semibold">Assigned Roles</div>
-                    <Table>
-                        <template #tableHeader>
-                            <TableHeaderRow :contents="['ID','Name','Action']"/>
-                        </template>
-                        <TableRow
-                            v-for="role in props.user.roles"
-                            :key="role.id"
-                            :contents="[role.id,role.name]"
-                        >
-                            <TableDataCell class="flex space-x-2">
-                                <AdminButton
-                                    v-if="hasPermission('revoke-role.from-user')"
-                                    :obj="[user, role]"
-                                    :text="['User', 'Role']"
-                                    button-text="Revoke"
-                                    button-type="deleteOnConfirm"
-                                    route-method="delete"
-                                    route-name="users.revokeRole"
-                                />
-                            </TableDataCell>
-                        </TableRow>
-                    </Table>
-                </div>
-            </Card>
-
-            <Card v-if="props.user?.permissions.length" class="">
-                <div class="w-full">
-                    <div class="py-4 font-semibold">Direct Permissions</div>
-                    <Table>
-                        <template #tableHeader>
-                            <TableHeaderRow :contents="['ID','Name','Action']"/>
-                        </template>
-                        <TableRow
-                            v-for="permission in props.user?.permissions"
-                            :key="permission.id"
-                            :contents="[permission.id, permission.name]"
-                        >
-                            <TableDataCell class="flex space-x-2">
-                                <AdminButton
-                                    v-if="hasPermission('revoke-permission.from-user')"
-                                    :obj="[user, permission]"
-                                    :text="['User','Permission']"
-                                    button-text="Revoke"
-                                    button-type="deleteOnConfirm"
-                                    route-method="delete"
-                                    route-name="users.revokePermission"
-                                />
-                            </TableDataCell>
-                        </TableRow>
-                    </Table>
-                </div>
-            </Card>
-        </div>
-    </Card>
-
-    <Card v-if="(props.user?.permissions.length)+(props.user?.permissionsAll.length)" type="green">
-        <div class="flex flex-wrap justify-around justify-items-center justify-self-center">
-            <Card
-                v-if="props.user?.roles.find((role) => role.assignedPermissions.length)"
-                class=""
+    <Card class="mx-auto max-w-150">
+        <div class="py-4 font-semibold">User's Address</div>
+        <!-- src/App.vue -->
+        <Vueform v-model="form" :display-errors="false"
+                 :endpoint="false"
+                 :multilingual="false"
+                 size="md" sync
+                 @submit='updateUserAddress'
+        >
+            <SelectElement
+                :items="usersList"
+                :native="false"
+                :rules="['required']"
+                :search="true"
+                :track-by="['id', 'name', 'email', 'label']"
+                autocomplete="disabled"
+                input-type="search"
+                label="Select User"
+                name="user_id"
+            />
+            <StaticElement
+                content="Address Details"
+                name="register_title"
+                tag="h1"
+            />
+            <StaticElement
+                name="divider"
+                tag="hr"
+            />
+            <GroupElement
+                name="container"
             >
-                <div class="py-4 font-semibold">Permissions from Roles</div>
-                <Table>
-                    <template #tableHeader>
-                        <TableHeaderRow :contents="['ID','Role','Id','Permission']"/>
-                    </template>
-                    <template
-                        v-for="role in props.user.roles"
-                        :key="role.id"
-                    >
-                        <TableRow
-                            v-for="permission in role.assignedPermissions"
-                        >
-                            <TableDataCell
-                                v-if="permission === role.assignedPermissions[0]"
-                                :rowspan="[role.assignedPermissions.length]"
-                            >{{ role.id }}
-                            </TableDataCell>
-                            <TableDataCell
-                                v-if="permission === role.assignedPermissions[0]"
-                                :rowspan="[role.assignedPermissions.length]"
-                            >{{ role.name }}
-                            </TableDataCell>
-                            <TableDataCell>{{ permission.id }}</TableDataCell>
-                            <TableDataCell>{{ permission.name }}</TableDataCell>
-                        </TableRow>
-                    </template>
-                </Table>
-            </Card>
+                <RadiogroupElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :items="['Permanent', 'Present']"
+                    :rules="['required','max:255']"
+                    label="Address Type"
+                    name="addressType"
+                />
+                <RadiogroupElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :items="['Village', 'Municipality', 'City Corporation']"
+                    :rules="['required','max:255']"
+                    label="Chose Category"
+                    name="typeVillageMunicipalityCity"
+                />
 
-            <Card
-                v-if="props.user?.permissionsAll.length"
-                class=""
-            >
-                <div class="py-4 font-semibold">All Permissions</div>
-                <Table>
-                    <template #tableHeader>
-                        <TableHeaderRow :contents="['ID','Name','Action']"/>
-                    </template>
-                    <TableRow
-                        v-for="permission in props.user?.permissionsAll"
-                        :key="permission.id"
-                        :contents="[ permission.id,permission.name]"
-                    >
-                        <TableDataCell class="flex space-x-2">
-                            <AdminButton
-                                v-if="hasPermission('delete-permission.from-user') && props.user?.permissions.find((object) =>partialContains(object, permission))"
-                                :obj="[user, permission]"
-                                button-text="remove"
-                                button-type="delete"
-                                route-method="delete"
-                                route-name="users.revokePermission"
-                                text="User Permission"
+                <SelectElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :items="districts"
+                    :native="false"
+                    :rules="['required','max:255']"
+                    :search="true"
+                    :track-by="['name']"
+                    autocomplete="disabled"
+                    input-type="search"
+                    label="District"
+                    label-prop="name"
+                    name="district"
+                    value-prop="name"
+                />
+                <SelectElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :items="upazilas"
+                    :native="false"
+                    :rules="['required','max:255']"
+                    :search="true"
+                    :track-by="['name']"
+                    autocomplete="disabled"
+                    input-type="search"
+                    label="Upazila / City Corporation"
+                    label-prop="name"
+                    name="upazillaCity"
+                    value-prop="name"
+                />
+                <SelectElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :items="unions"
+                    :native="false"
+                    :rules="['required','max:255']"
+                    :search="true"
+                    :track-by="['name']"
+                    autocomplete="disabled"
+                    input-type="search"
+                    label="Union / Municipality"
+                    label-prop="name"
+                    name="unionMunicipality"
+                    value-prop="name"
+                />
+                <TextElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :rules="['required','max:255']"
+                    input-type="text"
+                    label="Police Station"
+                    name="policeStation"
+                />
 
-                            />
-                        </TableDataCell>
-                    </TableRow>
-                </Table>
-            </Card>
-        </div>
+                <TextElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :rules="['required','max:255']"
+                    input-type="text"
+                    label="Ward / Council"
+                    name="wardCouncil"
+                />
+                <TextElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :rules="['required','max:255']"
+                    input-type="text"
+                    label="Village / Mohokuma"
+                    name="villageMohokuma"
+                />
+                <TextElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :rules="['max:255']"
+                    input-type="text"
+                    label="Road No / Name"
+                    name="roadNo"
+                />
+                <TextElement
+                    :columns="{
+                                  container: 6,
+                                  label: 12,
+                                  wrapper: 12,
+                                }"
+                    :rules="['max:255']"
+                    input-type="text"
+                    label="House No / Name"
+                    name="houseNo"
+                />
+                <EditorElement editorStyle="height: 320px" name="otherDetails"/>
+            </GroupElement>
+            <ButtonElement
+                :full="true"
+                :submits="true"
+                button-label="Update Address Data"
+                name="submit"
+                size="lg"
+            />
+        </Vueform>
     </Card>
 </template>
-<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped></style>

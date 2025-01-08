@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -18,6 +19,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
     use HasRoles, HasPermissions, RefreshesPermissionCache;
     use SoftDeletes;
+    use SoftCascadeTrait;
     /**
      * The attributes that are mass assignable.
      *
@@ -52,6 +54,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $softCascade = [
+        'userProfile',
+        'userEducation',
+        'userAddress',
+        'userAddress@restrict',
+        'UserSocial',
+        'UserFamily',
+        'UserHonorGift',
+        'UserPosting',
+        'UserSuccess',
+        'UserWebPost',
+    ];
 
     public function userProfile(): HasOne
     {
