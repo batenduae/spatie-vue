@@ -15,7 +15,6 @@ import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import TableHeaderRow from "@/Components/AdminComponents/Table/TableHeaderRow.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-import UsersProfileCreate from "@/Pages/UsersInfo/UsersProfile/UsersProfileCreate.vue";
 
 const {hasPermission, hasPermissionSelf, hasPermissionOthers, showFlash} = usePermissions();
 onMounted(showFlash)
@@ -397,10 +396,6 @@ defineOptions({ layout: SpatieAdminLayout });
                 </Table>
             </Card>
         </div>
-    </Card>
-
-    <Card type="cyan">
-        <UsersProfileCreate :userId="props.user.id"/>
     </Card>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

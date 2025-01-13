@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\SpatieContainer\SpatieRequests\CreatePermissionRequest;
 use App\SpatieContainer\SpatieResources\PermissionResource;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
@@ -81,6 +82,21 @@ class PermissionController extends Controller implements HasMiddleware
     public function destroy(Permission $permission): RedirectResponse
     {
         $permission->delete();
-        return back()->with('error','Permission deleted successfully');
+        return back()->with('error', 'Permission deleted successfully');
+    }
+
+    public function destroyMany(Request $request)
+    {
+        $ids = $request->ids;
+        $text = "";
+        foreach ($ids as $id) {
+            $permission = Permission::findOrFail($id);
+            if ($id > 1) {
+                $permission->delete();
+            }
+            $text = $text . $permission->name . ", ";
+        }
+        return back()
+            ->with('danger', "Permission : '" . $text . "' Deleted Successfully");
     }
 }

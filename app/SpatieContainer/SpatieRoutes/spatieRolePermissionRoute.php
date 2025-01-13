@@ -22,6 +22,7 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::delete('usersDestroy', [UserController::class, 'destroyMany'])->name("users.destroyMany");
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::delete('permissionsDestroy', [PermissionController::class, 'destroyMany'])->name("permissions.destroyMany");
 
     Route::get('users/{user}/assignRolePermissionView', [AssignRolePermissionController::class, 'usersAssignRolePermissionView'])
         ->name('users.assignRolePermissionView');

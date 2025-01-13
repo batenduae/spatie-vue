@@ -61,7 +61,11 @@ class UserAddressController extends Controller
      */
     public function show(string $id)
     {
-
+        $userAddress = UserAddress::findOrFail($id);
+        return Inertia::render('UsersInfo/UsersAddress/UsersAddressView', [
+            'user' => $userAddress->user()->select('id', 'name', 'email')->get()->first(),
+            'userAddress' => new UserAddressResource($userAddress),
+        ]);
     }
 
     /**

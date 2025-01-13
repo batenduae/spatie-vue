@@ -53,6 +53,7 @@ const saveUser = () => {
 //for batch mode operation
 //to delete user
 const selectedUsers = ref();
+const deleteUserDialog = ref(false);
 const deleteUsersDialog = ref(false);
 const confirmDeleteSelected = () => {
     deleteUsersDialog.value = true;
@@ -107,17 +108,18 @@ const exportCSV = () => {
                 :filters="filters"
                 :paginator="true"
                 :rows="25"
-                :rowsPerPageOptions="[5, 10, 25, 50, 100, 1000]"
+                :rowsPerPageOptions="[5, 10, 25, 50, 100]"
                 :value="props.users"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users from Page {currentPage} of {totalPages}"
                 dataKey="id"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageInput"
                 removableSort
+                sortMode="multiple"
+
                 showGridlines
                 size="small"
-                sortMode="multiple"
                 stripedRows
-                scrollHeight="400px" scrollable
+
             >
                 <template #header>
                     <div class="flex flex-wrap gap-2 items-center justify-between">

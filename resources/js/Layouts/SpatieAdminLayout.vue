@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {Notification, NotificationProgress, Notivue, outlinedIcons, pastelTheme} from "notivue";
+import Toast from 'primevue/toast';
 import SidebarArea from "@/Components/AdminComponents/SideBar/SidebarArea.vue";
 import HeaderArea from "@/Components/AdminComponents/Header/HeaderArea.vue";
 import {usePermissions} from "@/composables/permissions.js";
@@ -20,6 +21,7 @@ onMounted(showFlash)
                 <NotificationProgress :item="item" />
             </Notification>
         </Notivue>
+        <Toast position="bottom-right"/>
     </div>
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden bg-white dark:bg-boxdark-2 text-black dark:text-white">
