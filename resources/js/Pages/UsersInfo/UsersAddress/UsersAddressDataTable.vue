@@ -74,6 +74,11 @@ const deleteSelectedUsersAddress = () => {
 const exportCSV = () => {
     dt.value.exportCSV();
 };
+const multiSortMeta = ref(
+    [
+        {field: 'id', order: -1},
+    ]
+);
 
 </script>
 
@@ -116,8 +121,10 @@ const exportCSV = () => {
                 dataKey="id"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageInput"
                 removableSort
+                :multiSortMeta="multiSortMeta"
                 showGridlines
-
+                scrollHeight="400px"
+                scrollable
                 size="small"
                 sortMode="multiple"
                 stripedRows
@@ -163,7 +170,7 @@ const exportCSV = () => {
                             />
                             <AdminButton
                                 v-if="hasPermission('users.*')"
-                                :obj="slotProps.data.id"
+                                :obj="slotProps.data"
                                 button-text="Delete"
                                 button-type="deleteOnConfirm"
                                 route-method="delete"

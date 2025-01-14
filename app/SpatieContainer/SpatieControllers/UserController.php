@@ -28,7 +28,7 @@ class UserController extends Controller implements HasMiddleware
             new Middleware(PermissionMiddleware::using(['users.index']), only: ['index']),
             new Middleware(PermissionMiddleware::using(['users.others.create']), only: ['create', 'store']),
             new Middleware(PermissionMiddleware::using(['users.self.edit', 'users.others.edit']), only: ['edit', 'update']),
-            new Middleware(PermissionMiddleware::using(['users.self.delete', 'users.others.delete']), only: ['destroy']),
+            new Middleware(PermissionMiddleware::using(['users.self.delete', 'users.others.delete']), only: ['destroy', 'destroyMany']),
         ];
     }
 

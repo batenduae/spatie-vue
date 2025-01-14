@@ -1,13 +1,12 @@
 <script setup>
 import {ref} from 'vue';
 import {FilterMatchMode} from '@primevue/core/api';
-import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
-
 import {useToast} from 'primevue/usetoast';
 import {usePermissions} from "@/composables/permissions.js";
 import {useForm} from "@inertiajs/vue3";
 
 const {hasPermission, hasPermissionSelf, hasPermissionOthers, hasRole, showFlash} = usePermissions();
+//
 const props = defineProps([
     'permissions',
 ])
@@ -15,7 +14,6 @@ const toast = useToast();
 const dt = ref();
 const permissions = ref();
 permissions.value = props.permissions;
-
 
 const filters = ref({
     'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
@@ -33,6 +31,10 @@ const createNewPermission = () => {
     permissionDialog.value = true;
 };
 
+const hideDialog = () => {
+    permissionDialog.value = false;
+    submitted.value = false;
+};
 function updatePermission(permissionId) {
     permission = props.permissions.filter((item) => {
         return (item.id === permissionId)
@@ -40,16 +42,12 @@ function updatePermission(permissionId) {
     submitted.value = false;
     permissionDialog.value = true;
 }
-
-const hideDialog = () => {
-    permissionDialog.value = false;
-    submitted.value = false;
-};
 const savePermission = () => {
     submitted.value = true;
     let form = useForm({
         name: ref(permission.name),
         group: ref(permission.group),
+        description: ref(permission.description),
     });
     if (!permission?.id && permission?.name.trim()) {
         form.post(route('permissions.store'))
@@ -63,11 +61,30 @@ const savePermission = () => {
         permission.value = {};
     }
 };
+let selectedPermission = ref();
+const deletePermissionDialog = ref(false);
+
+function confirmDeletePermission(id) {
+    selectedPermission = id;
+    submitted.value = false;
+    deletePermissionDialog.value = true;
+}
+
+const deletePermission = () => {
+    deletePermissionDialog.value = false;
+    let ids = [selectedPermission];
+    let filteredIds = [...new Set([...hasPermissionSelf('permissions.delete', ids), ...hasPermissionOthers('permissions.delete', ids)])].filter((value) => value > 0);
+    const form = useForm({
+        ids: filteredIds,
+    });
+    form.delete(route('permissions.destroyMany', filteredIds))
+    selectedPermission = null;
+    toast.add({severity: 'success', summary: 'Successful', detail: 'Permission Deleted', life: 3000});
+};
 
 //for batch mode operation
 //to delete permission
-const selectedPermissions = ref();
-const deletePermissionDialog = ref(false);
+let selectedPermissions = ref();
 const deletePermissionsDialog = ref(false);
 const confirmDeleteSelected = () => {
     deletePermissionsDialog.value = true;
@@ -87,6 +104,12 @@ const deleteSelectedPermissions = () => {
 const exportCSV = () => {
     dt.value.exportCSV();
 };
+
+const multiSortMeta = ref(
+    [
+        {field: 'id', order: -1},
+    ]
+);
 
 </script>
 
@@ -130,6 +153,7 @@ const exportCSV = () => {
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageInput"
                 sortMode="multiple"
                 removableSort
+                :multiSortMeta="multiSortMeta"
                 scrollHeight="400px"
                 scrollable
                 showGridlines
@@ -154,30 +178,16 @@ const exportCSV = () => {
                 <Column field="id" header="Id" sortable style="min-width: 2rem"></Column>
                 <Column field="name" header="Permission Name" sortable style="min-width: 2rem"></Column>
                 <Column field="group" header="Permission Group" sortable style="min-width: 2rem"></Column>
+                <Column field="description" header="Permission Description" sortable style="min-width: 2rem"></Column>
                 <Column :exportable="false" header="Action" style="min-width: 3rem">
                     <template #body="slotProps">
                         <div class="flex justify-start space-x-2">
                             <Button v-if="hasPermission('permissions.edit')" class="mr-2" icon="pi pi-pencil"
                                     label=""
                                     @click="updatePermission(slotProps.data.id)"/>
-                            <AdminButton
-                                v-if="hasPermission('permissions.edit')"
-                                :obj="slotProps.data.id"
-                                button-type="edit1"
-                                route-name="permissions.edit"
-                            >
-                                <Button icon="pi pi-pencil" raised rounded text/>
-                            </AdminButton>
-                            <AdminButton
-                                v-if="hasPermission('permissions.delete')"
-                                :obj="slotProps.data.id"
-                                button-type="deleteOnConfirm1"
-                                route-method="delete"
-                                route-name="permissions.destroy"
-                                text="Permission"
-                            >
-                                <Button icon="pi pi-trash" raised rounded severity="danger" text/>
-                            </AdminButton>
+                            <Button v-if="hasPermission('permissions.delete')" class="mr-2" icon="pi pi-trash"
+                                    label=""
+                                    @click="confirmDeletePermission(slotProps.data.id)"/>
                         </div>
                     </template>
                 </Column>
@@ -204,22 +214,20 @@ const exportCSV = () => {
                         required="false"/>
                     <!--                    <small v-if="submitted && !permission.group" class="text-red-500">group is required.</small>-->
                 </div>
+
+                <div>
+                    <label class="block font-bold mb-3" for="group">Description</label>
+                    <InputText
+                        id="email" v-model.trim="permission.description" :invalid="submitted && !permission.description"
+                        fluid
+                        required="false"/>
+                    <!--                    <small v-if="submitted && !permission.description" class="text-red-500">description is required.</small>-->
+                </div>
             </div>
 
             <template #footer>
                 <Button icon="pi pi-times" label="Cancel" text @click="hideDialog"/>
                 <Button icon="pi pi-check" label="Save" @click="savePermission"/>
-            </template>
-        </Dialog>
-
-        <Dialog v-model:visible="deletePermissionDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
-            <div class="flex items-center gap-4">
-                <i class="pi pi-exclamation-triangle !text-3xl"/>
-                <span v-if="permission">Are you sure you want to delete <b>{{ permission.name }}</b>?</span>
-            </div>
-            <template #footer>
-                <Button icon="pi pi-times" label="No" text @click="deletePermissionDialog = false"/>
-                <Button icon="pi pi-check" label="Yes" @click="deletePermission"/>
             </template>
         </Dialog>
 

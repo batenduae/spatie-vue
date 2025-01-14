@@ -7,6 +7,7 @@ use App\SpatieContainer\SpatieRequests\CreateRoleRequest;
 use App\SpatieContainer\SpatieResources\PermissionResource;
 use App\SpatieContainer\SpatieResources\RoleResource;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
@@ -23,7 +24,7 @@ class RoleController extends Controller implements HasMiddleware
             new Middleware(PermissionMiddleware::using('roles.view'), only: ['index']),
             new Middleware(PermissionMiddleware::using('roles.create'), only: ['create', 'store']),
             new Middleware(PermissionMiddleware::using('roles.edit'), only: ['edit', 'update']),
-            new Middleware(PermissionMiddleware::using('roles.delete'), only: ['destroy']),
+            new Middleware(PermissionMiddleware::using('roles.delete'), only: ['destroy', 'destroyMany']),
         ];
     }
 
@@ -52,7 +53,7 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function store(CreateRoleRequest $request): RedirectResponse
     {
-        $role = Role::create(['name' => $request->name]);
+        $role = Role::create($request->validated());
         if($request->has('permissions')){
 //            $role->syncPermissions($request->permissions);
             $role->syncPermissions($request->input('permissions.*.name'));
@@ -86,7 +87,7 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function update(CreateRoleRequest $request, Role $role): RedirectResponse
     {
-        $role->update(['name' => $request->name]);
+        $role->update($request->validated());
 //            $role->syncPermissions($request->permissions);
         $role->syncPermissions($request->input('permissions.*.name'));
         return back()
@@ -101,6 +102,24 @@ class RoleController extends Controller implements HasMiddleware
     {
         $role->delete();
         return back()
-            ->with('warning',"Role: '".$role->name."' Deleted Successfully");
+            ->with('warning', "Role: '" . $role->name . "' Deleted Successfully");
+    }
+
+    /**
+     * Remove the specified resources from storage.
+     */
+    public function destroyMany(Request $request)
+    {
+        $ids = $request->ids;
+        $text = "";
+        foreach ($ids as $id) {
+            $role = Role::findOrFail($id);
+            if ($id > 1) {
+                $role->delete();
+            }
+            $text = $text . $role->name . ", ";
+        }
+        return back()
+            ->with('danger', "Roles : '" . $text . "' Deleted Successfully");
     }
 }

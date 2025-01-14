@@ -51,6 +51,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'users.revoke.permission', 'group' => 'users.assign']);
 
 
+        Permission::create(['name' => 'users.address.*', 'group' => 'users.address']);
+        Permission::create(['name' => '	users.address.index', 'group' => 'users.address']);
+        Permission::create(['name' => '	users.address.others.*', 'group' => 'users.address']);
+        Permission::create(['name' => '	users.address.others.create', 'group' => 'users.address']);
+
+
 //        For Maintaining Roles by SuperAdmin & Admin
         Permission::create(['name' => 'roles.*', 'group' => 'wild']);
         Permission::create(['name' => 'roles.index', 'group' => 'roles']);

@@ -5,6 +5,7 @@ import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 import RolesTable from "@/Pages/Admin/SpatieRolePermission/Roles/RolesTable.vue";
+import RolesDataTable from "@/Pages/Admin/SpatieRolePermission/Roles/RolesDataTable.vue";
 
 defineProps(["roles"]);
 const { hasPermission,showFlash } = usePermissions();
@@ -30,7 +31,7 @@ defineOptions({ layout: SpatieAdminLayout });
                 v-if="hasPermission('roles.create')"
             />
         </PageHeader>
-
+        <RolesDataTable :roles="roles"/>
         <RolesTable :roles="roles"/>
     </div>
 </template>

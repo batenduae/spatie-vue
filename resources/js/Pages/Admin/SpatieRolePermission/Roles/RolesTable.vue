@@ -18,12 +18,12 @@ defineProps(["roles"]);
                     Table: Role's Index
                 </template>
                 <template #tableHeader>
-                    <TableHeaderRow :contents="['ID','Name','Action']"/>
+                    <TableHeaderRow :contents="['ID','Name','Group','Description','Action']"/>
                 </template>
                 <TableRow
                     v-for="role in roles"
                     :key="role.id"
-                    :contents="[ role.id,role.name]"
+                    :contents="[ role.id,role.name,role.group,role.description]"
                     narrow="narrower"
                 >
                     <TableDataCell>

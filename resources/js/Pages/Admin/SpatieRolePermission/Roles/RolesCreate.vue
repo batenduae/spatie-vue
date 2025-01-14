@@ -36,6 +36,8 @@ function addTag(newTag) {
 
 const form = useForm({
     name: "",
+    group: "",
+    description: "",
     permissions: ref([]),
 });
 
@@ -64,18 +66,48 @@ defineOptions({ layout: SpatieAdminLayout });
         >
             <form @submit.prevent="form.post(route('roles.store'))">
                 <div>
-                    <InputLabel for="role" value="Role" />
+                    <InputLabel for="name" value="Role Name"/>
 
                     <TextInput
-                        id="role"
+                        id="name"
                         type="text"
                         v-model="form.name"
                         required
                         autofocus
-                        autocomplete="role"
+                        autocomplete="name"
                     />
 
-                    <InputError class="mt-2" :message="form.errors.name" />
+                    <InputError :message="form.errors.name" class="mt-2"/>
+                </div>
+
+                <div>
+                    <InputLabel for="group" value="Group"/>
+
+                    <TextInput
+                        id="group"
+                        v-model="form.group"
+                        autocomplete="group"
+                        autofocus
+                        required
+                        type="text"
+                    />
+
+                    <InputError :message="form.errors.group" class="mt-2"/>
+                </div>
+
+                <div>
+                    <InputLabel for="description" value="Description"/>
+
+                    <TextArea
+                        id="description"
+                        v-model="form.description"
+                        autocomplete="description"
+                        autofocus
+                        required
+                        type="text"
+                    />
+
+                    <InputError :message="form.errors.description" class="mt-2"/>
                 </div>
 
                 <div v-if="hasPermission('roles.assign.permission')" class="mt-4">
@@ -128,13 +160,15 @@ defineOptions({ layout: SpatieAdminLayout });
                     <TableRow>
                         <TableHeaderCell>ID</TableHeaderCell>
                         <TableHeaderCell>Name</TableHeaderCell>
+                        <TableHeaderCell>Group</TableHeaderCell>
+                        <TableHeaderCell>Description</TableHeaderCell>
                         <TableHeaderCell>Action</TableHeaderCell>
                     </TableRow>
                 </template>
                 <TableRow
                     v-for="permission in form.permissions"
                     :key="permission.id"
-                    :contents="[permission.id,permission.name]"
+                    :contents="[permission.id,permission.name,permission.group,permission.description]"
                 >
                     <TableDataCell>
                         <button

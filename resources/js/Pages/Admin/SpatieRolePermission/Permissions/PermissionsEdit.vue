@@ -22,6 +22,7 @@ const props = defineProps({
 const form = useForm({
     name: props.permission.name,
     group: props.permission.group,
+    description: props.permission.description,
 });
 defineOptions({ layout: SpatieAdminLayout });
 </script>
@@ -64,11 +65,24 @@ defineOptions({ layout: SpatieAdminLayout });
                     v-model="form.group"
                     autocomplete="group"
                     autofocus
-                    required
                     type="text"
                 />
 
                 <InputError :message="form.errors.group" class="mt-2"/>
+            </div>
+
+            <div class="mt-2">
+                <InputLabel for="group" value="Permission Description"/>
+
+                <TextArea
+                    id="description"
+                    v-model="form.description"
+                    autocomplete="description"
+                    autofocus
+                    type="text"
+                />
+
+                <InputError :message="form.errors.description" class="mt-2"/>
             </div>
 
             <div class="flex items-center justify-end mt-4">

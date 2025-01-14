@@ -75,6 +75,12 @@ const exportCSV = () => {
     dt.value.exportCSV();
 };
 
+const multiSortMeta = ref(
+    [
+        {field: 'id', order: -1},
+    ]
+);
+
 </script>
 
 <template>
@@ -115,7 +121,9 @@ const exportCSV = () => {
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageInput"
                 removableSort
                 sortMode="multiple"
-
+                :multiSortMeta="multiSortMeta"
+                scrollHeight="500px"
+                scrollable
                 showGridlines
                 size="small"
                 stripedRows

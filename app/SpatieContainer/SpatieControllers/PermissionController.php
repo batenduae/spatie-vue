@@ -23,7 +23,7 @@ class PermissionController extends Controller implements HasMiddleware
             new Middleware(PermissionMiddleware::using('permissions.view'), only: ['index']),
             new Middleware(PermissionMiddleware::using('permissions.create'), only: ['create', 'store']),
             new Middleware(PermissionMiddleware::using('permissions.edit'), only: ['edit', 'update']),
-            new Middleware(PermissionMiddleware::using('permissions.delete'), only: ['destroy']),
+            new Middleware(PermissionMiddleware::using('permissions.delete'), only: ['destroy', 'destroyMany']),
         ];
     }
 

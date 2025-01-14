@@ -26,6 +26,7 @@ class CreatePermissionRequest extends FormRequest
         return [
             'name' => ['required', 'max:100', 'string', Rule::unique('permissions', 'name')->ignore($this->permission)],
             'group' => ['sometimes', 'max:100', 'string'],
+            'description' => ['sometimes', 'max:100', 'string'],
         ];
     }
 }

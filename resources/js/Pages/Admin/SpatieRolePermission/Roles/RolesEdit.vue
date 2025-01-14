@@ -41,6 +41,8 @@ function addTag(newTag) {
 
 const form = useForm({
     name: props.role.name,
+    group: props.role.group,
+    description: props.role.description,
     permissions: ref(props.role?.assignedPermissions),
 });
 
@@ -64,19 +66,53 @@ defineOptions({ layout: SpatieAdminLayout });
         <Card type="orange" class="w-96">
             <form @submit.prevent="form.put(route('roles.update', role))">
                 <div v-if="hasPermission(['roles.edit'])">
-                    <InputLabel for="role" value="Role"/>
 
-                    <TextInput
-                        id="role"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.name"
-                        required
-                        autofocus
-                        autocomplete="name"
-                    />
+                    <div>
+                        <InputLabel for="name" value="Role Name"/>
 
-                    <InputError class="mt-2" :message="form.errors.name" />
+                        <TextInput
+                            id="name"
+                            v-model="form.name"
+                            autocomplete="name"
+                            autofocus
+                            class="mt-1 block w-full"
+                            required
+                            type="text"
+                        />
+
+                        <InputError :message="form.errors.name" class="mt-2"/>
+                    </div>
+
+                    <div>
+                        <InputLabel for="group" value="Group"/>
+
+                        <TextInput
+                            id="group"
+                            v-model="form.group"
+                            autocomplete="group"
+                            autofocus
+                            required
+                            type="text"
+                        />
+
+                        <InputError :message="form.errors.group" class="mt-2"/>
+                    </div>
+
+                    <div>
+                        <InputLabel for="description" value="Description"/>
+
+                        <TextArea
+                            id="description"
+                            v-model="form.description"
+                            autocomplete="description"
+                            autofocus
+                            required
+                            type="text"
+                        />
+
+                        <InputError :message="form.errors.description" class="mt-2"/>
+                    </div>
+
                 </div>
 
                 <div v-if="hasPermission(['roles.sync.permission'])" class="mt-4">

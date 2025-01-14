@@ -18,6 +18,7 @@ onUpdated(showFlash)
 const form = useForm({
     name: "",
     group: "",
+    description: "",
 });
 defineOptions({ layout: SpatieAdminLayout });
 </script>
@@ -63,6 +64,20 @@ defineOptions({ layout: SpatieAdminLayout });
                 />
 
                 <InputError :message="form.errors.group" class="mt-2"/>
+            </div>
+
+            <div class="mt-2">
+                <InputLabel for="description" value="Permission Description"/>
+
+                <TextArea
+                    id="description"
+                    v-model="form.description"
+                    autocomplete="description"
+                    autofocus
+                    type="text"
+                />
+
+                <InputError :message="form.errors.description" class="mt-2"/>
             </div>
 
             <div class="flex items-center justify-end mt-4">

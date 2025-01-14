@@ -21,6 +21,7 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::delete('usersDestroy', [UserController::class, 'destroyMany'])->name("users.destroyMany");
     Route::resource('roles', RoleController::class);
+    Route::delete('rolesDestroy', [RoleController::class, 'destroyMany'])->name("roles.destroyMany");
     Route::resource('permissions', PermissionController::class);
     Route::delete('permissionsDestroy', [PermissionController::class, 'destroyMany'])->name("permissions.destroyMany");
 

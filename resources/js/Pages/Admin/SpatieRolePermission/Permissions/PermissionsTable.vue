@@ -23,12 +23,12 @@ const {hasPermission, showFlash} = usePermissions();
                     Table: Permissions Index
                 </template>
                 <template #tableHeader>
-                    <TableHeaderRow :contents="['ID','Name','Group','Action']"/>
+                    <TableHeaderRow :contents="['ID','Name','Group','Description','Action']"/>
                 </template>
                 <TableRow
                     v-for="permission in props.permissions"
                     :key="permission.id"
-                    :contents="[ permission.id,permission.name, permission.group]"
+                    :contents="[ permission.id,permission.name, permission.group, permission.description]"
                     narrow="narrower"
                 >
                     <TableDataCell>

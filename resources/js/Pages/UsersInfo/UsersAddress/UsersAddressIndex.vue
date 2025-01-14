@@ -23,7 +23,7 @@ defineOptions({layout: SpatieAdminLayout});
             route-name="usersAddress.create"
         />
     </PageHeader>
-    <UsersAddressTable :usersAddress="usersAddress"/>
     <UsersAddressDataTable :usersAddress="usersAddress"/>
+    <UsersAddressTable :usersAddress="usersAddress"/>
 </template>
 <style scoped></style>
