@@ -115,153 +115,167 @@ const multiSortMeta = ref(
 </script>
 
 <template>
-    <div>
-        <div class="card mb-4">
-            <!--            For operation-->
-            <Toolbar class="mb-6">
-                <template #start>
-                    <!--                    create new role-->
-                    <Button v-if="hasPermission('roles.create')" class="mr-2" icon="pi pi-plus"
-                            label="Create Role"
-                            @click="createNewRole"/>
-                    <Button :disabled="!selectedRoles || !selectedRoles.length" icon="pi pi-trash"
-                            label="Delete"
-                            outlined severity="danger"
-                            @click="confirmDeleteSelected"
-                    />
+    <div v-if="hasPermission('roles.index')" class="">
+        <div v-if="roles.length" class="mx-auto">
+            <div class="card mb-4">
+                <!--            For operation-->
+                <Toolbar class="mb-6">
+                    <template #start>
+                        <!--                    create new role-->
+                        <Button v-if="hasPermission('roles.create')" class="mr-2" icon="pi pi-plus"
+                                label="Create Role"
+                                @click="createNewRole"/>
+                        <Button :disabled="!selectedRoles || !selectedRoles.length" icon="pi pi-trash"
+                                label="Delete"
+                                outlined severity="danger"
+                                @click="confirmDeleteSelected"
+                        />
 
-                </template>
+                    </template>
 
-                <template #end>
-                    <FileUpload :chooseButtonProps="{ severity: 'secondary' }" :maxFileSize="1000000" accept="image/*"
-                                auto chooseLabel="Import"
-                                class="mr-2" customUpload label="Import" mode="basic"/>
-                    <Button icon="pi pi-upload" label="Export" severity="secondary" @click="exportCSV($event)"/>
-                </template>
-            </Toolbar>
+                    <template #end>
+                        <FileUpload :chooseButtonProps="{ severity: 'secondary' }" :maxFileSize="1000000" accept="image/*"
+                                    auto chooseLabel="Import"
+                                    class="mr-2" customUpload label="Import" mode="basic"/>
+                        <Button icon="pi pi-upload" label="Export" severity="secondary" @click="exportCSV($event)"/>
+                    </template>
+                </Toolbar>
 
-            <!--            show chart-->
-            <DataTable
-                ref="dt"
-                v-model:selection="selectedRoles"
-                :filters="filters"
-                :paginator="true"
-                :multiSortMeta="multiSortMeta"
-                :rowsPerPageOptions="[5, 10, 25, 50, 100]"
-                :value="props.roles"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} roles from Page {currentPage} of {totalPages}"
-                dataKey="id"
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageInput"
-                :rows="5"
-                removableSort
-                scrollHeight="400px"
-                scrollable
-                sortMode="multiple"
-                showGridlines
-                size="small"
-                stripedRows
+                <!--            show chart-->
+                <DataTable
+                    ref="dt"
+                    v-model:selection="selectedRoles"
+                    :filters="filters"
+                    :paginator="true"
+                    :multiSortMeta="multiSortMeta"
+                    :rowsPerPageOptions="[5, 10, 25, 50, 100]"
+                    :value="props.roles"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} roles from Page {currentPage} of {totalPages}"
+                    dataKey="id"
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageInput"
+                    :rows="5"
+                    removableSort
+                    scrollHeight="400px"
+                    scrollable
+                    sortMode="multiple"
+                    showGridlines
+                    size="small"
+                    stripedRows
 
-            >
-                <template #header>
-                    <div class="flex flex-wrap gap-2 items-center justify-between">
-                        <h4 class="m-0">Manage Roles</h4>
-                        <IconField>
-                            <InputIcon>
-                                <i class="pi pi-search"/>
-                            </InputIcon>
-                            <InputText v-model="filters['global'].value" placeholder="Search..."/>
-                        </IconField>
-                    </div>
-                </template>
-
-
-                <Column :exportable="false" selectionMode="multiple" style="width: 2rem"></Column>
-                <Column field="id" header="Id" sortable style="min-width: 2rem"></Column>
-                <Column field="name" header="Role Name" sortable style="min-width: 2rem"></Column>
-                <Column field="group" header="Role Group" sortable style="min-width: 2rem"></Column>
-                <Column field="description" header="Role Description" style="min-width: 2rem"></Column>
-                <Column :exportable="false" header="Action" style="min-width: 3rem">
-                    <template #body="slotProps">
-                        <div class="flex justify-start space-x-2">
-                            <Button v-if="hasPermission('roles.edit')" class="mr-2" icon="pi pi-pencil"
-                                    label=""
-                                    @click="updateRole(slotProps.data.id)"/>
-                            <Button v-if="hasPermission('roles.delete')" class="mr-2" icon="pi pi-trash"
-                                    label=""
-                                    @click="confirmDeleteRole(slotProps.data.id)"/>
-                            <AdminButton
-                                v-if="hasPermission(['roles.sync.permission'])"
-                                :obj="slotProps.data.id"
-                                button-text="sync-permit"
-                                button-type="assign"
-                                route-name="roles.syncPermissionView"
-                            />
+                >
+                    <template #header>
+                        <div class="flex flex-wrap gap-2 items-center justify-between">
+                            <h4 class="m-0">Manage Roles</h4>
+                            <IconField>
+                                <InputIcon>
+                                    <i class="pi pi-search"/>
+                                </InputIcon>
+                                <InputText v-model="filters['global'].value" placeholder="Search..."/>
+                            </IconField>
                         </div>
                     </template>
-                </Column>
-            </DataTable>
+
+
+                    <Column :exportable="false" selectionMode="multiple" style="width: 2rem"></Column>
+                    <Column field="id" header="Id" sortable style="min-width: 2rem"></Column>
+                    <Column field="name" header="Role Name" sortable style="min-width: 2rem"></Column>
+                    <Column field="group" header="Role Group" sortable style="min-width: 2rem"></Column>
+                    <Column field="description" header="Role Description" style="min-width: 2rem"></Column>
+                    <Column :exportable="false" header="Action" style="min-width: 3rem">
+                        <template #body="slotProps">
+                            <div class="flex justify-start space-x-2">
+                                <Button v-if="hasPermission('roles.edit')" class="mr-2" icon="pi pi-pencil"
+                                        label=""
+                                        @click="updateRole(slotProps.data.id)"/>
+                                <Button v-if="hasPermission('roles.delete')" class="mr-2" icon="pi pi-trash"
+                                        label=""
+                                        @click="confirmDeleteRole(slotProps.data.id)"/>
+                                <AdminButton
+                                    v-if="hasPermission(['roles.sync.permission'])"
+                                    :obj="slotProps.data.id"
+                                    button-text="sync-permit"
+                                    button-type="assign"
+                                    route-name="roles.syncPermissionView"
+                                />
+                            </div>
+                        </template>
+                    </Column>
+                </DataTable>
+            </div>
+
+            <Dialog v-model:visible="roleDialog" :modal="true" :style="{ width: '450px' }"
+                    header="Role Details">
+                <div class="flex flex-col gap-6">
+                    <div>
+                        <label class="block font-bold mb-3" for="name">Name</label>
+                        <InputText
+                            id="name" v-model.trim="role.name" :invalid="submitted && !role.name"
+                            autofocus fluid
+                            required="true"/>
+                        <small v-if="submitted && !role.name" class="text-red-500">Name is required.</small>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold mb-3" for="group">Group</label>
+                        <InputText
+                            id="group" v-model.trim="role.group" :invalid="submitted && !role.group"
+                            fluid
+                            required="false"/>
+                        <!--                    <small v-if="submitted && !role.group" class="text-red-500">group is required.</small>-->
+                    </div>
+
+                    <div>
+                        <label class="block font-bold mb-3" for="description">Description</label>
+                        <Textarea
+                            id="description" v-model.trim="role.description" :invalid="submitted && !role.description"
+                            fluid
+                            required="false"/>
+                        <!--                    <small v-if="submitted && !role.description" class="text-red-500">group is required.</small>-->
+                    </div>
+
+
+                </div>
+
+                <template #footer>
+                    <Button icon="pi pi-times" label="Cancel" text @click="hideDialog"/>
+                    <Button icon="pi pi-check" label="Save" @click="saveRole"/>
+                </template>
+            </Dialog>
+
+            <Dialog v-model:visible="deleteRoleDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
+                <div class="flex items-center gap-4">
+                    <i class="pi pi-exclamation-triangle !text-3xl"/>
+                    <span v-if="role">Are you sure you want to delete <b>{{ role.name }}</b>?</span>
+                </div>
+                <template #footer>
+                    <Button icon="pi pi-times" label="No" text @click="deleteRoleDialog = false"/>
+                    <Button icon="pi pi-check" label="Yes" @click="deleteRole"/>
+                </template>
+            </Dialog>
+
+            <Dialog v-model:visible="deleteRolesDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
+                <div class="flex items-center gap-4">
+                    <i class="pi pi-exclamation-triangle !text-3xl"/>
+                    <span v-if="role">Are you sure you want to delete the selected roles?</span>
+                </div>
+                <template #footer>
+                    <Button icon="pi pi-times" label="No" text @click="deleteRolesDialog = false"/>
+                    <Button icon="pi pi-check" label="Yes" text @click="deleteSelectedRoles"/>
+                </template>
+            </Dialog>
         </div>
-
-        <Dialog v-model:visible="roleDialog" :modal="true" :style="{ width: '450px' }"
-                header="Role Details">
-            <div class="flex flex-col gap-6">
-                <div>
-                    <label class="block font-bold mb-3" for="name">Name</label>
-                    <InputText
-                        id="name" v-model.trim="role.name" :invalid="submitted && !role.name"
-                        autofocus fluid
-                        required="true"/>
-                    <small v-if="submitted && !role.name" class="text-red-500">Name is required.</small>
-                </div>
-
-                <div>
-                    <label class="block font-bold mb-3" for="group">Group</label>
-                    <InputText
-                        id="group" v-model.trim="role.group" :invalid="submitted && !role.group"
-                        fluid
-                        required="false"/>
-                    <!--                    <small v-if="submitted && !role.group" class="text-red-500">group is required.</small>-->
-                </div>
-
-                <div>
-                    <label class="block font-bold mb-3" for="description">Description</label>
-                    <Textarea
-                        id="description" v-model.trim="role.description" :invalid="submitted && !role.description"
-                        fluid
-                        required="false"/>
-                    <!--                    <small v-if="submitted && !role.description" class="text-red-500">group is required.</small>-->
-                </div>
-
-
+        <div v-else class="">
+            <div
+                class="text-xl text-white bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+                No Role Found
             </div>
-
-            <template #footer>
-                <Button icon="pi pi-times" label="Cancel" text @click="hideDialog"/>
-                <Button icon="pi pi-check" label="Save" @click="saveRole"/>
-            </template>
-        </Dialog>
-
-        <Dialog v-model:visible="deleteRoleDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
-            <div class="flex items-center gap-4">
-                <i class="pi pi-exclamation-triangle !text-3xl"/>
-                <span v-if="role">Are you sure you want to delete <b>{{ role.name }}</b>?</span>
-            </div>
-            <template #footer>
-                <Button icon="pi pi-times" label="No" text @click="deleteRoleDialog = false"/>
-                <Button icon="pi pi-check" label="Yes" @click="deleteRole"/>
-            </template>
-        </Dialog>
-
-        <Dialog v-model:visible="deleteRolesDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
-            <div class="flex items-center gap-4">
-                <i class="pi pi-exclamation-triangle !text-3xl"/>
-                <span v-if="role">Are you sure you want to delete the selected roles?</span>
-            </div>
-            <template #footer>
-                <Button icon="pi pi-times" label="No" text @click="deleteRolesDialog = false"/>
-                <Button icon="pi pi-check" label="Yes" text @click="deleteSelectedRoles"/>
-            </template>
-        </Dialog>
+        </div>
+    </div>
+    <div v-else class="">
+        <div
+            class="text-xl text-white bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+            You are not allowed to access Role Datatable
+        </div>
     </div>
 </template>
 

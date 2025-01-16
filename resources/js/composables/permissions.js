@@ -75,7 +75,7 @@ export function usePermissions() {
             let jsonPermits;
             jsonPermits = JSON.stringify(permits);
 
-            // console.log("Array Found")
+            console.log("Array Found")
             switch (option) {
                 case 'exact':
                     // console.log(permissionArray,permits,JSON.stringify(permissionArray.sort()) === JSON.stringify(permits.sort()))
@@ -104,8 +104,8 @@ export function usePermissions() {
                     return permissionArray.find((permission) => permits.includes(permission))
             }
         }else{
-            // console.log('String Found')
-            // console.log(permissionArray, permits.includes(permissionArray))
+            console.log('String Found')
+            console.log(permissionArray, permits.includes(permissionArray))
             return permits.includes(permissionArray)
         }
     }

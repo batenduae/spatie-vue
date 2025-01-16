@@ -114,7 +114,7 @@ const multiSortMeta = ref(
 </script>
 
 <template>
-    <div>
+    <div v-if="hasPermission('permissions.index')" class="">
         <div class="card mb-4">
             <!--            For operation-->
             <Toolbar class="mb-6">

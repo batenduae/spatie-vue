@@ -11,7 +11,7 @@ defineProps(["roles"]);
 </script>
 
 <template>
-    <div class="">
+    <div v-if="hasPermission('roles.index')" class="" >
         <div v-if="roles.length" class="mx-auto">
             <Table>
                 <template #caption>
@@ -61,6 +61,13 @@ defineProps(["roles"]);
             </div>
         </div>
     </div>
+    <div v-else class="">
+        <div
+            class="text-xl text-white bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+            You are not allowed to access Role Datatable
+        </div>
+    </div>
+
 </template>
 
 <style scoped>

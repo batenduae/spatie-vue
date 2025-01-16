@@ -17,7 +17,7 @@ defineOptions({layout: SpatieAdminLayout});
 <template>
     <PageHeader text="User's Address Index Page" title="User's Profile">
         <AdminButton
-            v-if="hasPermission('users.others.create')"
+            v-if="hasPermission(['users.address.create'])"
             button-text="Create User's Address"
             button-type="create"
             route-name="usersAddress.create"

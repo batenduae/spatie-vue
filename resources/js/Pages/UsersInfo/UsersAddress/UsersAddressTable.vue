@@ -11,8 +11,8 @@ defineProps(["usersAddress"]);
 </script>
 
 <template>
-    <div v-if="usersAddress.length && hasPermission(['users.address.index'])" class="mx-auto">
-        <div class="">
+    <div v-if="hasPermission(['users.address.index'])" class="mx-auto">
+        <div v-if="usersAddress.length" class="mx-auto">
             <Table>
                 <template #caption>
                     Table: User's Address Index Table
@@ -58,13 +58,19 @@ defineProps(["usersAddress"]);
                 </TableRow>
             </Table>
         </div>
+        <div v-else class="">
+            <div class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+                No User's Address Found
+            </div>
+        </div>
     </div>
     <div v-else class="">
         <div
-            class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
-            No User's Address Found
+            class="text-xl text-white bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+            You are not allowed to access User's Address Table
         </div>
     </div>
+
 </template>
 
 <style scoped>

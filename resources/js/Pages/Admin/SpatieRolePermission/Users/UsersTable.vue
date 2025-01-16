@@ -11,8 +11,8 @@ defineProps(["users"]);
 </script>
 
 <template>
-    <div v-if="users.length && hasPermission(['users.index'])" class="mx-auto">
-        <div class="">
+    <div v-if="hasPermission(['users.index'])" class="mx-auto">
+        <div v-if="users.length" class="">
             <Table>
                 <template #caption>
                     Table: User's Index Table
@@ -141,11 +141,17 @@ defineProps(["users"]);
                 </TableRow>
             </Table>
         </div>
+        <div v-else class="">
+            <div
+                class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+                No User Found.
+            </div>
+        </div>
     </div>
     <div v-else class="">
         <div
             class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
-            No User Found
+            You are not allowed to see user's Table
         </div>
     </div>
 </template>

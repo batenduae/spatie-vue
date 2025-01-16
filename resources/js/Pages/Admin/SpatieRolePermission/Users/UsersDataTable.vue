@@ -84,8 +84,9 @@ const multiSortMeta = ref(
 </script>
 
 <template>
-    <div>
-        <div class="card mb-4">
+    <div v-if="hasPermission(['users.index'])" class="mx-auto">
+        <div v-if="users.length" class="mx-auto">
+            <div class="card mb-4">
             <!--            For operation-->
             <Toolbar class="mb-6">
                 <template #start>
@@ -259,7 +260,7 @@ const multiSortMeta = ref(
             </DataTable>
         </div>
 
-        <Dialog v-model:visible="userDialog" :modal="true" :style="{ width: '450px' }" header="User Details">
+            <Dialog v-model:visible="userDialog" :modal="true" :style="{ width: '450px' }" header="User Details">
             <div class="flex flex-col gap-6">
                 <img v-if="user.image" :alt="user.image"
                      :src="`https://primefaces.org/cdn/primevue/images/user/${user.image}`" class="block m-auto pb-4"/>
@@ -300,7 +301,7 @@ const multiSortMeta = ref(
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteUserDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
+            <Dialog v-model:visible="deleteUserDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
             <div class="flex items-center gap-4">
                 <i class="pi pi-exclamation-triangle !text-3xl"/>
                 <span v-if="user"
@@ -314,7 +315,7 @@ const multiSortMeta = ref(
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteUsersDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
+            <Dialog v-model:visible="deleteUsersDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
             <div class="flex items-center gap-4">
                 <i class="pi pi-exclamation-triangle !text-3xl"/>
                 <span v-if="user">Are you sure you want to delete the selected users?</span>
@@ -324,6 +325,19 @@ const multiSortMeta = ref(
                 <Button icon="pi pi-check" label="Yes" text @click="deleteSelectedUsers"/>
             </template>
         </Dialog>
+        </div>
+        <div v-else class="">
+            <div
+                class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+                You are not allowed to see user's Datatable.
+            </div>
+        </div>
+    </div>
+    <div v-else class="">
+        <div
+            class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
+            You are not allowed to see user's Datatable.
+        </div>
     </div>
 </template>
 
