@@ -37,9 +37,13 @@ onMounted(showFlash)
 
             <!-- ===== Main Content Start ===== -->
             <main class="w-full flex-1 bgImage dark:bg-boxdark-2 ">
-                <div class="items-center p-4 md:p-6 2xl:p-10 duration-300 ease-linear">
-                    <slot></slot>
-                </div>
+                <ScrollPanel style="height: 93vh">
+                    <div class="items-center p-4 md:p-6 2xl:p-10 duration-300 ease-linear">
+                        <slot></slot>
+                    </div>
+                    <ScrollTop :buttonProps="{ severity: 'danger', raised: true, rounded: true }" :threshold="100" icon="pi pi-arrow-up"
+                               target="parent"/>
+                </ScrollPanel>
             </main>
             <!-- ===== Main Content End ===== -->
         </div>
