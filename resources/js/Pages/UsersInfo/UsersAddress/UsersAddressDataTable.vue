@@ -83,12 +83,6 @@ const multiSortMeta = ref(
 </script>
 
 <template>
-    <div class="bg-black text-blue-50">
-        <div class="card w-60 flex justify-around">
-            <div>"users.address.index"</div>
-            <div>{{hasPermission('users.address.index')}}</div>
-        </div>
-    </div>
     <div v-if="hasPermission(['users.address.index'])" class="">
         <div v-if="usersAddress.length" class="mx-auto">
             <div>
@@ -153,12 +147,15 @@ const multiSortMeta = ref(
                         <Column :exportable="false" selectionMode="multiple" style="width: 2rem"></Column>
                         <Column field="id" header="Id" sortable style="min-width: 2rem"></Column>
                         <Column field="user_id" header="User ID" sortable style="min-width: 2rem"></Column>
+                        <Column field="user_name" header="User Name" sortable style="min-width: 2rem"></Column>
+                        <Column field="user_email" header="User Email" sortable style="min-width: 2rem"></Column>
                         <Column field="addressType" header="Address Type" sortable style="min-width: 3rem"/>
                         <Column field="district" header="District" sortable style="min-width: 3rem"/>
                         <Column field="typeVillageMunicipalityCity" header="Type" sortable style="min-width: 3rem"/>
                         <Column field="upazillaCity" header="Upazilla / City" sortable style="min-width: 3rem"/>
                         <Column field="policeStation" header="Police Station" sortable style="min-width: 3rem"/>
-                        <Column field="unionMunicipality" header="Union / Municipality" sortable style="min-width: 3rem"/>
+                        <Column field="unionMunicipality" header="Union / Municipality" sortable
+                                style="min-width: 3rem"/>
                         <Column field="wardCouncil" header="Ward / Council" sortable style="min-width: 3rem"/>
                         <Column field="villageMohokuma" header="Village / Mohokuma" sortable style="min-width: 3rem"/>
                         <Column field="roadNo" header="Road No" sortable style="min-width: 3rem"/>

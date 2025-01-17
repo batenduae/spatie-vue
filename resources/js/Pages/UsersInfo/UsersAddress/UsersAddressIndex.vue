@@ -10,7 +10,9 @@ import UsersAddressDataTable from "@/Pages/UsersInfo/UsersAddress/UsersAddressDa
 const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
-defineProps(["usersAddress"]);
+defineProps([
+    'usersAddress',
+]);
 defineOptions({layout: SpatieAdminLayout});
 </script>
 
@@ -23,6 +25,7 @@ defineOptions({layout: SpatieAdminLayout});
             route-name="usersAddress.create"
         />
     </PageHeader>
+
     <UsersAddressDataTable :usersAddress="usersAddress"/>
     <UsersAddressTable :usersAddress="usersAddress"/>
 </template>

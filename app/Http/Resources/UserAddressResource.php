@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,6 +18,8 @@ class UserAddressResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
+            'user_name' => User::findOrFail($this->user_id)->name,
+            'user_email' => User::findOrFail($this->user_id)->email,
             'addressType' => $this->addressType,
             'district' => $this->district,
             'typeVillageMunicipalityCity' => $this->typeVillageMunicipalityCity,

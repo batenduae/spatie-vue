@@ -66,7 +66,6 @@ defineOptions({layout: SpatieAdminLayout});
 
     <Card class="mx-auto max-w-150">
         <div class="py-4 font-semibold">User Information</div>
-        {{ upazillas }}
         <Vueform v-model="form" :display-errors="false"
                  :endpoint="false"
                  :multilingual="false"

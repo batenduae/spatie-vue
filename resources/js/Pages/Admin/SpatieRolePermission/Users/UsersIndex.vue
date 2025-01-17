@@ -6,11 +6,15 @@ import UsersDataTable from "@/Pages/Admin/SpatieRolePermission/Users/UsersDataTa
 import UsersTable from "@/Pages/Admin/SpatieRolePermission/Users/UsersTable.vue";
 import {onMounted, onUpdated} from "vue";
 import {usePermissions} from "@/composables/permissions.js";
+import UsersTrashedDataTable from "@/Pages/Admin/SpatieRolePermission/Users/UsersTrashedDataTable.vue";
 
 const {hasPermission, hasRole, showFlash} = usePermissions();
 onMounted(showFlash)
 onUpdated(showFlash)
-defineProps(["users"]);
+defineProps([
+    'users',
+    'usersTrashed',
+]);
 defineOptions({layout: SpatieAdminLayout});
 </script>
 
@@ -24,8 +28,8 @@ defineOptions({layout: SpatieAdminLayout});
                 route-name="users.create"
             />
         </PageHeader>
-
         <UsersDataTable :users="users"/>
+        <UsersTrashedDataTable :users="usersTrashed"/>
         <UsersTable :users="users"/>
     </div>
 </template>

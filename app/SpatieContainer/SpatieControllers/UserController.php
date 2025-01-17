@@ -39,6 +39,7 @@ class UserController extends Controller implements HasMiddleware
     {
         return Inertia::render('Admin/SpatieRolePermission/Users/UsersIndex',[
             'users' =>  UserResource::collection(User::all()),
+            'usersTrashed' => User::onlyTrashed()->get()
         ]);
     }
 

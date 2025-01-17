@@ -29,13 +29,6 @@ defineOptions({ layout: SpatieAdminLayout });
                 v-if="hasPermission('permissions.create')"
             />
         </PageHeader>
-        <div class="bg-black text-blue-50" v-for="permission in permissions">
-            <div class="card w-60 flex justify-around">
-                <div>{{permission.name}}</div>
-                <div>{{hasPermission(permission.name)}}</div>
-            </div>
-        </div>
-        users.address.index
         <PermissionsDataTable :permissions="permissions"/>
         <PermissionsTable :permissions="permissions"/>
     </div>
