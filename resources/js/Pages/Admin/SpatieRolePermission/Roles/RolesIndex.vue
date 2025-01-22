@@ -4,7 +4,6 @@ import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-import RolesTable from "@/Pages/Admin/SpatieRolePermission/Roles/RolesTable.vue";
 import RolesDataTable from "@/Pages/Admin/SpatieRolePermission/Roles/RolesDataTable.vue";
 
 defineProps(["roles"]);
@@ -32,7 +31,7 @@ defineOptions({ layout: SpatieAdminLayout });
             />
         </PageHeader>
         <RolesDataTable :roles="roles"/>
-        <RolesTable :roles="roles"/>
+<!--        <RolesTable :roles="roles"/>-->
     </div>
 </template>
 

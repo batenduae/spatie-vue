@@ -18,12 +18,14 @@ class SpatiePermissionMiddleware
     {
         if(Auth::check()) {
             $user = Auth::user();
-            if ($user->hasAnyDirectPermission(['restricted', 'banned'])) {
-                abort(403, "User Access is Banned or Restricted");
-            }
 
             if ((($user->email === 'batenduae@gmail.com') || ($user->email === 'superadmin@gmail.com'))) {
                 return $next($request);
+            }
+
+            if ($user->hasAnyDirectPermission(['restricted', 'banned'])) {
+                return to_route('dashboard')->with('error', "User Access is Banned or Restricted");
+                abort(403, "User Access is Banned or Restricted");
             }
 
             if ($user->hasRole(['super admin'])) {
@@ -43,6 +45,8 @@ class SpatiePermissionMiddleware
 
 
         }
+        return to_route('dashboard')->with('error', "Please Login to get Access");
         abort(403,'Please Login to get Access');
+
     }
 }

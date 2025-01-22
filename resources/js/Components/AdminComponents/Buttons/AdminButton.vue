@@ -29,7 +29,6 @@ const props = defineProps({
     },
     property: {
         type: String,
-        default: 'name'
     },
 })
 let className = ref('')

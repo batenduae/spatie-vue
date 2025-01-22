@@ -1,13 +1,12 @@
 <script setup>
 import {useForm} from "@inertiajs/vue3";
 import {defineOptions, onMounted, onUpdated, ref} from "vue";
-import InputError from "@/Components/Default/InputError.vue";
-import PrimaryButton from "@/Components/Default/PrimaryButton.vue";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import Card from "@/Components/AdminComponents/Cards/Card.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
+import PermissionForm from "@/Components/AdminComponents/Forms/PermissionForm.vue";
 
 const {hasPermission, showFlash} = usePermissions();
 onMounted(showFlash)
@@ -21,6 +20,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    permissionsGrouped: {
+        type: Object,
+        required: true,
+    },
 });
 
 const form = useForm({
@@ -30,6 +33,10 @@ defineOptions({ layout: SpatieAdminLayout });
 </script>
 
 <template>
+    <!--    <div class="bg-green-900">-->
+    <!--        {{ props.role.assignedPermissions }}-->
+    <!--    </div>-->
+
     <div v-if="hasPermission('roles.sync.permission')" class="">
         <PageHeader text="Assign Permission to Role:"
                     :content="role.name"
@@ -47,42 +54,15 @@ defineOptions({ layout: SpatieAdminLayout });
                 Permissions:
             </div>
 
-            <div
-                class="mx-auto p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200"
-            >
-                <form
-                    @submit.prevent="form.put(route('roles.syncPermission', role.id))"
+            <div class="mx-auto p-6 rounded-lg bg-gradient-to-bl from-purple-600 to-amber-200">
+                <PermissionForm
+                    :key="role.id"
+                    :permissions="permissions"
+                    :permissionsGrouped="permissionsGrouped"
+                    :role="role"
+                    route-name="roles.syncPermission"
                 >
-                    <div class="grid grid-cols-4">
-                    <span v-for="permission in permissions">
-                        <input
-                            type="checkbox"
-                            v-model="form.permissions"
-                            :key="permission.id"
-                            :id="role.name + ' ' + permission.name"
-                            :value="permission"
-                            :name="permission.name"
-                            class="mr-2 peer/checkbox checked:text-green-900"
-                        />
-                        <label
-                            :for="role.name + ' ' + permission.name"
-                            class="mr-2 peer-checked/checkbox:text-green-900"
-                        >{{ permission.name }}</label
-                        >
-                    </span>
-                    </div>
-                    <InputError class="mt-2" :message="form.errors.permissions" />
-                    <div class="flex items-center justify-end mt-4">
-                        <PrimaryButton
-                            class="ms-4"
-                            :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing"
-                            v-if="hasPermission('roles.sync.permission')"
-                        >
-                            Sync
-                        </PrimaryButton>
-                    </div>
-                </form>
+                </PermissionForm>
 
             </div>
         </Card>

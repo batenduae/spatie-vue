@@ -4,7 +4,7 @@ import {FilterMatchMode} from '@primevue/core/api';
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import {useToast} from 'primevue/usetoast';
 import {usePermissions} from "@/composables/permissions.js";
-import {useForm} from "@inertiajs/vue3";
+import {useForm, usePage} from "@inertiajs/vue3";
 
 const {hasPermission, hasPermissionSelf, hasPermissionOthers, hasRole, showFlash} = usePermissions();
 const props = defineProps([
@@ -44,7 +44,7 @@ const saveUser = () => {
             password_confirmation: user.value.password,
         });
         form.post(route('users.store'))
-        toast.add({severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000});
+        // toast.add({severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000});
         userDialog.value = false;
         user.value = {};
     }
@@ -68,7 +68,7 @@ const deleteSelectedUsers = () => {
     });
     form.delete(route('users.destroyMany', filteredIds))
     selectedUsers.value = null;
-    toast.add({severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000});
+    // toast.add({severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000});
 };
 
 const exportCSV = () => {
@@ -220,6 +220,7 @@ const multiSortMeta = ref(
                             <AdminButton
                                 v-if="slotProps.data.id!==1 && (hasPermissionSelf('users.self.delete',slotProps.data.id) || hasPermissionOthers('users.others.delete',slotProps.data.id))"
                                 :obj="slotProps.data"
+                                :property="name"
                                 button-type="deleteOnConfirm1"
                                 route-method="delete"
                                 route-name="users.destroy"
@@ -246,7 +247,8 @@ const multiSortMeta = ref(
                                     </svg>
                                 </Button>
                             </AdminButton>
-                            <Button v-else raised rounded severity="success" text>
+                            <Button v-if="usePage().props.auth.user.id===slotProps.data.id" raised rounded
+                                    severity="success" text>
                                 Logged in
                                 <svg fill="#75FB4C" height="24px" viewBox="0 -960 960 960"
                                      width="24px" xmlns="http://www.w3.org/2000/svg">
@@ -329,7 +331,7 @@ const multiSortMeta = ref(
         <div v-else class="">
             <div
                 class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
-                You are not allowed to see user's Datatable.
+                There are no data in user's Datatable.
             </div>
         </div>
     </div>

@@ -29,6 +29,9 @@ class UserController extends Controller implements HasMiddleware
             new Middleware(PermissionMiddleware::using(['users.others.create']), only: ['create', 'store']),
             new Middleware(PermissionMiddleware::using(['users.self.edit', 'users.others.edit']), only: ['edit', 'update']),
             new Middleware(PermissionMiddleware::using(['users.self.delete', 'users.others.delete']), only: ['destroy', 'destroyMany']),
+            new Middleware(PermissionMiddleware::using(['users.self.delete', 'users.others.delete']), only: ['destroyPermanently']),
+            new Middleware(PermissionMiddleware::using(['users.index']), only: ['restore']),
+
         ];
     }
 
@@ -56,6 +59,7 @@ class UserController extends Controller implements HasMiddleware
      */
     public function store(CreateUserRequest $request)
     {
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -86,6 +90,7 @@ class UserController extends Controller implements HasMiddleware
 
         return to_route('users.index')
             ->with('success', "User : '" . $user->name . "' Created Successfully");
+
     }
 
     /**
@@ -153,7 +158,15 @@ class UserController extends Controller implements HasMiddleware
             ->with('danger', "User : '" . $user->name . "' Deleted Successfully");
     }
 
-    public function destroyMany(Request $request)
+    public function destroyPermanently(string $id): RedirectResponse
+    {
+        $userName = User::onlyTrashed()->findOrFail($id)->name;
+        User::onlyTrashed()->findOrFail($id)->forceDelete();
+        return back()
+            ->with('danger', "User : '" . $userName . "' Deleted Permanently Successfully");
+    }
+
+    public function destroyMany(Request $request): RedirectResponse
     {
         $ids = $request->ids;
         $text = "";
@@ -166,5 +179,13 @@ class UserController extends Controller implements HasMiddleware
         }
         return back()
             ->with('danger', "Users : '" . $text . "' Deleted Successfully");
+    }
+
+    public function restore(string $id): RedirectResponse
+    {
+        User::onlyTrashed()->findOrFail($id)->restore();
+        $user = User::findOrFail($id);
+        return back()
+            ->with('danger', "User : '" . $user->name . "' Restored Successfully");
     }
 }

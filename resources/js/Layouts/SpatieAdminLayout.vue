@@ -41,8 +41,9 @@ onMounted(showFlash)
                     <div class="items-center p-4 md:p-6 2xl:p-10 duration-300 ease-linear">
                         <slot></slot>
                     </div>
-                    <ScrollTop :buttonProps="{ severity: 'danger', raised: true, rounded: true }" :threshold="100" icon="pi pi-arrow-up"
-                               target="parent"/>
+                    <ScrollTop :buttonProps="{ severity: 'danger', raised: true, rounded: true }" :threshold="100"
+                               behavior="smooth"
+                               icon="pi pi-arrow-up" target="parent"/>
                 </ScrollPanel>
             </main>
             <!-- ===== Main Content End ===== -->

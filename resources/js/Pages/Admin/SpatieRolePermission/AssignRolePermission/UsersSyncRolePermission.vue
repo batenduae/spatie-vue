@@ -25,6 +25,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    permissionsGrouped: {
+        type: Object,
+        required: true,
+    },
     assignedRoles: {
         type: Object,
         required: true,
@@ -81,32 +85,27 @@ defineOptions({ layout: SpatieAdminLayout });
             <div class="text-xl py-2 text-blue-600 font-bold">
                 Roles:
             </div>
-            <div
-                class="mx-auto p-6 rounded-lg bg-gradient-to-b from-purple-400 to-indigo-400"
-            >
-                <form
-                    @submit.prevent="
-                        form1.put(route('users.syncRole', user.id))
-                    "
-                >
-                    <div class="grid sm:grid-cols-4">
-                        <span v-for="role in roles" class="">
-                            <input
-                                type="checkbox"
-                                v-model="form1.roles"
-                                :id="role.name"
-                                :value="role.name"
-                                :name="role.name"
-                                class="mr-2 peer/checkbox checked:text-green-900"
-                            />
-                            <label
-                                :for="role.name"
-                                class="mr-2 peer-checked/checkbox:text-green-900"
-                                >{{ role.name }}</label
-                            >
-                        </span>
-                    </div>
-                    <InputError class="mt-2" :message="form1.errors.roles" />
+            <div class="mx-auto p-6 rounded-lg bg-gradient-to-b from-purple-400 to-indigo-400">
+                <form @submit.prevent="form1.put(route('users.syncRole', user.id))">
+                    <Card type="">
+                        <div class="flex flex-row flex-wrap">
+                            <div v-for="role in roles" class="flex flex-row flex-none w-64">
+                                <input
+                                    :id="role.name"
+                                    v-model="form1.roles"
+                                    :name="role.name"
+                                    :value="role.name"
+                                    class="mr-2 peer/checkbox checked:text-green-900"
+                                    type="checkbox"
+                                />
+                                <label
+                                    :for="role.name"
+                                    class="mr-2 peer-checked/checkbox:text-green-900"
+                                >{{ role.name }}</label>
+                            </div>
+                        </div>
+                    </Card>
+                    <InputError :message="form1.errors.roles" class="mt-2"/>
                     <div class="flex items-center justify-end mt-4">
                         <PrimaryButton
                             class="ms-4"
@@ -124,44 +123,78 @@ defineOptions({ layout: SpatieAdminLayout });
             <div class="mt-4 text-xl py-2 text-green-600 font-bold">
                 Permissions:
             </div>
-            <div
-                class="mx-auto p-6 rounded-lg bg-gradient-to-bl from-fuchsia-500 to-amber-200"
-            >
-                <form
-                    @submit.prevent="
-                        form2.put(
-                            route('users.syncPermission', user.id)
-                        )
-                    "
-                >
-                    <div class="grid sm:grid-cols-4">
-                        <span v-for="permission in permissions">
-                            <input
-                                type="checkbox"
-                                v-model="form2.permissions"
-                                :id="permission.name"
-                                :value="permission.name"
-                                :name="permission.name"
-                                :checked="
+            <div class="mx-auto p-6 rounded-lg bg-gradient-to-bl from-fuchsia-500 to-amber-200">
+                <form @submit.prevent="form2.put(route('users.syncPermission', user.id))">
+
+                    <div class="flex flex-col">
+                        <Card type="green">
+                            <div v-for="(groupItem,groupName) of permissionsGrouped" class="pb-6">
+                                <div class="text-blue-900">
+                                <span class="text-xl font-semibold">
+                                    Group: <span class="text-purple-900 capitalize">{{ groupName || "Null" }}</span>
+                                </span> ({{ groupItem.length }})
+                                </div>
+                                <div class="flex flex-row flex-wrap">
+                                    <div v-for="permission in groupItem" class="flex flex-row flex-none w-64">
+                                        <input
+                                            :id="permission.name"
+                                            v-model="form2.permissions"
+                                            :checked="
                                     assignedPermissionsViaRole.includes(
                                         permission.name
                                     )
                                 "
-                                :disabled="
+                                            :disabled="
                                     assignedPermissionsViaRole.includes(
                                         permission.name
                                     ) &&
                                     !form2.permissions.includes(permission.name)
                                 "
-                                class="mr-2 peer/checkbox checked:text-blue-700 disabled:text-green-900 disabled:opacity-25 disabled:font-semibold"
-                            />
-                            <label
-                                :for="permission.name"
-                                class="mr-2 peer-checked/checkbox:text-blue-700 peer-disabled/checkbox:text-green-900"
-                                >{{ permission.name }}</label
-                            >
-                        </span>
+                                            :name="permission.name"
+                                            :value="permission.name"
+                                            class="mr-2 peer/checkbox checked:text-blue-700 disabled:text-green-900 disabled:opacity-25 disabled:font-semibold"
+                                            type="checkbox"
+                                        />
+                                        <label
+                                            :for="permission.name"
+                                            class="mr-2 peer-checked/checkbox:text-blue-700 peer-disabled/checkbox:text-green-900"
+                                        >{{ permission.name }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+
+                        <Card type="yellow">
+                            <div class="flex flex-row flex-wrap">
+                                <div v-for="permission in permissions" class="flex flex-row flex-none w-64">
+                                    <input
+                                        :id="permission.name"
+                                        v-model="form2.permissions"
+                                        :checked="
+                                    assignedPermissionsViaRole.includes(
+                                        permission.name
+                                    )
+                                "
+                                        :disabled="
+                                    assignedPermissionsViaRole.includes(
+                                        permission.name
+                                    ) &&
+                                    !form2.permissions.includes(permission.name)
+                                "
+                                        :name="permission.name"
+                                        :value="permission.name"
+                                        class="mr-2 peer/checkbox checked:text-blue-700 disabled:text-green-900 disabled:opacity-25 disabled:font-semibold"
+                                        type="checkbox"
+                                    />
+                                    <label
+                                        :for="permission.name"
+                                        class="mr-2 peer-checked/checkbox:text-blue-700 peer-disabled/checkbox:text-green-900"
+                                    >{{ permission.name }}</label>
+                                </div>
+                            </div>
+                        </Card>
                     </div>
+
                     <InputError
                         class="mt-2"
                         :message="form2.errors.permissions"

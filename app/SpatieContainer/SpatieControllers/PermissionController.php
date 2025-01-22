@@ -73,7 +73,7 @@ class PermissionController extends Controller implements HasMiddleware
     {
         $permission->update($request->validated());
         return to_route('permissions.index')
-            ->with('success','Permission Updated Successfully');
+            ->with('success', "Permission : '" . $permission->name . "' Updated Successfully");
     }
 
     /**

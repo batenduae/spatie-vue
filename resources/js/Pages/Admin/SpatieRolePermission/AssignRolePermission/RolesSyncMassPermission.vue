@@ -19,6 +19,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    permissionsGrouped: {
+        type: Object,
+        required: true,
+    },
 })
 
 defineOptions({ layout: SpatieAdminLayout });
@@ -46,6 +50,7 @@ defineOptions({ layout: SpatieAdminLayout });
                 <PermissionForm
                     :key="role.id"
                     :permissions="permissions"
+                    :permissionsGrouped="permissionsGrouped"
                     :role="role"
                     route-name="roles.syncPermission"
                 >

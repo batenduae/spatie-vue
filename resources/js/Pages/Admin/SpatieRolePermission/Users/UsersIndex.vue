@@ -3,7 +3,6 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
 import UsersDataTable from "@/Pages/Admin/SpatieRolePermission/Users/UsersDataTable.vue";
-import UsersTable from "@/Pages/Admin/SpatieRolePermission/Users/UsersTable.vue";
 import {onMounted, onUpdated} from "vue";
 import {usePermissions} from "@/composables/permissions.js";
 import UsersTrashedDataTable from "@/Pages/Admin/SpatieRolePermission/Users/UsersTrashedDataTable.vue";
@@ -30,7 +29,7 @@ defineOptions({layout: SpatieAdminLayout});
         </PageHeader>
         <UsersDataTable :users="users"/>
         <UsersTrashedDataTable :users="usersTrashed"/>
-        <UsersTable :users="users"/>
+<!--        <UsersTable :users="users"/>-->
     </div>
 </template>
 

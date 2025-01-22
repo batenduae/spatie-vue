@@ -65,9 +65,6 @@ const multiSortMeta = ref(
 </script>
 
 <template>
-    <div class="bg-green-900">
-        {{ users }}
-    </div>
     <div v-if="hasPermission(['users.index'])" class="mx-auto">
         <div v-if="users.length" class="mx-auto">
             <div class="card mb-4">
@@ -147,19 +144,22 @@ const multiSortMeta = ref(
                     <Column :exportable="false" header="Action" style="min-width: 3rem">
                         <template #body="slotProps">
                             <div class="flex justify-start space-x-2">
+                                {{ slotProps.data.id }}
                                 <AdminButton
                                     v-if="slotProps.data.id!==1 && (hasPermissionSelf('users.self.edit',slotProps.data.id) || hasPermissionOthers('users.others.edit',slotProps.data.id))"
-                                    :obj="slotProps.data.id"
-                                    route-name="users.edit"
+                                    :obj="slotProps.data"
+                                    route-method="post"
+                                    route-name="users.restore"
+                                    text="User"
                                 >
                                     <Button icon="pi pi-replay" raised rounded text/>
                                 </AdminButton>
                                 <AdminButton
                                     v-if="slotProps.data.id!==1 && (hasPermissionSelf('users.self.delete',slotProps.data.id) || hasPermissionOthers('users.others.delete',slotProps.data.id))"
-                                    :obj="slotProps.data"
+                                    :obj="slotProps.data.id"
                                     button-type="deleteOnConfirm1"
                                     route-method="delete"
-                                    route-name="users.destroy"
+                                    route-name="users.destroyPermanently"
                                     text="User"
                                 >
                                     <Button icon="pi pi-trash" raised rounded severity="danger" text/>
@@ -198,14 +198,14 @@ const multiSortMeta = ref(
         <div v-else class="">
             <div
                 class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
-                You are not allowed to see user's Datatable.
+                There are no data in user's Trash Datatable.
             </div>
         </div>
     </div>
     <div v-else class="">
         <div
             class="text-xl bg-gradient-to-br from-pink-300 to-rose-600 rounded-lg p-4 max-w-xl text-center mx-auto">
-            You are not allowed to see user's Datatable.
+            You are not allowed to see user's Trash Datatable.
         </div>
     </div>
 </template>

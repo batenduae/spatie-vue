@@ -50,6 +50,7 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
             'user' => new UserResource($user),
             'roles' => RoleResource::collection(Role::all()),
             'permissions' => PermissionResource::collection(Permission::all()),
+            'permissionsGrouped' => PermissionResource::collection(Permission::all())->collection->sortBy([['name', 'asc']])->groupBy('group'),
             'assignedRoles' => $user->roles->pluck('name'),
             'assignedPermissions' => $user->permissions->pluck('name'),
             'assignedPermissionsViaRole' => $user->getPermissionsViaRoles()->pluck('name'),
@@ -131,9 +132,11 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
 
     public function rolesSyncPermissionView($roleId): Response
     {
+//        dd(PermissionResource::collection(Permission::all())->collection->groupBy('group'));
         return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/RolesSyncPermission', [
             'role' => new RoleResource(Role::findOrFail($roleId)),
             'permissions' => PermissionResource::collection(Permission::all()),
+            'permissionsGrouped' => PermissionResource::collection(Permission::all())->collection->sortBy([['name', 'asc']])->groupBy('group'),
         ]);
     }
 
@@ -177,6 +180,7 @@ class AssignRolePermissionController extends Controller implements HasMiddleware
         return Inertia::render('Admin/SpatieRolePermission/AssignRolePermission/RolesSyncMassPermission', [
             'roles' => RoleResource::collection(Role::all()),
             'permissions' => PermissionResource::collection(Permission::all()),
+            'permissionsGrouped' => PermissionResource::collection(Permission::all())->collection->sortBy([['name', 'asc']])->groupBy('group'),
         ]);
     }
 

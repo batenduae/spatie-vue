@@ -2,7 +2,6 @@
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 import PageHeader from "@/Components/AdminComponents/Heading/PageHeader.vue";
 import SpatieAdminLayout from "@/Layouts/SpatieAdminLayout.vue";
-import PermissionsTable from "@/Pages/Admin/SpatieRolePermission/Permissions/PermissionsTable.vue";
 import PermissionsDataTable from "@/Pages/Admin/SpatieRolePermission/Permissions/PermissionsDataTable.vue";
 import {usePermissions} from "@/composables/permissions.js";
 import {onMounted, onUpdated} from "vue";
@@ -30,7 +29,7 @@ defineOptions({ layout: SpatieAdminLayout });
             />
         </PageHeader>
         <PermissionsDataTable :permissions="permissions"/>
-        <PermissionsTable :permissions="permissions"/>
+<!--        <PermissionsTable :permissions="permissions"/>-->
     </div>
 </template>
 

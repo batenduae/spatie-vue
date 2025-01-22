@@ -88,8 +88,10 @@ class RoleController extends Controller implements HasMiddleware
     public function update(CreateRoleRequest $request, Role $role): RedirectResponse
     {
         $role->update($request->validated());
+        if ($request->has('permissions')) {
 //            $role->syncPermissions($request->permissions);
-        $role->syncPermissions($request->input('permissions.*.name'));
+            $role->syncPermissions($request->input('permissions.*.name'));
+        }
         return back()
             ->with('success',"Role: '".$role->name."' Updated Successfully");
 //        return to_route('roles.index');

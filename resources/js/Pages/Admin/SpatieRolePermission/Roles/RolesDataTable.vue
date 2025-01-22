@@ -211,7 +211,8 @@ const multiSortMeta = ref(
                         <InputText
                             id="name" v-model.trim="role.name" :invalid="submitted && !role.name"
                             autofocus fluid
-                            required="true"/>
+                            required="true"
+                        />
                         <small v-if="submitted && !role.name" class="text-red-500">Name is required.</small>
                     </div>
 
@@ -220,7 +221,7 @@ const multiSortMeta = ref(
                         <InputText
                             id="group" v-model.trim="role.group" :invalid="submitted && !role.group"
                             fluid
-                            required="false"/>
+                        />
                         <!--                    <small v-if="submitted && !role.group" class="text-red-500">group is required.</small>-->
                     </div>
 
@@ -229,7 +230,7 @@ const multiSortMeta = ref(
                         <Textarea
                             id="description" v-model.trim="role.description" :invalid="submitted && !role.description"
                             fluid
-                            required="false"/>
+                        />
                         <!--                    <small v-if="submitted && !role.description" class="text-red-500">group is required.</small>-->
                     </div>
 
