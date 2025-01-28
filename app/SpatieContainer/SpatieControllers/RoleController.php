@@ -34,7 +34,8 @@ class RoleController extends Controller implements HasMiddleware
     public function index(): Response
     {
         return Inertia::render('Admin/SpatieRolePermission/Roles/RolesIndex',[
-            'roles'=> RoleResource::collection(Role::all()),
+            'roles' => RoleResource::collection(Role::all()),
+            'permissions' => PermissionResource::collection(Permission::all()),
         ]);
     }
 
@@ -43,8 +44,8 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function create(): Response
     {
-        return Inertia::render('Admin/SpatieRolePermission/Roles/RolesCreate',[
-            'permissions'   =>  PermissionResource::collection(Permission::all())
+        return Inertia::render('Admin/SpatieRolePermission/Roles/RolesCreate', [
+            'permissions' => PermissionResource::collection(Permission::all()),
         ]);
     }
 

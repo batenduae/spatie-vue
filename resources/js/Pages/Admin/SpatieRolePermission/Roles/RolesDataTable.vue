@@ -8,9 +8,17 @@ import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 
 const {hasPermission, hasPermissionSelf, hasPermissionOthers, hasRole, showFlash} = usePermissions();
 //
-const props = defineProps([
-    'roles',
-])
+const props = defineProps({
+    roles: {
+        type: Object,
+        required: true,
+    },
+    permissions: {
+        type: Object,
+        required: true,
+    },
+});
+
 const toast = useToast();
 const dt = ref();
 const roles = ref();
@@ -49,6 +57,7 @@ const saveRole = () => {
         name: ref(role.name),
         group: ref(role.group),
         description: ref(role.description),
+        permissions: ref(role.permissions),
     });
     if (!role?.id && role?.name.trim()) {
         form.post(route('roles.store'))
@@ -111,6 +120,15 @@ const multiSortMeta = ref(
         {field: 'id', order: -1},
     ]
 );
+
+const selectedCities = ref();
+const cities = ref([
+    {name: 'New York', code: 'NY'},
+    {name: 'Rome', code: 'RM'},
+    {name: 'London', code: 'LDN'},
+    {name: 'Istanbul', code: 'IST'},
+    {name: 'Paris', code: 'PRS'}
+]);
 
 </script>
 
@@ -232,6 +250,14 @@ const multiSortMeta = ref(
                             fluid
                         />
                         <!--                    <small v-if="submitted && !role.description" class="text-red-500">group is required.</small>-->
+                    </div>
+
+                    <div>
+                        <label class="block font-bold mb-3" for="permissions">Permissions</label>
+                        <MultiSelect v-model="role.permissions" :maxSelectedLabels="3" :options="permissions" :showClear="true"
+                                     class="w-full md:w-80" display="chip"
+                                     filter optionLabel="name" placeholder="Select Permissions"/>
+                        <!--                    <small v-if="submitted && !role.permissions" class="text-red-500">permissions is required.</small>-->
                     </div>
 
 
