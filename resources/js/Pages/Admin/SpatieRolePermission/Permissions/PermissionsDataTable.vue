@@ -184,9 +184,12 @@ const multiSortMeta = ref(
                         <div class="flex justify-start space-x-2">
                             <Button v-if="hasPermission('permissions.edit')" class="mr-2" icon="pi pi-pencil"
                                     label=""
-                                    @click="updatePermission(slotProps.data.id)"/>
+                                    outlined severity="info"
+                                    @click="updatePermission(slotProps.data.id)"
+                            />
                             <Button v-if="hasPermission('permissions.delete')" class="mr-2" icon="pi pi-trash"
                                     label=""
+                                    outlined severity="danger"
                                     @click="confirmDeletePermission(slotProps.data.id)"/>
                         </div>
                     </template>

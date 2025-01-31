@@ -72,10 +72,10 @@ defineOptions({ layout: SpatieAdminLayout });
 
                         <TextInput
                             id="name"
+                            fluid
                             v-model="form.name"
                             autocomplete="name"
                             autofocus
-                            class="mt-1 block w-full"
                             required
                             type="text"
                         />
@@ -88,10 +88,9 @@ defineOptions({ layout: SpatieAdminLayout });
 
                         <TextInput
                             id="group"
+                            fluid
                             v-model="form.group"
                             autocomplete="group"
-                            autofocus
-                            required
                             type="text"
                         />
 
@@ -103,10 +102,10 @@ defineOptions({ layout: SpatieAdminLayout });
 
                         <TextArea
                             id="description"
+                            autoResize
                             v-model="form.description"
                             autocomplete="description"
-                            autofocus
-                            required
+                            fluid
                             type="text"
                         />
 
@@ -143,11 +142,11 @@ defineOptions({ layout: SpatieAdminLayout });
                 </div>
 
                 <div class="flex items-center justify-end mt-4">
+                    <!--                    @click="push.success('Role Updated Successfully')"-->
                     <PrimaryButton
                         class="ms-4"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
-                        @click="push.success('Role Updated Successfully')"
                         v-if="hasPermission(['roles.edit','roles.sync.permission'])"
                     >
                         Update

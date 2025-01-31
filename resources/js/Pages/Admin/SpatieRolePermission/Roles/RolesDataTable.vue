@@ -6,9 +6,9 @@ import {usePermissions} from "@/composables/permissions.js";
 import {useForm} from "@inertiajs/vue3";
 import AdminButton from "@/Components/AdminComponents/Buttons/AdminButton.vue";
 
-const {hasPermission, hasPermissionSelf, hasPermissionOthers, hasRole, showFlash} = usePermissions();
+let {hasPermission, hasPermissionSelf, hasPermissionOthers, hasRole, showFlash} = usePermissions();
 //
-const props = defineProps({
+let props = defineProps({
     roles: {
         type: Object,
         required: true,
@@ -19,29 +19,24 @@ const props = defineProps({
     },
 });
 
-const toast = useToast();
-const dt = ref();
-const roles = ref();
+let toast = useToast();
+let dt = ref();
+let roles = ref();
 roles.value = props.roles;
 
-const filters = ref({
+let filters = ref({
     'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
 });
 
 //For create new role
 let role = ref({});
-const roleDialog = ref(false);
-const submitted = ref(false);
+let roleDialog = ref(false);
+let submitted = ref(false);
 
-const createNewRole = () => {
+let createNewRole = () => {
     role = {};
     submitted.value = false;
     roleDialog.value = true;
-};
-
-const hideDialog = () => {
-    roleDialog.value = false;
-    submitted.value = false;
 };
 
 function updateRole(roleId) {
@@ -51,28 +46,35 @@ function updateRole(roleId) {
     submitted.value = false;
     roleDialog.value = true;
 }
-const saveRole = () => {
+
+let saveRole = () => {
     submitted.value = true;
     let form = useForm({
         name: ref(role.name),
-        group: ref(role.group),
-        description: ref(role.description),
-        permissions: ref(role.permissions),
+        group: ref(role?.group),
+        description: ref(role?.description),
+        permissions: ref(role?.assignedPermissions),
     });
     if (!role?.id && role?.name.trim()) {
         form.post(route('roles.store'))
-        toast.add({severity: 'success', summary: 'Successful', detail: 'Role Created', life: 3000});
+        // toast.add({severity: 'success', summary: 'Successful', detail: 'Role Created', life: 3000});
         roleDialog.value = false;
         role = {};
     } else {
+        console.log(form.permissions)
         form.put(route('roles.update', role.id))
-        toast.add({severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 3000});
+        // toast.add({severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 3000});
         roleDialog.value = false;
-        role.value = {};
+        role = {};
     }
 };
+let hideDialog = () => {
+    roleDialog.value = false;
+    submitted.value = false;
+};
+
 let selectedRole = ref();
-const deleteRoleDialog = ref(false);
+let deleteRoleDialog = ref(false);
 
 function confirmDeleteRole(id) {
     selectedRole = id;
@@ -80,55 +82,46 @@ function confirmDeleteRole(id) {
     deleteRoleDialog.value = true;
 }
 
-const deleteRole = () => {
+let deleteRole = () => {
     deleteRoleDialog.value = false;
     let ids = [selectedRole];
     let filteredIds = [...new Set([...hasPermissionSelf('roles.delete', ids), ...hasPermissionOthers('roles.delete', ids)])].filter((value) => value > 0);
-    const form = useForm({
+    let form = useForm({
         ids: filteredIds,
     });
     form.delete(route('roles.destroyMany', filteredIds))
     selectedRole = null;
-    toast.add({severity: 'success', summary: 'Successful', detail: 'Role Deleted', life: 3000});
+    // toast.add({severity: 'success', summary: 'Successful', detail: 'Role Deleted', life: 3000});
 };
 
 //for batch mode operation
 //to delete role
 let selectedRoles = ref();
-const deleteRolesDialog = ref(false);
-const confirmDeleteSelected = () => {
+let deleteRolesDialog = ref(false);
+let confirmDeleteSelected = () => {
     deleteRolesDialog.value = true;
 };
-const deleteSelectedRoles = () => {
+let deleteSelectedRoles = () => {
     deleteRolesDialog.value = false;
     let ids = selectedRoles.value.map(({id}) => id);
     let filteredIds = [...new Set([...hasPermissionSelf('roles.delete', ids), ...hasPermissionOthers('roles.delete', ids)])].filter((value) => value > 0);
-    const form = useForm({
+    let form = useForm({
         ids: filteredIds,
     });
     form.delete(route('roles.destroyMany', filteredIds))
     selectedRoles.value = null;
-    toast.add({severity: 'success', summary: 'Successful', detail: 'Roles Deleted', life: 3000});
+    // toast.add({severity: 'success', summary: 'Successful', detail: 'Roles Deleted', life: 3000});
 };
 
-const exportCSV = () => {
+let exportCSV = () => {
     dt.value.exportCSV();
 };
 
-const multiSortMeta = ref(
+let multiSortMeta = ref(
     [
         {field: 'id', order: -1},
     ]
 );
-
-const selectedCities = ref();
-const cities = ref([
-    {name: 'New York', code: 'NY'},
-    {name: 'Rome', code: 'RM'},
-    {name: 'London', code: 'LDN'},
-    {name: 'Istanbul', code: 'IST'},
-    {name: 'Paris', code: 'PRS'}
-]);
 
 </script>
 
@@ -204,9 +197,11 @@ const cities = ref([
                             <div class="flex justify-start space-x-2">
                                 <Button v-if="hasPermission('roles.edit')" class="mr-2" icon="pi pi-pencil"
                                         label=""
+                                        outlined severity="info"
                                         @click="updateRole(slotProps.data.id)"/>
                                 <Button v-if="hasPermission('roles.delete')" class="mr-2" icon="pi pi-trash"
                                         label=""
+                                        outlined severity="danger"
                                         @click="confirmDeleteRole(slotProps.data.id)"/>
                                 <AdminButton
                                     v-if="hasPermission(['roles.sync.permission'])"
@@ -254,13 +249,15 @@ const cities = ref([
 
                     <div>
                         <label class="block font-bold mb-3" for="permissions">Permissions</label>
-                        <MultiSelect v-model="role.permissions" :maxSelectedLabels="3" :options="permissions" :showClear="true"
+                        <MultiSelect v-model="role.assignedPermissions" :maxSelectedLabels="3" :options="permissions"
+                                     :showClear="true" filter
                                      class="w-full md:w-80" display="chip"
-                                     filter optionLabel="name" placeholder="Select Permissions"/>
+                                     fluid
+                                     optionLabel="name"
+                                     placeholder="Select Permissions"
+                        />
                         <!--                    <small v-if="submitted && !role.permissions" class="text-red-500">permissions is required.</small>-->
                     </div>
-
-
                 </div>
 
                 <template #footer>

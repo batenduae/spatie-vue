@@ -70,11 +70,12 @@ defineOptions({ layout: SpatieAdminLayout });
 
                     <TextInput
                         id="name"
-                        type="text"
                         v-model="form.name"
+                        type="text"
+                        autocomplete="name"
                         required
                         autofocus
-                        autocomplete="name"
+                        fluid
                     />
 
                     <InputError :message="form.errors.name" class="mt-2"/>
@@ -86,8 +87,8 @@ defineOptions({ layout: SpatieAdminLayout });
                     <TextInput
                         id="group"
                         v-model="form.group"
+                        fluid
                         autocomplete="group"
-                        autofocus
                         required
                         type="text"
                     />
@@ -101,8 +102,8 @@ defineOptions({ layout: SpatieAdminLayout });
                     <TextArea
                         id="description"
                         v-model="form.description"
+                        fluid
                         autocomplete="description"
-                        autofocus
                         required
                         type="text"
                     />
@@ -130,6 +131,7 @@ defineOptions({ layout: SpatieAdminLayout });
                         placeholder="Assign Some Permissions"
                         label="name"
                         track-by="name"
+                        fluid
                     >
                         <template slot="tag" slot-scope="props">
                             {{ form.permissions }}

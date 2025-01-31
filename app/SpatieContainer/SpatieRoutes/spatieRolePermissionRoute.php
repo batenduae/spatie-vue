@@ -19,9 +19,12 @@ Route::middleware(['isAdmin'])->group(function () {
         ->name('admin.index');
 
     Route::resource('users', UserController::class);
-    Route::delete('usersDestroy', [UserController::class, 'destroyMany'])->name("users.destroyMany");
+    Route::delete('usersDestroyMany', [UserController::class, 'destroyMany'])->name("users.destroyMany");
     Route::delete('usersDestroyPermanently/{id}', [UserController::class, 'destroyPermanently'])->name("users.destroyPermanently");
     Route::post('usersRestore/{id}', [UserController::class, 'restore'])->name("users.restore");
+    Route::post('usersRestoreMany', [UserController::class, 'restoreMany'])->name("users.restoreMany");
+    Route::delete('usersDestroyPermanentlyMany', [UserController::class, 'destroyPermanentlyMany'])->name("users.destroyPermanentlyMany");
+
     Route::resource('roles', RoleController::class);
     Route::delete('rolesDestroy', [RoleController::class, 'destroyMany'])->name("roles.destroyMany");
     Route::resource('permissions', PermissionController::class);

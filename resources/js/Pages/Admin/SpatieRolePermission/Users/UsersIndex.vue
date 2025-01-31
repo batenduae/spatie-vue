@@ -15,6 +15,7 @@ defineProps([
     'usersTrashed',
 ]);
 defineOptions({layout: SpatieAdminLayout});
+
 </script>
 
 <template>

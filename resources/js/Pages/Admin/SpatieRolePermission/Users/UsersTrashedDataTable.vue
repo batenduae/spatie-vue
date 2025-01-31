@@ -35,21 +35,42 @@ const restoreUsers = () => {
 //to delete user
 const selectedUsers = ref();
 const deleteUserDialog = ref(false);
+const restoreUsersDialog = ref(false);
 const deleteUsersDialog = ref(false);
+const confirmRestoreSelected = () => {
+    restoreUsersDialog.value = true;
+};
 const confirmDeleteSelected = () => {
     deleteUsersDialog.value = true;
 };
-const deleteSelectedUsers = () => {
-    deleteUsersDialog.value = false;
+
+const restoreSelectedUsers = () => {
+    restoreUsersDialog.value = false;
     let ids = selectedUsers.value.map(({id}) => id);
-    let filteredIds = [...new Set([...hasPermissionSelf('users.self.delete', ids), ...hasPermissionOthers('users.others.delete', ids)])].filter((value) => value > 1);
+    let filteredIds = [...new Set([...hasPermissionOthers('users.others.restore', ids)])].filter((value) => value > 1);
     console.log(filteredIds)
     const form = useForm({
         ids: filteredIds,
     });
-    form.delete(route('users.destroyMany', filteredIds))
+    form.post(route('users.restoreMany', filteredIds))
     selectedUsers.value = null;
-    toast.add({severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000});
+    // toast.add({severity: 'success', summary: 'Successful', detail: 'Users Restored', life: 3000});
+    this.$parent.fetchData();
+    this.$forceUpdate();
+};
+const deleteSelectedUsers = () => {
+    deleteUsersDialog.value = false;
+    let ids = selectedUsers.value.map(({id}) => id);
+    let filteredIds = [...new Set([...hasPermissionOthers('users.others.delete', ids)])].filter((value) => value > 1);
+    console.log(filteredIds)
+    const form = useForm({
+        ids: filteredIds,
+    });
+    form.delete(route('users.destroyPermanentlyMany', filteredIds))
+    selectedUsers.value = null;
+    // toast.add({severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000});
+    this.$parent.fetchData();
+    this.$forceUpdate();
 };
 
 const exportCSV = () => {
@@ -72,10 +93,12 @@ const multiSortMeta = ref(
                 <Toolbar class="mb-6">
                     <template #start>
                         <!--                    create new user-->
-                        <Button v-if="hasPermission('users.others.create')" class="mr-2" icon="pi pi-"
+                        <Button :disabled="!selectedUsers || !selectedUsers.length" class="mr-2" icon="pi pi-replay"
                                 label="Restore"
-                                @click="restoreUsers"/>
-                        replay
+                                outlined severity="success"
+                                @click="confirmRestoreSelected"
+
+                        />
                         <Button :disabled="!selectedUsers || !selectedUsers.length" icon="pi pi-exclamation-triangle"
                                 label="Delete Completely"
                                 outlined severity="danger"
@@ -144,7 +167,6 @@ const multiSortMeta = ref(
                     <Column :exportable="false" header="Action" style="min-width: 3rem">
                         <template #body="slotProps">
                             <div class="flex justify-start space-x-2">
-                                {{ slotProps.data.id }}
                                 <AdminButton
                                     v-if="slotProps.data.id!==1 && (hasPermissionSelf('users.self.edit',slotProps.data.id) || hasPermissionOthers('users.others.edit',slotProps.data.id))"
                                     :obj="slotProps.data"
@@ -181,6 +203,17 @@ const multiSortMeta = ref(
                 <template #footer>
                     <Button icon="pi pi-times" label="No" text @click="deleteUserDialog = false"/>
                     <Button icon="pi pi-check" label="Yes" @click="deleteUser"/>
+                </template>
+            </Dialog>
+
+            <Dialog v-model:visible="restoreUsersDialog" :modal="true" :style="{ width: '450px' }" header="Confirm">
+                <div class="flex items-center gap-4">
+                    <i class="pi pi-exclamation-triangle !text-3xl"/>
+                    <span v-if="user">Are you sure you want to restore the selected users?</span>
+                </div>
+                <template #footer>
+                    <Button icon="pi pi-times" label="No" text @click="restoreUsersDialog = false"/>
+                    <Button icon="pi pi-check" label="Yes" text @click="restoreSelectedUsers"/>
                 </template>
             </Dialog>
 

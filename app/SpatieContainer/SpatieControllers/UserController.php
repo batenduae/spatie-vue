@@ -29,8 +29,8 @@ class UserController extends Controller implements HasMiddleware
             new Middleware(PermissionMiddleware::using(['users.others.create']), only: ['create', 'store']),
             new Middleware(PermissionMiddleware::using(['users.self.edit', 'users.others.edit']), only: ['edit', 'update']),
             new Middleware(PermissionMiddleware::using(['users.self.delete', 'users.others.delete']), only: ['destroy', 'destroyMany']),
-            new Middleware(PermissionMiddleware::using(['users.self.delete', 'users.others.delete']), only: ['destroyPermanently']),
-            new Middleware(PermissionMiddleware::using(['users.index']), only: ['restore']),
+            new Middleware(PermissionMiddleware::using(['users.self.delete', 'users.others.delete']), only: ['destroyPermanently', 'destroyPermanentlyMany']),
+            new Middleware(PermissionMiddleware::using(['users.index']), only: ['restore', 'restoreMany']),
 
         ];
     }
@@ -88,7 +88,7 @@ class UserController extends Controller implements HasMiddleware
 //        $user->syncPermissions($request->permissions);
         }
 
-        return to_route('users.index')
+        return back()
             ->with('success', "User : '" . $user->name . "' Created Successfully");
 
     }
@@ -154,16 +154,8 @@ class UserController extends Controller implements HasMiddleware
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
-        return back()
+        return to_route('users.index')
             ->with('danger', "User : '" . $user->name . "' Deleted Successfully");
-    }
-
-    public function destroyPermanently(string $id): RedirectResponse
-    {
-        $userName = User::onlyTrashed()->findOrFail($id)->name;
-        User::onlyTrashed()->findOrFail($id)->forceDelete();
-        return back()
-            ->with('danger', "User : '" . $userName . "' Deleted Permanently Successfully");
     }
 
     public function destroyMany(Request $request): RedirectResponse
@@ -177,7 +169,7 @@ class UserController extends Controller implements HasMiddleware
             }
             $text = $text . $user->name . ", ";
         }
-        return back()
+        return to_route('users.index')
             ->with('danger', "Users : '" . $text . "' Deleted Successfully");
     }
 
@@ -187,5 +179,41 @@ class UserController extends Controller implements HasMiddleware
         $user = User::findOrFail($id);
         return back()
             ->with('danger', "User : '" . $user->name . "' Restored Successfully");
+    }
+
+    public function restoreMany(Request $request): RedirectResponse
+    {
+        $ids = $request->ids;
+        $text = "";
+        foreach ($ids as $id) {
+            User::onlyTrashed()->findOrFail($id)->restore();
+            $user = User::findOrFail($id);
+            $text = $text . $user->name . ", ";
+        }
+        return back()
+            ->with('success', "Users : '" . $text . "' Restored Successfully");
+    }
+
+    public function destroyPermanently(string $id): RedirectResponse
+    {
+        $userName = User::onlyTrashed()->findOrFail($id)->name;
+        User::onlyTrashed()->findOrFail($id)->forceDelete();
+        return back()
+            ->with('danger', "User : '" . $userName . "' Deleted Permanently Successfully");
+    }
+
+    public function destroyPermanentlyMany(Request $request): RedirectResponse
+    {
+        $ids = $request->ids;
+        $text = "";
+        foreach ($ids as $id) {
+            if ($id > 1) {
+                $userName = User::onlyTrashed()->findOrFail($id)->name;
+                User::onlyTrashed()->findOrFail($id)->forceDelete();
+            }
+            $text = $text . $userName . ", ";
+        }
+        return back()
+            ->with('danger', "Users : '" . $text . "' Deleted Permanently Successfully");
     }
 }
