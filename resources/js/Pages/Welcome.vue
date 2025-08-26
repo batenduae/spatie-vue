@@ -56,6 +56,7 @@ function handleImageError() {
                         Dashboard
                     </Link>
                 </div>
+
             </HomeIndex>
         </div>
     </div>

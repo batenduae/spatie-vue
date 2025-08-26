@@ -17,6 +17,7 @@ const {hasRole, hasPermission} = usePermissions();
 
 <template>
     <div class="">
+        <Toast/>
         <Notivue v-slot="item">
             <Notification
                 :icons="outlinedIcons"

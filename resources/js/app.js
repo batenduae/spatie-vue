@@ -63,11 +63,46 @@ createInertiaApp({
         }
     },
     resolve: (name) => {
-        const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
-        let page = pages[`./Pages/${name}.vue`];
-        page.default.layout = page.default.layout || DefaultLayout;
-        return page;
+        // console.log(name);
+
+        const pages = import.meta.glob(
+            ["./Pages/**/*.vue",
+                "../../Modules/*/resources/js/Pages/**/*.vue"],
+            {eager: true});
+
+        // console.log(pages);
+
+        const regex = /([^:]+)::(.+)/;
+        const matches = regex.exec(name);
+        // let page = '';
+        // let module = '';
+        // let pageName = '';
+
+        if (matches && matches.length > 2) {
+            let module = matches[1].replace(
+                /[A-Z]/g,
+                (m) => m);
+            let pageName = matches[2];
+            let page = pages[`../../Modules/${module}/resources/js/Pages/${pageName}.vue`];
+            page.default.layout = page.default.layout || DefaultLayout;
+            return page;
+        } else {
+            let page = pages[`./Pages/${name}.vue`];
+            page.default.layout = page.default.layout || DefaultLayout;
+            return page;
+        }
+
+        // console.log(module);
+        // console.log(pageName);
+
+
     },
+
+    // use lower function to define module
+    // public function index(){
+    //     return Inertia::render('Employee::Employee/Index');
+    // }
+
     setup({ el, App, props, plugin }) {
         return createApp({render: () => h(App, props)})
             .use(plugin)

@@ -2,6 +2,7 @@
 </script>
 
 <template>
+    <Toast/>
     <div
         class="min-h-screen w-full sm:justify-center items-center "
     >

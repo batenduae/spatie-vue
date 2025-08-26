@@ -4,6 +4,7 @@ import SidebarArea from "@/Components/TailAdmin/Sidebar/SidebarArea.vue"
 </script>
 
 <template>
+    <Toast/>
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden">
         <!-- ===== Sidebar Start ===== -->

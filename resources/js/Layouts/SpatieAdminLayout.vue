@@ -12,6 +12,7 @@ onMounted(showFlash)
 
 <template>
     <div class="">
+        <Toast/>
         <Notivue v-slot="item">
             <Notification
                           :item="item"
