@@ -12,7 +12,7 @@ defineOptions({layout: SpatieAdminLayout});
     <Head title="Admin"></Head>
     <div class="py-6">
         <div class="bg-slate-200 text-black dark:bg-black dark:text-white/70 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-4 text-center">Admin Page</div>
+            <div class="p-4 text-center">Admin Dashboard Settings Page</div>
         </div>
     </div>
     <div

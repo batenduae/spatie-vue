@@ -38,7 +38,17 @@ const submit = () => {
     <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
         {{ status }}
     </div>
-<div class="bgImage h-screen flex items-center justify-center no-scrollbar">
+    <div class="bgImage h-screen flex flex-col items-center justify-center space-y-5 no-scrollbar">
+
+        <div class="bg-indigo-400 text-white text-xl py-2 px-5 mx-auto text-center rounded-lg
+    box-border w-100">
+            <Link
+                :href="route('home')"
+                class=" hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+                Back to Home
+            </Link>
+        </div>
     <div class="bg-slate-500 text-white py-8 px-10 rounded-lg
     box-border h-80 w-100 ">
         <form @submit.prevent="submit">

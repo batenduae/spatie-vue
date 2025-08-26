@@ -11,9 +11,8 @@ defineOptions({layout: AuthenticatedLayout});
 </script>
 
 <template>
-    <Head title="Dashboard"/>
+    <Head title="User Dashboard"/>
     <div class="text-center  bg-white dark:bg-boxdark-2 text-black dark:text-white">
-
         <section
             class=" h-[478px] w-full bg-cover bg-center bg-no-repeat sm:h-[500px] md:mt-[-22px] lg:h-[630px] bg-[url('https://res.cloudinary.com/cross-border-education-technologies-pte-ltd/image/upload/v1721890721/Shikho%20Website%20V3/Shikho%20New%20Hero%20Image%20-%20July%202024/mobile_responsive_punqka.png')] lg:bg-[url('https://res.cloudinary.com/cross-border-education-technologies-pte-ltd/image/upload/v1721890721/Shikho%20Website%20V3/Shikho%20New%20Hero%20Image%20-%20July%202024/desktop_version_sn7dpn.png')]">
             <div class="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:h-full lg:px-8">
@@ -43,7 +42,5 @@ defineOptions({layout: AuthenticatedLayout});
                 </div>
             </div>
         </section>
-
-
     </div>
 </template>

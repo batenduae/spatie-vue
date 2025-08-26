@@ -69,13 +69,13 @@ const {hasRole, hasPermission} = usePermissions();
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Dashboard
+                                    User Dashboard
                                 </NavLink>
                                 <NavLink
                                     :href="route('admin.index')"
                                     :active="route().current('admin.index')"
                                 >
-                                    Admin
+                                    Admin Dashboard
                                 </NavLink>
 
                             </div>
