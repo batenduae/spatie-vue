@@ -36,6 +36,8 @@ import 'notivue/notification-progress.css'
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
 import Aura from '@primevue/themes/aura';
+//vuex
+import {createStore} from 'vuex';
 
 
 //notivue
@@ -49,7 +51,8 @@ const notivue = createNotivue({
         }
     }
 })
-
+// Create a new store instance.
+const store = createStore();
 
 ////////////////////////////////////////
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
@@ -134,6 +137,8 @@ createInertiaApp({
                 }
             })
             .use(ToastService)
+            //
+            .use(store)
             //
             .mount(el);
     },
