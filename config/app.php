@@ -126,4 +126,5 @@ return [
 //for asset handling
     'asset_url' => env('ASSET_URL', 'https://www.spatie-vue.test'),
 
+
 ];
