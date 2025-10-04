@@ -40,7 +40,7 @@ function handleImageError() {
             id="background"
             class="absolute -left-20 top-0 max-w-[877px]"
             src="https://laravel.com/assets/img/welcome/background.svg"
-        />
+            alt=""/>
         <div>
             <HomeIndex>
                 <div

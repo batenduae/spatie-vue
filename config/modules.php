@@ -5,6 +5,7 @@ use Nwidart\Modules\Providers\ConsoleServiceProvider;
 
 return [
 
+    'name' => 'ModuleName',
     /*
     |--------------------------------------------------------------------------
     | Module Namespace
@@ -33,10 +34,10 @@ return [
             'views/master' => 'resources/views/components/layouts/master.blade.php',
             'scaffold/config' => 'config/config.php',
             'composer' => 'composer.json',
-            'assets/js/app' => 'resources/assets/js/app.js',
-            'assets/sass/app' => 'resources/assets/sass/app.scss',
-            'vite' => 'vite.config.js',
-            'package' => 'package.json',
+//            'assets/js/app' => 'resources/assets/js/app.js',
+//            'assets/sass/app' => 'resources/assets/sass/app.scss',
+//            'vite' => 'vite.config.js',
+//            'package' => 'package.json',
         ],
         'replacements' => [
             /**
@@ -141,46 +142,46 @@ return [
             'helpers' => ['path' => 'app/Helpers', 'generate' => false],
             'interfaces' => ['path' => 'app/Interfaces', 'generate' => false],
             'listener' => ['path' => 'app/Listeners', 'generate' => false],
-            'model' => ['path' => 'app/Models', 'generate' => false],
+            'model' => ['path' => 'app/Models', 'generate' => true],   //true
             'notifications' => ['path' => 'app/Notifications', 'generate' => false],
             'observer' => ['path' => 'app/Observers', 'generate' => false],
             'policies' => ['path' => 'app/Policies', 'generate' => false],
-            'provider' => ['path' => 'app/Providers', 'generate' => true],
+            'provider' => ['path' => 'app/Providers', 'generate' => true],   //true
             'repository' => ['path' => 'app/Repositories', 'generate' => false],
             'resource' => ['path' => 'app/Transformers', 'generate' => false],
-            'route-provider' => ['path' => 'app/Providers', 'generate' => true],
+            'route-provider' => ['path' => 'app/Providers', 'generate' => true],   //true
             'rules' => ['path' => 'app/Rules', 'generate' => false],
             'services' => ['path' => 'app/Services', 'generate' => false],
             'scopes' => ['path' => 'app/Models/Scopes', 'generate' => false],
             'traits' => ['path' => 'app/Traits', 'generate' => false],
 
             // app/Http/
-            'controller' => ['path' => 'app/Http/Controllers', 'generate' => true],
+            'controller' => ['path' => 'app/Http/Controllers', 'generate' => true],   //true
             'filter' => ['path' => 'app/Http/Middleware', 'generate' => false],
             'request' => ['path' => 'app/Http/Requests', 'generate' => false],
 
             // config/
-            'config' => ['path' => 'config', 'generate' => true],
+            'config' => ['path' => 'config', 'generate' => true],   //true
 
             // database/
-            'factory' => ['path' => 'database/factories', 'generate' => true],
-            'migration' => ['path' => 'database/migrations', 'generate' => true],
+            'factory' => ['path' => 'database/factories', 'generate' => false],   //true
+            'migration' => ['path' => 'database/migrations', 'generate' => true],   //true
             'seeder' => ['path' => 'database/seeders', 'generate' => true],
 
             // lang/
             'lang' => ['path' => 'lang', 'generate' => false],
 
             // resource/
-            'assets' => ['path' => 'resources/assets', 'generate' => true],
+            'assets' => ['path' => 'resources/assets', 'generate' => false],   //true
             'component-view' => ['path' => 'resources/views/components', 'generate' => false],
-            'views' => ['path' => 'resources/views', 'generate' => true],
+            'views' => ['path' => 'resources/views', 'generate' => false],   //true
 
             // routes/
-            'routes' => ['path' => 'routes', 'generate' => true],
+            'routes' => ['path' => 'routes', 'generate' => false],
 
             // tests/
-            'test-feature' => ['path' => 'tests/Feature', 'generate' => true],
-            'test-unit' => ['path' => 'tests/Unit', 'generate' => true],
+            'test-feature' => ['path' => 'tests/Feature', 'generate' => false],   //true
+            'test-unit' => ['path' => 'tests/Unit', 'generate' => false],    //true
         ],
     ],
 
@@ -225,6 +226,11 @@ return [
     | application. You can add your own commands to merge section.
     |
     */
+//    'commands' => ConsoleServiceProvider::defaultCommands()
+//        ->merge([
+//            // New commands go here
+//        ])->toArray(),
+
     'commands' => ConsoleServiceProvider::defaultCommands()
         ->merge([
             // New commands go here

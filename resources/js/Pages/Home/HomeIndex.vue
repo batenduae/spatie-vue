@@ -2,14 +2,14 @@
 
 import HomeMenuBar from "@/Pages/Home/HomeMenuBar.vue";
 import HomeMegaMenu from "@/Pages/Home/HomeMegaMenu.vue";
-import BlogIndex from "../../../../Modules/Blog/resources/js/Pages/BlogIndex.vue";
+
 </script>
 
 <template>
     <div class="h-screen">
         <!--        <HomeMenuBar></HomeMenuBar>-->
         <HomeMegaMenu></HomeMegaMenu>
-        <div class="bg-indigo-50">
+      <div class="bg-indigo-500">
             <div class="text-3xl text-center p-5">
                 This is My Super Website
                 <div class="">Here I provide various Feature</div>
@@ -19,7 +19,6 @@ import BlogIndex from "../../../../Modules/Blog/resources/js/Pages/BlogIndex.vue
 
 
         <!--        <div class="">-->
-        <!--            <BlogIndex></BlogIndex>-->
         <!--        </div>-->
     </div>
     <slot></slot>
