@@ -74,7 +74,6 @@ createInertiaApp({
             {eager: true});
 
         // console.log(pages);
-
         const regex = /([^:]+)::(.+)/;
         const matches = regex.exec(name);
         // let page = '';
@@ -94,11 +93,8 @@ createInertiaApp({
             page.default.layout = page.default.layout || DefaultLayout;
             return page;
         }
-
         // console.log(module);
         // console.log(pageName);
-
-
     },
 
     // use lower function to define module
