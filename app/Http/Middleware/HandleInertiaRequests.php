@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -40,22 +41,30 @@ class HandleInertiaRequests extends Middleware
                 }
             }
         }
-
+        $roles = [];
+        foreach (Role::all() as $role) {
+            if (Auth::user()) {
+                if (Auth::user()->hasRole($role->name)) {
+                    $roles[] = $role->name;
+                }
+            }
+        }
+//        $roles = Auth::user()->getRoleNames();
         return [
             ...parent::share($request),
             'auth.user' => fn() => $request->user()
                 ? new UserResource($request->user())
                 : null,
             'auth.user.permit' => $permissions,
-
+            'auth.user.permitRole' => $roles,
             'flash' => function () use ($request) {
                 return [
-                    'message'   => session('message'),
-                    'info'      => session('info'),
-                    'success'   => session('success'),
-                    'warning'   => session('warning'),
-                    'error'     => session('error'),
-                    'danger'    => session('danger'),
+                    'message' => session('message'),
+                    'info' => session('info'),
+                    'success' => session('success'),
+                    'warning' => session('warning'),
+                    'error' => session('error'),
+                    'danger' => session('danger'),
                 ];
             }
         ];
